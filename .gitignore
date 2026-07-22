@@ -1,0 +1,4 @@
+# ローカル用の安全バックアップ（リポジトリには含めない）
+index.COMPLETE-*.html
+.DS_Store
+.claude/
