@@ -399,21 +399,38 @@ table{ border-collapse:collapse; width:100%; }
   font-family:var(--font-mincho);
   font-size:.66em; letter-spacing:.12em; margin-top:.25em;
 }
-/* FV内の「主催の実績」：小さく上品に。金の細罫を上に一本 */
-.fv__record{ margin-top:1.9em; padding-top:1.4em; border-top:1px solid rgba(196,165,123,.45); max-width:440px; }
-.fv__record-label{
-  font-family:var(--font-en); font-weight:300;
-  font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+/* FV内の「主催の実績」：金を効かせて豪華に。上に金グラデの罫、数字は金 */
+.fv__record{
+  margin-top:1.9em; padding-top:1.5em; max-width:460px; position:relative;
 }
-.fv__record-row{ margin-top:.9em; display:flex; gap:clamp(.6em,2.4vw,1.4em); }
+.fv__record::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:1.5px;
+  background:linear-gradient(90deg, rgba(196,165,123,0), #D8B76A 30%, #B8912F 50%, #D8B76A 70%, rgba(196,165,123,0));
+}
+.fv__record-label{
+  font-family:var(--font-en); font-weight:400;
+  font-size:.74rem; letter-spacing:.24em; text-transform:uppercase;
+  background:linear-gradient(90deg,#B8912F,#E4C87E,#B8912F);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.fv__record-row{ margin-top:1em; display:flex; gap:clamp(.6em,2.4vw,1.4em); }
 .fv__record-row > div{ flex:1; display:flex; flex-direction:column; align-items:flex-start; line-height:1.2; }
-.fv__record-row b{ font-family:var(--font-en); font-weight:300; font-size:clamp(1.4rem,4.4vw,1.9rem); color:var(--greige-dk); }
-.fv__record-row i{ font-family:var(--font-mincho); font-style:normal; font-size:.62rem; color:var(--text-sub); margin-top:.1em; }
-.fv__record-row span{ font-size:.62rem; color:var(--text-sub); letter-spacing:.04em; margin-top:.15em; }
+.fv__record-row b{
+  font-family:var(--font-en); font-weight:400; font-size:clamp(1.6rem,5vw,2.2rem);
+  background:linear-gradient(160deg,#D8B76A 0%,#B8912F 55%,#E4C87E 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.fv__record-row i{ font-family:var(--font-mincho); font-style:normal; font-size:.64rem; color:var(--greige-dk); margin-top:.12em; }
+.fv__record-row span{ font-size:.64rem; color:var(--text-sub); letter-spacing:.04em; margin-top:.15em; }
 @media (max-width:767px){
+  /* SPは暗転画像の上なので、罫と文字を明るい金＋白に */
+  .fv__record::before{ background:linear-gradient(90deg, rgba(232,201,126,0), #E8C97E 50%, rgba(232,201,126,0)); }
   .fv__record{ margin-inline:auto; }
-  .fv__record-label{ text-align:center; }
+  .fv__record-label{ text-align:center; background:linear-gradient(90deg,#E8C97E,#FFF3D6,#E8C97E); -webkit-background-clip:text; background-clip:text; color:transparent; }
   .fv__record-row > div{ align-items:center; }
+  .fv__record-row b{ background:linear-gradient(160deg,#F3E2B0,#E8C97E 55%,#FFF6DE); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .fv__record-row i{ color:rgba(255,255,255,.9); }
+  .fv__record-row span{ color:rgba(255,255,255,.85); }
 }
 
 .fv__cta{ margin-top:2.4em; }
@@ -424,7 +441,7 @@ table{ border-collapse:collapse; width:100%; }
      画像が暗転し、文章（白）が下からのぼって現れる（見本サイト準拠）。
      マスク拡大はせず brightness と opacity だけを動かすので滑らかに動く。 */
   .fv{ height:100svh; min-height:560px; padding:0; overflow:hidden; }
-  .fv__mask{ position:absolute; inset:0; }
+  .fv__mask{ position:absolute; inset:0; will-change:transform; }
   .fv__img{ position:absolute; inset:0; }
   .fv__archline{ display:none; }
   .fv__copy{
@@ -599,40 +616,64 @@ table{ border-collapse:collapse; width:100%; }
 }
 .founder__body{ font-size:.9rem; color:var(--text-sub); display:grid; gap:1.05em; }
 
-/* 実績パネル（権威性の核）：白い額に金の細罫で仕切り、数字を大きく見せる */
+/* 実績パネル（権威性の核）：金の額装＋金のシマー掃引で豪華に見せる */
 .founder__hero{
-  margin:3.4em auto 0; max-width:940px;
+  margin:3.6em auto 0; max-width:940px;
   display:grid; grid-template-columns:repeat(4,1fr);
-  background:linear-gradient(180deg,#FFFFFF 0%, #FBF8F1 100%);
-  border:1px solid rgba(196,165,123,.42);
-  border-radius:18px;
-  box-shadow:0 14px 48px rgba(90,81,72,.10);
+  background:
+    linear-gradient(180deg, #FFFDF9 0%, #FBF5EA 100%);
+  border:1.5px solid transparent;
+  border-radius:20px;
+  /* 二重背景で「金の縁取り」を表現 */
+  background-clip:padding-box;
+  box-shadow:
+    0 18px 56px rgba(120,97,60,.16),
+    0 0 0 1px rgba(196,165,123,.5),
+    inset 0 1px 0 rgba(255,255,255,.9);
   overflow:hidden;
   position:relative;
+  isolation:isolate;
 }
-/* 上辺に金のアクセントライン */
+/* 金の光沢フレーム（上下辺） */
 .founder__hero::before{
-  content:""; position:absolute; top:0; left:8%; right:8%; height:2px;
-  background:linear-gradient(90deg, rgba(196,165,123,0), var(--gold), rgba(196,165,123,0));
+  content:""; position:absolute; inset:0; border-radius:20px; padding:1.5px;
+  background:linear-gradient(135deg, #E9CE92 0%, #C4A57B 25%, #F6E8C6 50%, #B8925A 75%, #E9CE92 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none; z-index:2;
 }
-.founder__hstat{ text-align:center; padding:clamp(1.9em,4.2vw,3em) .6em; position:relative; }
-.founder__hstat + .founder__hstat{ border-left:1px solid rgba(196,165,123,.26); }
+/* 斜めに走る金のシマー（js-count-group が見えたら1回流れる） */
+.founder__hshimmer{
+  position:absolute; top:0; bottom:0; left:-40%; width:35%;
+  background:linear-gradient(105deg, rgba(255,247,225,0) 0%, rgba(246,232,198,.85) 45%, rgba(255,255,255,.95) 50%, rgba(246,232,198,.85) 55%, rgba(255,247,225,0) 100%);
+  transform:skewX(-14deg); opacity:0; z-index:1; pointer-events:none;
+}
+.founder__hero.is-shimmer .founder__hshimmer{ animation:founderShimmer 1.5s ease-out .3s 1; }
+@keyframes founderShimmer{
+  0%{ left:-40%; opacity:0; } 12%{ opacity:1; } 100%{ left:120%; opacity:0; }
+}
+.founder__hstat{ text-align:center; padding:clamp(2em,4.4vw,3.2em) .6em; position:relative; z-index:1; }
+.founder__hstat + .founder__hstat{ border-left:1px solid rgba(196,165,123,.32); }
 .founder__hnum{
-  font-family:var(--font-en); font-weight:300;
-  font-size:clamp(2.5rem,6.4vw,3.7rem); line-height:1;
-  letter-spacing:.02em; color:var(--greige-dk);
-  font-variant-numeric:tabular-nums;
+  font-family:var(--font-en); font-weight:400;
+  font-size:clamp(2.6rem,6.8vw,3.9rem); line-height:1;
+  letter-spacing:.02em; font-variant-numeric:tabular-nums;
+  /* 金のグラデ文字 */
+  background:linear-gradient(160deg, #B8912F 0%, #D8B76A 45%, #9C7A28 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 1px 0 rgba(255,255,255,.4);
 }
 .founder__hnum i{
   font-family:var(--font-mincho); font-style:normal;
-  font-size:.32em; margin-left:.18em; color:var(--text-sub); letter-spacing:.04em;
+  font-size:.3em; margin-left:.18em; letter-spacing:.04em;
+  -webkit-text-fill-color:var(--greige-dk); color:var(--greige-dk);
 }
-.founder__hlabel{ margin-top:1em; font-size:.8rem; letter-spacing:.09em; color:var(--text-sub); }
+.founder__hlabel{ margin-top:1.05em; font-size:.82rem; letter-spacing:.1em; color:var(--greige-dk); }
 @media (max-width:767px){
   .founder__hero{ grid-template-columns:repeat(2,1fr); }
   .founder__hstat + .founder__hstat{ border-left:0; }
-  .founder__hstat:nth-child(2n){ border-left:1px solid rgba(196,165,123,.26); }
-  .founder__hstat:nth-child(n+3){ border-top:1px solid rgba(196,165,123,.26); }
+  .founder__hstat:nth-child(2n){ border-left:1px solid rgba(196,165,123,.32); }
+  .founder__hstat:nth-child(n+3){ border-top:1px solid rgba(196,165,123,.32); }
   .founder__text{ text-align:center; }
 }
 
@@ -1071,27 +1112,7 @@ table{ border-collapse:collapse; width:100%; }
     <div class="wrap">
       <div class="center">
         <p class="eyebrow ani-gsap fadeIn slide-t">Founder</p>
-        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">このスクールを、<br class="sp-only">主宰する人</h2>
-      </div>
-
-      <!-- 権威性の核：実績を最上部に、豪華な額装＋カウントアップで見せる -->
-      <div class="founder__hero ani-gsap fadeIn slide-t js-count-group" data-delay="0.15">
-        <div class="founder__hstat">
-          <p class="founder__hnum"><span class="js-count" data-to="21">0</span><i>年</i></p>
-          <p class="founder__hlabel">経営を継続</p>
-        </div>
-        <div class="founder__hstat">
-          <p class="founder__hnum"><span class="js-count" data-to="4">0</span><i>店舗</i></p>
-          <p class="founder__hlabel">サロンを運営</p>
-        </div>
-        <div class="founder__hstat">
-          <p class="founder__hnum"><span class="js-count" data-to="700">0</span><i>名</i></p>
-          <p class="founder__hlabel">オーナーを支援</p>
-        </div>
-        <div class="founder__hstat">
-          <p class="founder__hnum"><span class="js-count" data-to="30">0</span><i>名+</i></p>
-          <p class="founder__hlabel">スタッフを育成</p>
-        </div>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">Quiet&nbsp;Luxury 主宰</h2>
       </div>
 
       <div class="founder__inner">
@@ -1114,6 +1135,27 @@ table{ border-collapse:collapse; width:100%; }
             <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを<wbr>運営し、<wbr>30名を超えるスタッフを<wbr>現場で育てています。<wbr>SGS講師として、<wbr>700名を超える<wbr>個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
             <p>目指すのは、<wbr>技術を教えるだけの<wbr>場ではありません。<wbr>ライフステージに合わせて<wbr>働き方を選びながら、<wbr>一人ひとりが<wbr>自信を持って<wbr>長く活躍できること。<wbr>Quiet Luxuryは、<wbr>その願いから<wbr>生まれました。</p>
           </div>
+        </div>
+      </div>
+
+      <!-- 権威性の核：実績。金の額装＋金のシマーで豪華に、写真の下に配置 -->
+      <div class="founder__hero ani-gsap fadeIn slide-t js-count-group" data-delay="0.15">
+        <div class="founder__hshimmer" aria-hidden="true"></div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="21">0</span><i>年</i></p>
+          <p class="founder__hlabel">経営を継続</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="4">0</span><i>店舗</i></p>
+          <p class="founder__hlabel">サロンを運営</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="700">0</span><i>名</i></p>
+          <p class="founder__hlabel">オーナーを支援</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="30">0</span><i>名+</i></p>
+          <p class="founder__hlabel">スタッフを育成</p>
         </div>
       </div>
     </div>
@@ -1678,9 +1720,13 @@ table{ border-collapse:collapse; width:100%; }
          第1段（前半）：明るいアーチ枠 → マスクを広げて画面全体に広がる。
          第2段（後半）：全体になった写真がその場で暗転し、白い文章が現れる。
          ピンで固定するので「その場で」変わり、スクロール量に連動して滑らか。 */
-      var A0 = 118, AF = 300;   // マスク%：アーチ枠 → 画面いっぱい
-      setMask(A0, A0);
+      /* 拡大は mask-size ではなく transform:scale で行う。
+         モバイルでは mask-size の毎フレーム再描画が重くカクつくため、
+         GPU合成される transform に寄せて滑らかにする（PCの体感に近づける）。 */
+      var SCALE_MAX = 2.9;      // アーチ枠 → 画面いっぱいに広がる倍率
+      setMask(118, 118);        // マスクは固定（アーチ枠）
       gsap.set(fvCopy, { clearProps: 'transform' });
+      gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%' });
       fvImg.style.filter = 'brightness(1)';
       fvCopy.style.opacity = '0';
 
@@ -1695,10 +1741,9 @@ table{ border-collapse:collapse; width:100%; }
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          // 前半：枠が全体に広がる
+          // 前半：枠が全体に広がる（GPUで滑らか）
           var e = Math.min(1, p / 0.5);
-          var m = A0 + (AF - A0) * e;
-          setMask(m, m);
+          gsap.set(fvMask, { scale: 1 + (SCALE_MAX - 1) * e });
           // 後半：暗転＋文章フェードイン
           var d = Math.max(0, (p - 0.5) / 0.5);
           fvImg.style.filter = 'brightness(' + (1 - 0.55 * d) + ')';
@@ -1710,7 +1755,7 @@ table{ border-collapse:collapse; width:100%; }
         st.kill();
         fvImg.style.filter = '';
         fvCopy.style.opacity = '1';
-        setMask(AF, AF);
+        gsap.set(fvMask, { scale: SCALE_MAX });
       };
     });
   }
@@ -1894,6 +1939,7 @@ table{ border-collapse:collapse; width:100%; }
       var top = o.g.getBoundingClientRect().top;
       if (top < trigger && top > -o.g.offsetHeight) {
         o.done = true;
+        o.g.classList.add('is-shimmer');   // 金のシマーを1回流す
         o.g.querySelectorAll('.js-count').forEach(function (el) {
           var to = parseFloat(el.getAttribute('data-to')) || 0;
           var obj = { v: 0 };
