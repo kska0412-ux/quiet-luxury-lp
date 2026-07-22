@@ -417,7 +417,12 @@ table{ border-collapse:collapse; width:100%; }
     padding-inline:var(--gutter);
     text-align:center;
   }
-  .fv__sub{ justify-content:center; }
+  /* SP：サブラベルを画面中央へ。罫線は左右対称にして片側だけの偏りを解消 */
+  .fv__copy{ align-items:center; }
+  .fv__sub{ justify-content:center; text-align:center; }
+  .fv__sub::after{
+    content:""; width:38px; height:1px; background:var(--gold); flex:none;
+  }
   .fv__cta .btn{ width:100%; }
 }
 
@@ -554,6 +559,30 @@ table{ border-collapse:collapse; width:100%; }
   margin-inline:.2em;
   font-family:var(--font-gothic);
 }
+
+/* ============================================================
+   Founder（主宰者プロフィール・PC/SP共通）
+   ============================================================ */
+.founder__inner{ display:grid; gap:clamp(2em,5vw,4em); align-items:center; margin-top:3.6em; }
+@media (min-width:768px){ .founder__inner{ grid-template-columns:.82fr 1.18fr; } }
+.founder__photo{ border-radius:var(--radius-card); overflow:hidden; background:var(--ph); box-shadow:var(--shadow); }
+.founder__photo img{ width:100%; aspect-ratio:4/5; object-fit:cover; }
+@media (max-width:767px){ .founder__photo{ max-width:320px; margin-inline:auto; } }
+.founder__name{ font-family:var(--font-mincho); letter-spacing:.1em; font-size:.95rem; color:var(--greige-dk); }
+.founder__name b{ font-weight:500; font-size:1.15em; color:var(--text); letter-spacing:.06em; }
+.founder__lead{
+  font-family:var(--font-mincho); font-weight:400;
+  font-size:clamp(1.05rem,3.8vw,1.32rem); line-height:1.95; letter-spacing:.06em;
+  color:var(--text); margin:1em 0 1.4em;
+}
+.founder__body{ font-size:.9rem; color:var(--text-sub); display:grid; gap:1.05em; }
+.founder__stats{ margin-top:2.8em; display:grid; grid-template-columns:repeat(2,1fr); gap:1.8em 1em; }
+@media (min-width:768px){ .founder__stats{ grid-template-columns:repeat(4,1fr); } }
+.founder__stat{ text-align:center; }
+.founder__num{ font-family:var(--font-en); font-weight:300; font-size:clamp(2rem,7vw,2.9rem); line-height:1; color:var(--greige-dk); }
+.founder__num span{ font-family:var(--font-mincho); font-size:.4em; margin-left:.15em; letter-spacing:.04em; }
+.founder__slabel{ margin-top:.7em; font-size:.74rem; color:var(--text-sub); letter-spacing:.06em; }
+@media (max-width:767px){ .founder__text{ text-align:center; } .founder__stats{ margin-top:2em; } }
 
 /* ============================================================
    Price
@@ -771,37 +800,37 @@ table{ border-collapse:collapse; width:100%; }
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">資格はある。けれど、技術に自信が持てない</span>
+          <span class="js-popin__text">資格はある。<wbr>けれど、<wbr>技術に自信が持てない</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">SNSで同世代の活躍を見るたび、胸がざわつく</span>
+          <span class="js-popin__text">SNSで同世代の活躍を見るたび、<wbr>胸がざわつく</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">自分の挑戦は、いつも後回しにしてきた</span>
+          <span class="js-popin__text">自分の挑戦は、<wbr>いつも後回しにしてきた</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">飛び抜けたアートのセンスがあるわけではない</span>
+          <span class="js-popin__text">飛び抜けたアートの<wbr>センスが<wbr>あるわけではない</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">学び直したい。でも、家庭も仕事も止められない</span>
+          <span class="js-popin__text">学び直したい。<wbr>でも、<wbr>家庭も仕事も<wbr>止められない</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">本当は、自分はもっとできるはずだと思っている</span>
+          <span class="js-popin__text">本当は、<wbr>自分はもっと<wbr>できるはずだと<wbr>思っている</span>
         </li>
       </ul>
 
@@ -967,6 +996,60 @@ table{ border-collapse:collapse; width:100%; }
           <p><span class="tbd">要差し替え</span> 体験談本文が入ります。実際に受講された方の言葉を、許諾を得たうえで掲載してください。</p>
           <p class="voice__who"><span class="tbd">要差し替え</span> お名前・年代・地域</p>
         </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       主宰者プロフィール（権威性・信頼）
+       ============================================================ -->
+  <section class="sec marble" id="founder">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow ani-gsap fadeIn slide-t">Founder</p>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">このスクールを、<br class="sp-only">主宰する人</h2>
+      </div>
+
+      <div class="founder__inner">
+        <div class="founder__photo ani-gsap fadeIn slide-t">
+          <img src="images/founder.jpg" width="800" height="1000" loading="lazy"
+               alt="Quiet Luxury 主宰者のポートレート">
+        </div>
+
+        <div class="founder__text ani-gsap fadeIn slide-t" data-delay="0.12">
+          <p class="founder__name">APRES&nbsp;LA&nbsp;PLUIE 代表　<b><span class="tbd">要確認</span> お名前</b></p>
+
+          <p class="founder__lead">
+            ライフステージが変わっても、<wbr>ネイリストであり続けられる。<wbr>
+            それを、<wbr>21年かけて自分の手で<wbr>証明してきました。
+          </p>
+
+          <div class="founder__body">
+            <p>大手ネイルサロンで、<wbr>ネイリストから店長・マネージャーまでの9年。<wbr>全国の百貨店やハワイ・アラモアナへの出店を任される日々の一方で、<wbr>出産・育児・介護を機に、<wbr>続けたくても辞めていく仲間を<wbr>何人も見送ってきました。</p>
+            <p>「このままでは、<wbr>自分の心も折れてしまう」。<wbr>理想のサロンを自らつくるため、<wbr>2005年に独立。<wbr>ジェルネイルの波とともに店舗とスクールを育て、<wbr>21年間、<wbr>市場の浮き沈みを越えて経営を続けています。</p>
+            <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを運営し、<wbr>30名を超えるスタッフを現場で育てています。<wbr>SGS講師として、<wbr>700名を超える個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
+            <p>目指すのは、<wbr>技術を教えるだけの場ではありません。<wbr>ライフステージに合わせて働き方を選びながら、<wbr>一人ひとりが自信を持って<wbr>長く活躍できること。<wbr>Quiet Luxuryは、<wbr>その願いから生まれました。</p>
+          </div>
+
+          <div class="founder__stats">
+            <div class="founder__stat">
+              <p class="founder__num">21<span>年</span></p>
+              <p class="founder__slabel">経営を継続</p>
+            </div>
+            <div class="founder__stat">
+              <p class="founder__num">4<span>店舗</span></p>
+              <p class="founder__slabel">サロンを運営</p>
+            </div>
+            <div class="founder__stat">
+              <p class="founder__num">700<span>名</span></p>
+              <p class="founder__slabel">オーナーを支援</p>
+            </div>
+            <div class="founder__stat">
+              <p class="founder__num">30<span>名+</span></p>
+              <p class="founder__slabel">スタッフを育成</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1522,30 +1605,33 @@ table{ border-collapse:collapse; width:100%; }
 
     // --- SP：アーチは拡大せず、写真をアーチ枠で見せたまま縦積み ---
     fvMm.add('(max-width: 767px)', function () {
-      // SP は縦長コンテナに幅合わせでアーチを収める（meet が幅基準で効く）
-      setMask(100, 100);
+      /* SP：写真枠（アーチ）から下にスクロールするほどアーチが広がる。
+         PC のような全画面ピン留めはせず、マスクを 100%→拡大してアーチの角が
+         埋まり写真が枠いっぱいに現れる「広がっていく」演出にする。 */
+      var SP_START = 100, SP_END = 230;   // マスクサイズ%（幅基準 meet）
+      setMask(SP_START, SP_START);
       if (fvCopy) {
         fvCopy.style.opacity = '1';                    // 縦積みなので常に表示
         gsap.set(fvCopy, { clearProps: 'transform' }); // イントロの残留transformを除去
       }
 
-      var tw = gsap.to(fvImg, {
-        opacity: 0.35,
-        filter: 'blur(8px) brightness(0.8)',
-        ease: 'none',
+      var spProxy = { v: SP_START };
+      var tw = gsap.to(spProxy, {
+        v: SP_END, ease: 'none',
         scrollTrigger: {
-          trigger: '.fv',
+          trigger: '.fv__mask',
           start: 'top top',
           end: 'bottom top',
           scrub: true,
-          invalidateOnRefresh: true
+          invalidateOnRefresh: true,
+          onUpdate: function () { setMask(spProxy.v, spProxy.v); }
         }
       });
 
       return function () {
         if (tw.scrollTrigger) tw.scrollTrigger.kill();
         tw.kill();
-        gsap.set(fvImg, { clearProps: 'opacity,filter' });
+        setMask(SP_START, SP_START);
       };
     });
   }
