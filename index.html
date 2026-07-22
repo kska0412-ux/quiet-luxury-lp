@@ -1674,11 +1674,12 @@ table{ border-collapse:collapse; width:100%; }
 
     // --- SP：アーチは拡大せず、写真をアーチ枠で見せたまま縦積み ---
     fvMm.add('(max-width: 767px)', function () {
-      /* SP：画像を画面いっぱいに敷いて固定（ピン留め）。スクロールしても写真は
-         動かず「その場で」暗くなり、文章が白でのぼって現れる（見本準拠）。
-         マスクは大きく固定するだけ、動かすのは brightness と opacity のみなので滑らか。 */
-      var SP_FULL = 300;
-      setMask(SP_FULL, SP_FULL);
+      /* SP：FVをピン留めして2段階で変化させる。
+         第1段（前半）：明るいアーチ枠 → マスクを広げて画面全体に広がる。
+         第2段（後半）：全体になった写真がその場で暗転し、白い文章が現れる。
+         ピンで固定するので「その場で」変わり、スクロール量に連動して滑らか。 */
+      var A0 = 118, AF = 300;   // マスク%：アーチ枠 → 画面いっぱい
+      setMask(A0, A0);
       gsap.set(fvCopy, { clearProps: 'transform' });
       fvImg.style.filter = 'brightness(1)';
       fvCopy.style.opacity = '0';
@@ -1686,7 +1687,7 @@ table{ border-collapse:collapse; width:100%; }
       var st = ScrollTrigger.create({
         trigger: '.fv',
         start: 'top top',
-        end: '+=100%',            // 1画面分ピン留めして暗転＋文章表示
+        end: '+=200%',            // 2画面分（前半＝拡大／後半＝暗転＋文章）
         scrub: true,
         pin: true,
         pinSpacing: true,
@@ -1694,8 +1695,14 @@ table{ border-collapse:collapse; width:100%; }
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          fvImg.style.filter = 'brightness(' + (1 - 0.55 * p) + ')';   // その場で暗転
-          fvCopy.style.opacity = Math.min(1, p * 1.7).toFixed(3);       // 文章が現れる
+          // 前半：枠が全体に広がる
+          var e = Math.min(1, p / 0.5);
+          var m = A0 + (AF - A0) * e;
+          setMask(m, m);
+          // 後半：暗転＋文章フェードイン
+          var d = Math.max(0, (p - 0.5) / 0.5);
+          fvImg.style.filter = 'brightness(' + (1 - 0.55 * d) + ')';
+          fvCopy.style.opacity = Math.min(1, d * 1.6).toFixed(3);
         }
       });
 
@@ -1703,7 +1710,7 @@ table{ border-collapse:collapse; width:100%; }
         st.kill();
         fvImg.style.filter = '';
         fvCopy.style.opacity = '1';
-        setMask(SP_FULL, SP_FULL);
+        setMask(AF, AF);
       };
     });
   }
