@@ -399,39 +399,48 @@ table{ border-collapse:collapse; width:100%; }
   font-family:var(--font-mincho);
   font-size:.66em; letter-spacing:.12em; margin-top:.25em;
 }
-/* FV内の「主催の実績」：金を効かせて豪華に。上に金グラデの罫、数字は金 */
-.fv__record{
-  margin-top:1.9em; padding-top:1.5em; max-width:460px; position:relative;
+/* 主宰の実績：金の円形バッジ。視界に入るとポップ＋カウントアップ */
+.rcircles{
+  margin-top:3.4em; display:flex; flex-wrap:wrap; justify-content:center;
+  gap:clamp(.6em,2.6vw,2em);
 }
-.fv__record::before{
-  content:""; position:absolute; top:0; left:0; right:0; height:1.5px;
-  background:linear-gradient(90deg, rgba(196,165,123,0), #D8B76A 30%, #B8912F 50%, #D8B76A 70%, rgba(196,165,123,0));
+.rcircle{
+  width:clamp(148px,23vw,216px); aspect-ratio:1; border-radius:50%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:1em; position:relative;
+  background:radial-gradient(circle at 50% 34%, #FFFDF7 0%, #FBF2DE 55%, #F0E1BE 100%);
+  box-shadow:0 16px 40px rgba(120,97,60,.20), inset 0 1px 0 rgba(255,255,255,.8);
+  opacity:0;                       /* 表示は is-shimmer 発火時のポップで（JS無効時は下でフォールバック）*/
 }
-.fv__record-label{
-  font-family:var(--font-en); font-weight:400;
-  font-size:.74rem; letter-spacing:.24em; text-transform:uppercase;
-  background:linear-gradient(90deg,#B8912F,#E4C87E,#B8912F);
+/* 金の光沢リング */
+.rcircle::before{
+  content:""; position:absolute; inset:0; border-radius:50%; padding:2.5px;
+  background:linear-gradient(135deg,#E9CE92 0%,#B8912F 30%,#F6E8C6 55%,#9C7A28 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
+}
+.rcircle__label{ font-size:clamp(.68rem,1.9vw,.82rem); color:var(--greige-dk); letter-spacing:.1em; line-height:1.5; }
+.rcircle__num{
+  font-family:var(--font-en); font-weight:400; line-height:1;
+  font-size:clamp(2.6rem,8vw,4rem); margin-top:.12em; font-variant-numeric:tabular-nums;
+  background:linear-gradient(160deg,#B8912F 0%,#E4C87E 45%,#9C7A28 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
-.fv__record-row{ margin-top:1em; display:flex; gap:clamp(.6em,2.4vw,1.4em); }
-.fv__record-row > div{ flex:1; display:flex; flex-direction:column; align-items:flex-start; line-height:1.2; }
-.fv__record-row b{
-  font-family:var(--font-en); font-weight:400; font-size:clamp(1.6rem,5vw,2.2rem);
-  background:linear-gradient(160deg,#D8B76A 0%,#B8912F 55%,#E4C87E 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
+.rcircle__num i{
+  font-family:var(--font-mincho); font-style:normal; font-size:.3em; margin-left:.1em;
+  -webkit-text-fill-color:var(--greige-dk); color:var(--greige-dk);
 }
-.fv__record-row i{ font-family:var(--font-mincho); font-style:normal; font-size:.64rem; color:var(--greige-dk); margin-top:.12em; }
-.fv__record-row span{ font-size:.64rem; color:var(--text-sub); letter-spacing:.04em; margin-top:.15em; }
+/* 視界に入ったら（is-shimmer）ポップイン（stagger） */
+.rcircles.is-shimmer .rcircle{ animation:rcPop .7s cubic-bezier(.2,.8,.3,1.35) both; }
+.rcircles.is-shimmer .rcircle:nth-child(2){ animation-delay:.12s; }
+.rcircles.is-shimmer .rcircle:nth-child(3){ animation-delay:.24s; }
+.rcircles.is-shimmer .rcircle:nth-child(4){ animation-delay:.36s; }
+@keyframes rcPop{ 0%{ opacity:0; transform:scale(.55); } 60%{ opacity:1; } 100%{ opacity:1; transform:scale(1); } }
 @media (max-width:767px){
-  /* SPは暗転画像の上なので、罫と文字を明るい金＋白に */
-  .fv__record::before{ background:linear-gradient(90deg, rgba(232,201,126,0), #E8C97E 50%, rgba(232,201,126,0)); }
-  .fv__record{ margin-inline:auto; }
-  .fv__record-label{ text-align:center; background:linear-gradient(90deg,#E8C97E,#FFF3D6,#E8C97E); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .fv__record-row > div{ align-items:center; }
-  .fv__record-row b{ background:linear-gradient(160deg,#F3E2B0,#E8C97E 55%,#FFF6DE); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  .fv__record-row i{ color:rgba(255,255,255,.9); }
-  .fv__record-row span{ color:rgba(255,255,255,.85); }
+  .rcircles{ gap:1em .8em; }
+  .rcircle{ width:min(42vw,180px); }
 }
+@media (prefers-reduced-motion:reduce){ .rcircle{ opacity:1; } }
 
 .fv__cta{ margin-top:2.4em; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
@@ -457,10 +466,6 @@ table{ border-collapse:collapse; width:100%; }
   .fv__sub{ justify-content:center; text-align:center; color:#FFFFFF; }
   .fv__sub small{ color:rgba(255,255,255,.9); }
   .fv__sub::after{ content:""; width:38px; height:1px; background:var(--gold); flex:none; }
-  .fv__record{ border-top-color:rgba(255,255,255,.5); margin-inline:auto; }
-  .fv__record-label{ color:var(--gold); }
-  .fv__record-row b{ color:#FFFFFF; }
-  .fv__record-row i, .fv__record-row span{ color:rgba(255,255,255,.85); }
   .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
 }
@@ -864,17 +869,6 @@ table{ border-collapse:collapse; width:100%; }
         <span>Quiet Luxury<small>〜次世代型ネイルスクール〜</small></span>
       </p>
 
-      <!-- 主催の実績（FV版・アニメなしの静的表示） -->
-      <div class="fv__record">
-        <p class="fv__record-label">主催の実績</p>
-        <div class="fv__record-row">
-          <div><b>21</b><i>年</i><span>経営継続</span></div>
-          <div><b>4</b><i>店舗</i><span>運営</span></div>
-          <div><b>700</b><i>名</i><span>支援</span></div>
-          <div><b>30</b><i>名+</i><span>育成</span></div>
-        </div>
-      </div>
-
       <div class="fv__cta">
         <a class="btn" href="#cta">
           無料個別相談に参加する
@@ -882,6 +876,35 @@ table{ border-collapse:collapse; width:100%; }
             <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
           </span>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       主宰の実績（金の円形バッジ・アニメーション入り）
+       ============================================================ -->
+  <section class="sec marble--warm" id="record">
+    <div class="wrap center">
+      <p class="eyebrow ani-gsap fadeIn slide-t">Achievements</p>
+      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">主宰の実績</h2>
+
+      <div class="rcircles js-count-group">
+        <div class="rcircle">
+          <span class="rcircle__label">経営を継続</span>
+          <span class="rcircle__num"><span class="js-count" data-to="21">0</span><i>年</i></span>
+        </div>
+        <div class="rcircle">
+          <span class="rcircle__label">サロンを運営</span>
+          <span class="rcircle__num"><span class="js-count" data-to="4">0</span><i>店舗</i></span>
+        </div>
+        <div class="rcircle">
+          <span class="rcircle__label">オーナーを支援</span>
+          <span class="rcircle__num"><span class="js-count" data-to="700">0</span><i>名</i></span>
+        </div>
+        <div class="rcircle">
+          <span class="rcircle__label">スタッフを育成</span>
+          <span class="rcircle__num"><span class="js-count" data-to="30">0</span><i>名+</i></span>
+        </div>
       </div>
     </div>
   </section>
@@ -1455,6 +1478,8 @@ table{ border-collapse:collapse; width:100%; }
     document.querySelectorAll('.js-count').forEach(function (el) {
       el.textContent = el.getAttribute('data-to');
     });
+    // 円形バッジはポップ演出を経由しないので、そのまま表示に戻す
+    document.querySelectorAll('.rcircle').forEach(function (el) { el.style.opacity = '1'; });
     if (fvCopy) { fvCopy.style.opacity = 1; fvCopy.style.filter = 'none'; }
     if (spbar) spbar.classList.add('is-visible');
   }
