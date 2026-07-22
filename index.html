@@ -399,6 +399,23 @@ table{ border-collapse:collapse; width:100%; }
   font-family:var(--font-mincho);
   font-size:.66em; letter-spacing:.12em; margin-top:.25em;
 }
+/* FV内の「主催の実績」：小さく上品に。金の細罫を上に一本 */
+.fv__record{ margin-top:1.9em; padding-top:1.4em; border-top:1px solid rgba(196,165,123,.45); max-width:440px; }
+.fv__record-label{
+  font-family:var(--font-en); font-weight:300;
+  font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold);
+}
+.fv__record-row{ margin-top:.9em; display:flex; gap:clamp(.6em,2.4vw,1.4em); }
+.fv__record-row > div{ flex:1; display:flex; flex-direction:column; align-items:flex-start; line-height:1.2; }
+.fv__record-row b{ font-family:var(--font-en); font-weight:300; font-size:clamp(1.4rem,4.4vw,1.9rem); color:var(--greige-dk); }
+.fv__record-row i{ font-family:var(--font-mincho); font-style:normal; font-size:.62rem; color:var(--text-sub); margin-top:.1em; }
+.fv__record-row span{ font-size:.62rem; color:var(--text-sub); letter-spacing:.04em; margin-top:.15em; }
+@media (max-width:767px){
+  .fv__record{ margin-inline:auto; }
+  .fv__record-label{ text-align:center; }
+  .fv__record-row > div{ align-items:center; }
+}
+
 .fv__cta{ margin-top:2.4em; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
 
@@ -576,13 +593,43 @@ table{ border-collapse:collapse; width:100%; }
   color:var(--text); margin:1em 0 1.4em;
 }
 .founder__body{ font-size:.9rem; color:var(--text-sub); display:grid; gap:1.05em; }
-.founder__stats{ margin-top:2.8em; display:grid; grid-template-columns:repeat(2,1fr); gap:1.8em 1em; }
-@media (min-width:768px){ .founder__stats{ grid-template-columns:repeat(4,1fr); } }
-.founder__stat{ text-align:center; }
-.founder__num{ font-family:var(--font-en); font-weight:300; font-size:clamp(2rem,7vw,2.9rem); line-height:1; color:var(--greige-dk); }
-.founder__num span{ font-family:var(--font-mincho); font-size:.4em; margin-left:.15em; letter-spacing:.04em; }
-.founder__slabel{ margin-top:.7em; font-size:.74rem; color:var(--text-sub); letter-spacing:.06em; }
-@media (max-width:767px){ .founder__text{ text-align:center; } .founder__stats{ margin-top:2em; } }
+
+/* 実績パネル（権威性の核）：白い額に金の細罫で仕切り、数字を大きく見せる */
+.founder__hero{
+  margin:3.4em auto 0; max-width:940px;
+  display:grid; grid-template-columns:repeat(4,1fr);
+  background:linear-gradient(180deg,#FFFFFF 0%, #FBF8F1 100%);
+  border:1px solid rgba(196,165,123,.42);
+  border-radius:18px;
+  box-shadow:0 14px 48px rgba(90,81,72,.10);
+  overflow:hidden;
+  position:relative;
+}
+/* 上辺に金のアクセントライン */
+.founder__hero::before{
+  content:""; position:absolute; top:0; left:8%; right:8%; height:2px;
+  background:linear-gradient(90deg, rgba(196,165,123,0), var(--gold), rgba(196,165,123,0));
+}
+.founder__hstat{ text-align:center; padding:clamp(1.9em,4.2vw,3em) .6em; position:relative; }
+.founder__hstat + .founder__hstat{ border-left:1px solid rgba(196,165,123,.26); }
+.founder__hnum{
+  font-family:var(--font-en); font-weight:300;
+  font-size:clamp(2.5rem,6.4vw,3.7rem); line-height:1;
+  letter-spacing:.02em; color:var(--greige-dk);
+  font-variant-numeric:tabular-nums;
+}
+.founder__hnum i{
+  font-family:var(--font-mincho); font-style:normal;
+  font-size:.32em; margin-left:.18em; color:var(--text-sub); letter-spacing:.04em;
+}
+.founder__hlabel{ margin-top:1em; font-size:.8rem; letter-spacing:.09em; color:var(--text-sub); }
+@media (max-width:767px){
+  .founder__hero{ grid-template-columns:repeat(2,1fr); }
+  .founder__hstat + .founder__hstat{ border-left:0; }
+  .founder__hstat:nth-child(2n){ border-left:1px solid rgba(196,165,123,.26); }
+  .founder__hstat:nth-child(n+3){ border-top:1px solid rgba(196,165,123,.26); }
+  .founder__text{ text-align:center; }
+}
 
 /* ============================================================
    Price
@@ -770,6 +817,18 @@ table{ border-collapse:collapse; width:100%; }
       <p class="fv__sub">
         <span>Quiet Luxury<small>〜次世代型ネイルスクール〜</small></span>
       </p>
+
+      <!-- 主催の実績（FV版・アニメなしの静的表示） -->
+      <div class="fv__record">
+        <p class="fv__record-label">主催の実績</p>
+        <div class="fv__record-row">
+          <div><b>21</b><i>年</i><span>経営継続</span></div>
+          <div><b>4</b><i>店舗</i><span>運営</span></div>
+          <div><b>700</b><i>名</i><span>支援</span></div>
+          <div><b>30</b><i>名+</i><span>育成</span></div>
+        </div>
+      </div>
+
       <div class="fv__cta">
         <a class="btn" href="#cta">
           無料個別相談に参加する
@@ -862,10 +921,10 @@ table{ border-collapse:collapse; width:100%; }
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t">
             <p class="reason__label">01</p>
-            <h3 class="reason__title">少人数制だから、<br class="sp-only">自己流が確実に直る</h3>
+            <h3 class="reason__title">少人数制だから、<br class="sp-only">自己流が<wbr>確実に直る</h3>
             <p class="reason__body">
-              一人ひとりの手元を、講師が最後まで見ます。長年の癖は、自分では気づけません。
-              見てもらえる環境に身を置くことが、遠回りに見えて、いちばんの近道です。
+              一人ひとりの手元を、<wbr>講師が最後まで見ます。<wbr>長年の癖は、<wbr>自分では気づけません。<wbr>
+              見てもらえる環境に身を置くことが、<wbr>遠回りに見えて、<wbr>いちばんの近道です。<wbr>
             </p>
           </div>
         </article>
@@ -877,10 +936,10 @@ table{ border-collapse:collapse; width:100%; }
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.12">
             <p class="reason__label">02</p>
-            <h3 class="reason__title">2ヶ月完結。家庭と仕事を<br class="pc-only">止めずに学べる</h3>
+            <h3 class="reason__title">2ヶ月完結。<wbr>家庭と仕事を<wbr>止めずに学べる</h3>
             <p class="reason__body">
-              対面とZoomを組み合わせ、通う回数を最小限にしました。
-              お子さんの予定に合わせて振り替えられるので、生活を崩さずに続けられます。
+              対面とZoomを組み合わせ、<wbr>通う回数を最小限にしました。<wbr>
+              お子さんの予定に合わせて振り替えられるので、<wbr>生活を崩さずに続けられます。<wbr>
             </p>
           </div>
         </article>
@@ -892,10 +951,10 @@ table{ border-collapse:collapse; width:100%; }
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.24">
             <p class="reason__label">03</p>
-            <h3 class="reason__title">写真添削と質問無制限で、<br class="pc-only">卒業後も一人にしない</h3>
+            <h3 class="reason__title">写真添削と質問無制限で、<wbr>卒業後も<wbr>一人にしない</h3>
             <p class="reason__body">
-              撮って送れば、その日のうちに添削が返ります。質問の回数に上限はありません。
-              サロンを開いたあとの不安にも、同じように向き合います。
+              撮って送れば、<wbr>その日のうちに添削が返ります。<wbr>質問の回数に上限はありません。<wbr>
+              サロンを開いたあとの不安にも、<wbr>同じように向き合います。<wbr>
             </p>
           </div>
         </article>
@@ -1010,6 +1069,26 @@ table{ border-collapse:collapse; width:100%; }
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">このスクールを、<br class="sp-only">主宰する人</h2>
       </div>
 
+      <!-- 権威性の核：実績を最上部に、豪華な額装＋カウントアップで見せる -->
+      <div class="founder__hero ani-gsap fadeIn slide-t js-count-group" data-delay="0.15">
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="21">0</span><i>年</i></p>
+          <p class="founder__hlabel">経営を継続</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="4">0</span><i>店舗</i></p>
+          <p class="founder__hlabel">サロンを運営</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="700">0</span><i>名</i></p>
+          <p class="founder__hlabel">オーナーを支援</p>
+        </div>
+        <div class="founder__hstat">
+          <p class="founder__hnum"><span class="js-count" data-to="30">0</span><i>名+</i></p>
+          <p class="founder__hlabel">スタッフを育成</p>
+        </div>
+      </div>
+
       <div class="founder__inner">
         <div class="founder__photo ani-gsap fadeIn slide-t">
           <img src="images/founder.jpg" width="800" height="1000" loading="lazy"
@@ -1020,34 +1099,15 @@ table{ border-collapse:collapse; width:100%; }
           <p class="founder__name">APRES&nbsp;LA&nbsp;PLUIE 代表　<b><span class="tbd">要確認</span> お名前</b></p>
 
           <p class="founder__lead">
-            ライフステージが変わっても、<wbr>ネイリストであり続けられる。<wbr>
-            それを、<wbr>21年かけて自分の手で<wbr>証明してきました。
+            ライフステージが<wbr>変わっても、<wbr>ネイリストで<wbr>あり続けられる。<wbr>
+            それを、<wbr>21年かけて<wbr>自分の手で<wbr>証明してきました。
           </p>
 
           <div class="founder__body">
-            <p>大手ネイルサロンで、<wbr>ネイリストから店長・マネージャーまでの9年。<wbr>全国の百貨店やハワイ・アラモアナへの出店を任される日々の一方で、<wbr>出産・育児・介護を機に、<wbr>続けたくても辞めていく仲間を<wbr>何人も見送ってきました。</p>
-            <p>「このままでは、<wbr>自分の心も折れてしまう」。<wbr>理想のサロンを自らつくるため、<wbr>2005年に独立。<wbr>ジェルネイルの波とともに店舗とスクールを育て、<wbr>21年間、<wbr>市場の浮き沈みを越えて経営を続けています。</p>
-            <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを運営し、<wbr>30名を超えるスタッフを現場で育てています。<wbr>SGS講師として、<wbr>700名を超える個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
-            <p>目指すのは、<wbr>技術を教えるだけの場ではありません。<wbr>ライフステージに合わせて働き方を選びながら、<wbr>一人ひとりが自信を持って<wbr>長く活躍できること。<wbr>Quiet Luxuryは、<wbr>その願いから生まれました。</p>
-          </div>
-
-          <div class="founder__stats">
-            <div class="founder__stat">
-              <p class="founder__num">21<span>年</span></p>
-              <p class="founder__slabel">経営を継続</p>
-            </div>
-            <div class="founder__stat">
-              <p class="founder__num">4<span>店舗</span></p>
-              <p class="founder__slabel">サロンを運営</p>
-            </div>
-            <div class="founder__stat">
-              <p class="founder__num">700<span>名</span></p>
-              <p class="founder__slabel">オーナーを支援</p>
-            </div>
-            <div class="founder__stat">
-              <p class="founder__num">30<span>名+</span></p>
-              <p class="founder__slabel">スタッフを育成</p>
-            </div>
+            <p>大手ネイルサロンで、<wbr>ネイリストから<wbr>店長・マネージャーまでの9年。<wbr>全国の百貨店や<wbr>ハワイ・アラモアナへの出店を<wbr>任される日々の一方で、<wbr>出産・育児・介護を機に、<wbr>続けたくても<wbr>辞めていく仲間を<wbr>何人も見送ってきました。</p>
+            <p>「このままでは、<wbr>自分の心も<wbr>折れてしまう」。<wbr>理想のサロンを<wbr>自らつくるため、<wbr>2005年に独立。<wbr>ジェルネイルの波とともに<wbr>店舗とスクールを育て、<wbr>21年間、<wbr>市場の浮き沈みを越えて<wbr>経営を続けています。</p>
+            <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを<wbr>運営し、<wbr>30名を超えるスタッフを<wbr>現場で育てています。<wbr>SGS講師として、<wbr>700名を超える<wbr>個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
+            <p>目指すのは、<wbr>技術を教えるだけの<wbr>場ではありません。<wbr>ライフステージに合わせて<wbr>働き方を選びながら、<wbr>一人ひとりが<wbr>自信を持って<wbr>長く活躍できること。<wbr>Quiet Luxuryは、<wbr>その願いから<wbr>生まれました。</p>
           </div>
         </div>
       </div>
@@ -1343,6 +1403,10 @@ table{ border-collapse:collapse; width:100%; }
       fig.style.clipPath = 'none';
       var img = fig.querySelector('img');
       if (img) img.style.transform = 'none';
+    });
+    // 実績カウントは最終値で固定表示
+    document.querySelectorAll('.js-count').forEach(function (el) {
+      el.textContent = el.getAttribute('data-to');
     });
     if (fvCopy) { fvCopy.style.opacity = 1; fvCopy.style.filter = 'none'; }
     if (spbar) spbar.classList.add('is-visible');
@@ -1791,6 +1855,45 @@ table{ border-collapse:collapse; width:100%; }
   }
   lenis.on('scroll', revealFigsInView);
   revealFigsInView();   // 初期表示ぶんを判定
+
+  /* --------------------------------------------------------
+     4-5c. 実績のカウントアップ（0 → 実数）
+     ScrollTrigger/IO はこの環境で外れるため、リビールと同じく
+     lenis の scroll で実座標を見て、視界に入ったら一度だけ回す。
+     -------------------------------------------------------- */
+  var countGroups = [];
+  document.querySelectorAll('.js-count-group').forEach(function (g) {
+    countGroups.push({ g: g, done: false });
+  });
+  function setFinal(g) {
+    g.querySelectorAll('.js-count').forEach(function (el) {
+      el.textContent = el.getAttribute('data-to');
+    });
+  }
+  function runCounters() {
+    if (!countGroups.length) return;
+    var trigger = window.innerHeight * 0.85;
+    for (var i = 0; i < countGroups.length; i++) {
+      var o = countGroups[i];
+      if (o.done) continue;
+      var top = o.g.getBoundingClientRect().top;
+      if (top < trigger && top > -o.g.offsetHeight) {
+        o.done = true;
+        o.g.querySelectorAll('.js-count').forEach(function (el) {
+          var to = parseFloat(el.getAttribute('data-to')) || 0;
+          var obj = { v: 0 };
+          gsap.to(obj, {
+            v: to, duration: 1.6, ease: 'power2.out',
+            onUpdate: function () { el.textContent = Math.round(obj.v); }
+          });
+        });
+      } else if (top <= -o.g.offsetHeight) {
+        o.done = true; setFinal(o.g);   // すでに通り過ぎていたら即最終値
+      }
+    }
+  }
+  lenis.on('scroll', runCounters);
+  runCounters();
 
   /* --------------------------------------------------------
      4-6. 無限横流しスライダー
