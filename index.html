@@ -420,26 +420,31 @@ table{ border-collapse:collapse; width:100%; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
 
 @media (max-width:767px){
-  .fv{ height:auto; min-height:0; padding:1.5em 0 3.2em; }
-  /* 写真＝全面の構造なので、SPでは .fv__mask 自体に高さを与えて写真枠にする。
-     マスクは幅基準（meet）でアーチが横いっぱいに収まる。 */
-  /* 高さ66vhにすると meet が幅基準になり、アーチが横いっぱいに収まる */
-  .fv__mask{ position:relative; inset:auto; display:block; height:66vh; }
+  /* SP：FVは画面いっぱいに画像を敷いて固定。スクロールすると「その場で」
+     画像が暗転し、文章（白）が下からのぼって現れる（見本サイト準拠）。
+     マスク拡大はせず brightness と opacity だけを動かすので滑らかに動く。 */
+  .fv{ height:100svh; min-height:560px; padding:0; overflow:hidden; }
+  .fv__mask{ position:absolute; inset:0; }
   .fv__img{ position:absolute; inset:0; }
   .fv__archline{ display:none; }
   .fv__copy{
-    position:relative; left:auto; top:auto; bottom:auto;
-    display:block;
-    max-width:none; margin:2.2em auto 0;
-    padding-inline:var(--gutter);
+    position:absolute; left:0; right:0; top:auto; bottom:9vh;
+    display:block; align-items:center;
+    max-width:none; margin:0; padding-inline:var(--gutter);
     text-align:center;
+    opacity:0;                 /* スクロールで表示（JSが opacity を上げる）*/
+    z-index:3;
   }
-  /* SP：サブラベルを画面中央へ。罫線は左右対称にして片側だけの偏りを解消 */
-  .fv__copy{ align-items:center; }
-  .fv__sub{ justify-content:center; text-align:center; }
-  .fv__sub::after{
-    content:""; width:38px; height:1px; background:var(--gold); flex:none;
-  }
+  /* 暗転した画像の上で読めるよう、文字を白系にして影を添える */
+  .fv__catch{ color:#FFFFFF; text-shadow:0 2px 22px rgba(0,0,0,.4); }
+  .fv__sub{ justify-content:center; text-align:center; color:#FFFFFF; }
+  .fv__sub small{ color:rgba(255,255,255,.9); }
+  .fv__sub::after{ content:""; width:38px; height:1px; background:var(--gold); flex:none; }
+  .fv__record{ border-top-color:rgba(255,255,255,.5); margin-inline:auto; }
+  .fv__record-label{ color:var(--gold); }
+  .fv__record-row b{ color:#FFFFFF; }
+  .fv__record-row i, .fv__record-row span{ color:rgba(255,255,255,.85); }
+  .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
 }
 
@@ -1669,33 +1674,36 @@ table{ border-collapse:collapse; width:100%; }
 
     // --- SP：アーチは拡大せず、写真をアーチ枠で見せたまま縦積み ---
     fvMm.add('(max-width: 767px)', function () {
-      /* SP：写真枠（アーチ）から下にスクロールするほどアーチが広がる。
-         PC のような全画面ピン留めはせず、マスクを 100%→拡大してアーチの角が
-         埋まり写真が枠いっぱいに現れる「広がっていく」演出にする。 */
-      var SP_START = 100, SP_END = 230;   // マスクサイズ%（幅基準 meet）
-      setMask(SP_START, SP_START);
-      if (fvCopy) {
-        fvCopy.style.opacity = '1';                    // 縦積みなので常に表示
-        gsap.set(fvCopy, { clearProps: 'transform' }); // イントロの残留transformを除去
-      }
+      /* SP：画像を画面いっぱいに敷いて固定（ピン留め）。スクロールしても写真は
+         動かず「その場で」暗くなり、文章が白でのぼって現れる（見本準拠）。
+         マスクは大きく固定するだけ、動かすのは brightness と opacity のみなので滑らか。 */
+      var SP_FULL = 300;
+      setMask(SP_FULL, SP_FULL);
+      gsap.set(fvCopy, { clearProps: 'transform' });
+      fvImg.style.filter = 'brightness(1)';
+      fvCopy.style.opacity = '0';
 
-      var spProxy = { v: SP_START };
-      var tw = gsap.to(spProxy, {
-        v: SP_END, ease: 'none',
-        scrollTrigger: {
-          trigger: '.fv__mask',
-          start: 'top top',
-          end: 'bottom top',
-          scrub: true,
-          invalidateOnRefresh: true,
-          onUpdate: function () { setMask(spProxy.v, spProxy.v); }
+      var st = ScrollTrigger.create({
+        trigger: '.fv',
+        start: 'top top',
+        end: '+=100%',            // 1画面分ピン留めして暗転＋文章表示
+        scrub: true,
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: function (self) {
+          var p = self.progress;
+          fvImg.style.filter = 'brightness(' + (1 - 0.55 * p) + ')';   // その場で暗転
+          fvCopy.style.opacity = Math.min(1, p * 1.7).toFixed(3);       // 文章が現れる
         }
       });
 
       return function () {
-        if (tw.scrollTrigger) tw.scrollTrigger.kill();
-        tw.kill();
-        setMask(SP_START, SP_START);
+        st.kill();
+        fvImg.style.filter = '';
+        fvCopy.style.opacity = '1';
+        setMask(SP_FULL, SP_FULL);
       };
     });
   }
