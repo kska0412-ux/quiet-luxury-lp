@@ -451,6 +451,8 @@ table{ border-collapse:collapse; width:100%; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
 /* 想いの文章オーバーレイはSPの第3段専用。PC/タブレットでは出さない */
 .fv__message{ display:none; }
+/* 白いモヤ（SP専用・文字背後の視認性向上）。PCでは出さない */
+.fv__haze{ display:none; }
 
 @media (max-width:767px){
   /* SP：FVは画面いっぱいに画像を敷いて固定。スクロールすると「その場で」
@@ -460,6 +462,17 @@ table{ border-collapse:collapse; width:100%; }
   .fv__mask{ position:absolute; inset:0; will-change:transform; }
   .fv__img{ position:absolute; inset:0; }
   .fv__archline{ display:none; }
+  /* 白いモヤ：文字エリア（下半分）に柔らかい白のグローを敷き、暗い文字を読みやすくする。
+     画像の上・文字の下（z-index 2）。暗転が進むとJSがopacityを下げて消す。 */
+  .fv__haze{
+    display:block; position:absolute; left:0; right:0; bottom:0; height:62%;
+    z-index:2; pointer-events:none;
+    background:radial-gradient(125% 78% at 50% 82%,
+      rgba(255,253,248,.95) 0%,
+      rgba(255,253,248,.72) 30%,
+      rgba(255,253,248,.32) 55%,
+      rgba(255,253,248,0) 78%);
+  }
   .fv__copy{
     position:absolute; left:0; right:0; top:auto; bottom:9vh;
     display:block; align-items:center;
@@ -878,6 +891,9 @@ table{ border-collapse:collapse; width:100%; }
     <svg class="fv__archline" viewBox="0 0 100 130" preserveAspectRatio="none" aria-hidden="true">
       <path d="M18.78,130 L18.78,71 A40,40 0 1 1 81.22,71 L81.22,130" vector-effect="non-scaling-stroke"/>
     </svg>
+
+    <!-- SP初期：暗い文字の背後に白いモヤを敷いて視認性を上げる。暗転が進むとフェードアウト -->
+    <div class="fv__haze" id="fvHaze" aria-hidden="true"></div>
 
     <div class="fv__copy" id="fvCopy">
       <h1 class="fv__catch">
@@ -1405,6 +1421,7 @@ table{ border-collapse:collapse; width:100%; }
   var fvCopy  = document.getElementById('fvCopy');
   var fvMessage = document.getElementById('fvMessage');
   var fvDim   = document.getElementById('fvDim');
+  var fvHaze  = document.getElementById('fvHaze');
   var archline = document.querySelector('.fv__archline');
   var fvImg  = document.getElementById('fvImg');
   var header = document.getElementById('header');
@@ -1761,6 +1778,7 @@ table{ border-collapse:collapse; width:100%; }
       setMask(118, 118);
       gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%' });
       if (fvDim) fvDim.style.opacity = '0';
+      if (fvHaze) fvHaze.style.opacity = '1';   // 初期は白いモヤを出して暗い文字を読みやすく
       // 初期：メインコピーは表示（イントロで横からスライドイン）、色は暗、想いは非表示
       fvCopy.style.opacity = '1';
       fvCopy.style.color = lerpColor(0);
@@ -1781,6 +1799,8 @@ table{ border-collapse:collapse; width:100%; }
           var e = clamp01(p / 0.32);
           gsap.set(fvMask, { scale: 1 + (SCALE_MAX - 1) * e });
           if (fvDim) fvDim.style.opacity = (0.6 * e).toFixed(3);
+          // 白いモヤは暗転が進むにつれ消す（画像が暗くなれば白文字で読めるため不要）
+          if (fvHaze) fvHaze.style.opacity = (1 - e).toFixed(3);
           // メインコピーを暗→白へ
           fvCopy.style.color = lerpColor(e);
           // ③ メインコピー退場（0.34〜0.44）→ 想い登場（0.4〜0.68）
@@ -1796,6 +1816,7 @@ table{ border-collapse:collapse; width:100%; }
       return function () {
         st.kill();
         if (fvDim) fvDim.style.opacity = '0';
+        if (fvHaze) fvHaze.style.opacity = '0';
         fvCopy.style.opacity = '1';
         fvCopy.style.color = '';
         if (fvMessage) fvMessage.style.opacity = '0';
