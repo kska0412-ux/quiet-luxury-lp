@@ -1803,7 +1803,7 @@ table{ border-collapse:collapse; width:100%; }
       var st = ScrollTrigger.create({
         trigger: '.fv',
         start: 'top top',
-        end: '+=260%',            // 3段ぶん（拡大→暗転＋白化→想い）
+        end: '+=175%',            // 短めのピン。少ないスクロールで想いまで到達する
         scrub: true,
         pin: true,
         pinSpacing: true,
@@ -1811,17 +1811,17 @@ table{ border-collapse:collapse; width:100%; }
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          // ①→② 枠拡大＋暗転（0〜0.45）。暗転は黒幕opacity（GPUで軽い）
-          var e = clamp01(p / 0.45);
+          // ①→② 枠拡大＋暗転（0〜0.32）。暗転は黒幕opacity（GPUで軽い）
+          var e = clamp01(p / 0.32);
           gsap.set(fvMask, { scale: 1 + (SCALE_MAX - 1) * e });
           if (fvDim) fvDim.style.opacity = (0.6 * e).toFixed(3);
           // メインコピーを暗→白へ
           fvCopy.style.color = lerpColor(e);
-          // ③ メインコピー退場（0.5〜0.62）→ 想い登場（0.6〜0.9）
-          var out = clamp01((p - 0.5) / 0.12);
+          // ③ メインコピー退場（0.34〜0.44）→ 想い登場（0.4〜0.68）
+          var out = clamp01((p - 0.34) / 0.1);
           fvCopy.style.opacity = (1 - out).toFixed(3);
           if (fvMessage) {
-            var mi = clamp01((p - 0.6) / 0.3);
+            var mi = clamp01((p - 0.4) / 0.28);
             fvMessage.style.opacity = mi.toFixed(3);
           }
         }
