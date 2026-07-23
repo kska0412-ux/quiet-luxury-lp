@@ -1535,8 +1535,11 @@ table{ border-collapse:collapse; width:100%; }
      -------------------------------------------------------- */
   var lenis = new Lenis({ smooth: true, lerp: 0.125 });
   lenis.on('scroll', ScrollTrigger.update);
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
+  /* Lenis を GSAP の ticker で駆動し、Lenis と ScrollTrigger を同一フレームに同期する
+     （独自の requestAnimationFrame ループだと両者がフレームずれしてスクラブがカクつく）。
+     lagSmoothing(0) でタブ復帰時などの補正ジャンプも止める。GSAP公式推奨のLenis連携。 */
+  gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+  gsap.ticker.lagSmoothing(0);
   lenis.stop();
 
   // ページ内リンクを Lenis 経由に
@@ -1804,7 +1807,7 @@ table{ border-collapse:collapse; width:100%; }
         trigger: '.fv',
         start: 'top top',
         end: '+=175%',            // 短めのピン。少ないスクロールで想いまで到達する
-        scrub: true,
+        scrub: 0.5,               // スクロール位置へ滑らかに追従（微振動を吸収）
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
@@ -1943,10 +1946,11 @@ table{ border-collapse:collapse; width:100%; }
   function revealItemsInView() {
     if (!revealItems.length) return;
     var trigger = window.innerHeight * 0.85;   // 旧 start:'top 80%' 相当（やや早め）
+    var sy = window.scrollY;                    // レイアウトを起こさない読み取り
     for (var i = 0; i < revealItems.length; i++) {
       var o = revealItems[i];
-      if (o.done) continue;
-      var top = o.el.getBoundingClientRect().top;
+      if (o.done || o.docTop == null) continue;
+      var top = o.docTop - sy;                  // キャッシュ位置から算出（reflow回避）
       if (top < trigger) { o.done = true; o.tween.play(); }
     }
   }
@@ -1975,15 +1979,16 @@ table{ border-collapse:collapse; width:100%; }
   function revealFigsInView() {
     if (!figItems.length) return;
     var trigger = window.innerHeight * 0.82;   // 写真の上端がここまで来たら開始
+    var sy = window.scrollY;
     for (var i = 0; i < figItems.length; i++) {
       var o = figItems[i];
-      if (o.done) continue;
-      var top = o.fig.getBoundingClientRect().top;
-      if (top < trigger && top > -o.fig.offsetHeight) {   // 視界に入った
+      if (o.done || o.docTop == null) continue;
+      var top = o.docTop - sy;                  // キャッシュ位置から算出（reflow回避）
+      if (top < trigger && top > -o.h) {   // 視界に入った
         o.done = true;
         gsap.to(o.fig, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.out' });
         gsap.to(o.img, { scale: 1, duration: 1.8, ease: 'power2.out' });
-      } else if (top <= -o.fig.offsetHeight) {
+      } else if (top <= -o.h) {
         // ページ最上部からすでに通り過ぎている場合は演出なしで最終状態に
         o.done = true;
         gsap.set(o.fig, { clipPath: 'inset(0%)' });
@@ -2011,11 +2016,12 @@ table{ border-collapse:collapse; width:100%; }
   function runCounters() {
     if (!countGroups.length) return;
     var trigger = window.innerHeight * 0.85;
+    var sy = window.scrollY;
     for (var i = 0; i < countGroups.length; i++) {
       var o = countGroups[i];
-      if (o.done) continue;
-      var top = o.g.getBoundingClientRect().top;
-      if (top < trigger && top > -o.g.offsetHeight) {
+      if (o.done || o.docTop == null) continue;
+      var top = o.docTop - sy;                  // キャッシュ位置から算出（reflow回避）
+      if (top < trigger && top > -o.h) {
         o.done = true;
         o.g.classList.add('is-shimmer');   // 金のシマーを1回流す
         o.g.querySelectorAll('.js-count').forEach(function (el) {
@@ -2026,12 +2032,33 @@ table{ border-collapse:collapse; width:100%; }
             onUpdate: function () { el.textContent = Math.round(obj.v); }
           });
         });
-      } else if (top <= -o.g.offsetHeight) {
+      } else if (top <= -o.h) {
         o.done = true; setFinal(o.g);   // すでに通り過ぎていたら即最終値
       }
     }
   }
   lenis.on('scroll', runCounters);
+
+  /* スクロールハンドラで getBoundingClientRect を呼ぶと毎回 reflow が起き
+     FVスクロール中にカクつく。要素の「文書内 top」を一度だけ測ってキャッシュし、
+     スクロール時は window.scrollY（レイアウト非発生）との差だけで判定する。
+     ピン挿入やリサイズで位置が変わるので ScrollTrigger の refresh で測り直す。 */
+  function recomputeRevealPositions() {
+    var sy = window.scrollY;
+    [revealItems, figItems, countGroups].forEach(function (arr) {
+      for (var i = 0; i < arr.length; i++) {
+        var o = arr[i];
+        var el = o.el || o.fig || o.g;
+        if (!el) continue;
+        o.docTop = el.getBoundingClientRect().top + sy;
+        o.h = el.offsetHeight;
+      }
+    });
+  }
+  ScrollTrigger.addEventListener('refresh', recomputeRevealPositions);
+  recomputeRevealPositions();
+  revealItemsInView();
+  revealFigsInView();
   runCounters();
 
   /* --------------------------------------------------------
