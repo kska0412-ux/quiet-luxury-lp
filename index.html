@@ -336,6 +336,11 @@ table{ border-collapse:collapse; width:100%; }
   object-position:50% 30%;   /* 施術者の顔と手がアーチ中央に来る位置 */
   will-change:filter;
 }
+/* 暗転用の黒幕（マスク内なのでアーチ形に収まり、拡大にも追従）。opacityのみ動かす */
+.fv__dim{
+  position:absolute; inset:0; background:#000; opacity:0;
+  pointer-events:none; will-change:opacity;
+}
 
 /* アーチの輪郭に沿わせる金の細罫。見本にはない、こちらの署名。
    マスクと同一のパスをSVGで描くので、形が必ず一致する。 */
@@ -867,6 +872,8 @@ table{ border-collapse:collapse; width:100%; }
            src="images/fv-hero.jpg"
            width="1536" height="1024"
            alt="明るいサロンで、お客様の爪にジェルを塗るネイリスト">
+      <!-- 暗転はfilterではなく黒幕のopacity（GPU合成で軽い）。SPのスクロールで使用 -->
+      <div class="fv__dim" id="fvDim" aria-hidden="true"></div>
     </div>
     <svg class="fv__archline" viewBox="0 0 100 130" preserveAspectRatio="none" aria-hidden="true">
       <path d="M18.78,130 L18.78,71 A40,40 0 1 1 81.22,71 L81.22,130" vector-effect="non-scaling-stroke"/>
@@ -1434,6 +1441,7 @@ table{ border-collapse:collapse; width:100%; }
   var fvMask  = document.getElementById('fvMask');
   var fvCopy  = document.getElementById('fvCopy');
   var fvMessage = document.getElementById('fvMessage');
+  var fvDim   = document.getElementById('fvDim');
   var archline = document.querySelector('.fv__archline');
   var fvImg  = document.getElementById('fvImg');
   var header = document.getElementById('header');
@@ -1552,6 +1560,13 @@ table{ border-collapse:collapse; width:100%; }
   var maskProxy = { w: 0, h: 0 };
 
   function runIntro() {
+    /* 扉が開いた直後に見せるアーチのサイズ。
+       SPは初期スクロール状態（マスク118%＝2枚目の枠の大きさ）に合わせ、
+       PCは従来どおり 60%75%。これで「小さい枠→一気に拡大」の段差を無くす。 */
+    var introSP = window.matchMedia('(max-width:767px)').matches;
+    var revealW = introSP ? 118 : MASK_FRAME_W;
+    var revealH = introSP ? 118 : MASK_FRAME_H;
+
     var tl = gsap.timeline({
       onComplete: function () {
         lenis.start();
@@ -1594,7 +1609,7 @@ table{ border-collapse:collapse; width:100%; }
       .fromTo(maskProxy,
         { w: 0, h: 0 },
         {
-          w: MASK_FRAME_W, h: MASK_FRAME_H,
+          w: revealW, h: revealH,
           duration: 1.15, ease: 'power2.out',
           onUpdate: function () { setMask(maskProxy.w, maskProxy.h); }
         }, '<')
@@ -1779,7 +1794,7 @@ table{ border-collapse:collapse; width:100%; }
 
       setMask(118, 118);
       gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%' });
-      fvImg.style.filter = 'brightness(1)';
+      if (fvDim) fvDim.style.opacity = '0';
       // 初期：メインコピーは表示（イントロで横からスライドイン）、色は暗、想いは非表示
       fvCopy.style.opacity = '1';
       fvCopy.style.color = lerpColor(0);
@@ -1796,10 +1811,10 @@ table{ border-collapse:collapse; width:100%; }
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          // ①→② 枠拡大＋暗転（0〜0.45）
+          // ①→② 枠拡大＋暗転（0〜0.45）。暗転は黒幕opacity（GPUで軽い）
           var e = clamp01(p / 0.45);
           gsap.set(fvMask, { scale: 1 + (SCALE_MAX - 1) * e });
-          fvImg.style.filter = 'brightness(' + (1 - 0.55 * e) + ')';
+          if (fvDim) fvDim.style.opacity = (0.6 * e).toFixed(3);
           // メインコピーを暗→白へ
           fvCopy.style.color = lerpColor(e);
           // ③ メインコピー退場（0.5〜0.62）→ 想い登場（0.6〜0.9）
@@ -1814,7 +1829,7 @@ table{ border-collapse:collapse; width:100%; }
 
       return function () {
         st.kill();
-        fvImg.style.filter = '';
+        if (fvDim) fvDim.style.opacity = '0';
         fvCopy.style.opacity = '1';
         fvCopy.style.color = '';
         if (fvMessage) fvMessage.style.opacity = '0';
