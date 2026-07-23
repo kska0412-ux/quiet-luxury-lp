@@ -327,14 +327,14 @@ table{ border-collapse:collapse; width:100%; }
   -webkit-mask-size:0% 0%;      mask-size:0% 0%;
   -webkit-mask-position:50% 50%; mask-position:50% 50%;
   -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
-  will-change:-webkit-mask-size, mask-size;
+  will-change:transform;
 }
 .fv__img{
   position:absolute; inset:0;
+  will-change:transform;
   width:100%; height:100%;
   object-fit:cover;
   object-position:50% 30%;   /* 施術者の顔と手がアーチ中央に来る位置 */
-  will-change:filter;
 }
 /* 暗転用の黒幕（マスク内なのでアーチ形に収まり、拡大にも追従）。opacityのみ動かす */
 .fv__dim{
@@ -466,7 +466,7 @@ table{ border-collapse:collapse; width:100%; }
      画像の上・文字の下（z-index 2）。暗転が進むとJSがopacityを下げて消す。 */
   .fv__haze{
     display:block; position:absolute; left:0; right:0; bottom:0; height:62%;
-    z-index:2; pointer-events:none;
+    z-index:2; pointer-events:none; will-change:opacity;
     background:radial-gradient(125% 78% at 50% 82%,
       rgba(255,253,248,.95) 0%,
       rgba(255,253,248,.72) 30%,
@@ -496,7 +496,7 @@ table{ border-collapse:collapse; width:100%; }
     font-family:var(--font-mincho); letter-spacing:.06em; line-height:2.05;
     font-size:clamp(.92rem,4vw,1.08rem);
     text-shadow:0 2px 20px rgba(0,0,0,.45);
-    opacity:0; pointer-events:none;
+    opacity:0; pointer-events:none; will-change:opacity;
   }
 }
 
@@ -603,6 +603,8 @@ table{ border-collapse:collapse; width:100%; }
   display:flex; gap:16px; padding-inline:10%;
 }
 .splide:not(.is-initialized) .splide__slide{ flex:0 0 clamp(140px, 30%, 260px); }
+/* 横流し中のリストはcomposite層に載せ、毎フレームのtransformをGPU合成で処理する */
+.js-gallery .splide__list{ will-change:transform; }
 
 .stats{ margin-top:5.5em; display:grid; gap:2.6em; }
 @media (min-width:768px){ .stats{ grid-template-columns:repeat(3,1fr); } }
@@ -684,8 +686,11 @@ table{ border-collapse:collapse; width:100%; }
   transform:skewX(-14deg); opacity:0; z-index:1; pointer-events:none;
 }
 .founder__hero.is-shimmer .founder__hshimmer{ animation:founderShimmer 1.5s ease-out .3s 1; }
+/* left(layout)ではなくtranslateX(composite)で走らせる。移動量160%(親)÷幅35%(自身基準)≒460%。 */
 @keyframes founderShimmer{
-  0%{ left:-40%; opacity:0; } 12%{ opacity:1; } 100%{ left:120%; opacity:0; }
+  0%{ transform:skewX(-14deg) translateX(0); opacity:0; }
+  12%{ opacity:1; }
+  100%{ transform:skewX(-14deg) translateX(460%); opacity:0; }
 }
 .founder__hstat{ text-align:center; padding:clamp(2em,4.4vw,3.2em) .6em; position:relative; z-index:1; }
 .founder__hstat + .founder__hstat{ border-left:1px solid rgba(196,165,123,.32); }
@@ -813,9 +818,7 @@ table{ border-collapse:collapse; width:100%; }
 .spbar{
   position:fixed; inset:auto 0 0 0; z-index:80;
   padding:10px 14px calc(10px + env(safe-area-inset-bottom));
-  background:rgba(250,247,243,.94);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
+  background:rgba(250,247,243,.98);
   box-shadow:0 -4px 24px rgba(90,81,72,.06);
   opacity:0; visibility:hidden;
   transition:opacity .5s ease, visibility .5s ease;
@@ -1509,6 +1512,8 @@ table{ border-collapse:collapse; width:100%; }
   });
 
   gsap.registerPlugin(ScrollTrigger);
+  // モバイルのアドレスバー伸縮（高さのみのresize）でピンを測り直さない。
+  ScrollTrigger.config({ ignoreMobileResize: true });
 
   /* --------------------------------------------------------
      Lenis（スムーススクロール）
@@ -1707,7 +1712,11 @@ table{ border-collapse:collapse; width:100%; }
     // --- PC ---
     fvMm.add('(min-width: 768px)', function () {
       recalcMaskMax();
+      // マスク枠のサイズは 60%/75% に固定し、以降の拡大は transform:scale で行う
+      // （mask-size を毎フレーム変えると全画面の再ラスタが走るため）。
       setMask(MASK_FRAME_W, MASK_FRAME_H);
+      gsap.set(fvMask, { scale: 1, transformOrigin: '50% 50%', force3D: true });
+      gsap.set(fvImg,  { scale: 1, transformOrigin: '50% 50%', force3D: true });
 
       var st = ScrollTrigger.create({
         trigger: '.fv',
@@ -1722,26 +1731,28 @@ table{ border-collapse:collapse; width:100%; }
         onUpdate: function (self) {
           var p = self.progress;
 
-          // 見本と同じ：写真は動かさず（ピンで固定）、アーチ（マスク）だけを
-          // 60%75%→300%375% に拡大して全面を現す。位置は 50% 50% 固定。
-          setMask(
-            MASK_FRAME_W + (maskMax.w - MASK_FRAME_W) * p,
-            MASK_FRAME_H + (maskMax.h - MASK_FRAME_H) * p
-          );
+          // 見本と同じ：写真は動かさず（ピンで固定）、アーチ（マスク）だけを拡大して全面を現す。
+          // マスク要素を 1→MASK_SCALE(5) に scale すると窓が 60%/75%→300%/375% に広がる（従来と同倍率）。
+          // 写真は 1/s で逆スケールし、外×内=1 で画面に固定（＝従来の「写真は動かさない」を厳密に維持）。
+          // transform は composite のみで完結するため毎フレームの mask 再ラスタが消える。
+          var s = 1 + (MASK_SCALE - 1) * p;
+          gsap.set(fvMask, { scale: s });
+          gsap.set(fvImg,  { scale: 1 / s });
 
           // アーチが広がるにつれ、脇のコピーと金罫は退いて写真に主役を渡す
           var fade = Math.max(0, 1 - p * 2.2);
           if (fvCopy) { fvCopy.style.opacity = fade; }
           if (archline) { archline.style.opacity = fade; }
 
-          fvImg.style.filter = 'brightness(' + (1 - 0.3 * p) + ')';
+          // 暗転はfilter:brightnessではなく黒幕(.fv__dim)のopacityで。
+          // 黒 opacity=0.3p の合成結果は img×(1−0.3p)=brightness(1−0.3p) と同一で、
+          // opacityはコンポジットのみ完結するため毎フレームの全画面再描画を無くす。
+          if (fvDim) fvDim.style.opacity = (0.3 * p).toFixed(3);
 
-          // 文字色の反転は「ヘッダーの背後にまだFVがある」間だけ。
-          // FVが上に抜けた後も反転を残すと、生成り背景に白文字が乗って読めなくなる。
-          var behindFv = fv.getBoundingClientRect().bottom > header.offsetHeight;
-          headerLogo.style.filter = behindFv
-            ? 'grayscale(' + p + ') brightness(' + (1 - p) + ') invert(' + p + ')'
-            : 'none';
+          // 文字色の反転はピン区間中のみ（この間FVは全画面固定でヘッダー背後に必ずある）。
+          // getBoundingClientRect の毎フレーム読み取り（forced reflow）を避ける。
+          headerLogo.style.filter =
+            'grayscale(' + p + ') brightness(' + (1 - p) + ') invert(' + p + ')';
         },
         onLeave:     function () { headerLogo.style.filter = 'none'; },
         onEnterBack: function () { headerLogo.style.filter = ''; }
@@ -1749,7 +1760,8 @@ table{ border-collapse:collapse; width:100%; }
 
       return function () {
         st.kill();
-        fvImg.style.filter = '';
+        gsap.set([fvMask, fvImg], { clearProps: 'transform' });
+        if (fvDim) fvDim.style.opacity = '0';
         headerLogo.style.filter = '';
         // スクロール中にSPへ切り替わると、透明度を戻さない限りコピーが消えたままになる。
         // CSSの初期値が opacity:0（イントロ用）なので、空文字ではなく 1 を明示する。
@@ -2023,13 +2035,36 @@ table{ border-collapse:collapse; width:100%; }
   }
   lenis.on('scroll', runCounters);
 
+  /* --------------------------------------------------------
+     4-5d. 横流しスライダーの画面外停止
+     Splide AutoScroll は画面外でも毎フレーム transform を書き続け、
+     Lenis/ScrollTrigger と全ページ通して並走してフレーム予算を削る。
+     ギャラリーが視界外にある間は pause して、無駄な毎フレーム更新を止める。
+     位置は他ハンドラと同じく docTop キャッシュ方式（reflow回避）で判定。 */
+  var galleryItems = [];   // initSplide が {el, sp, playing} を積む
+  function toggleGalleries() {
+    if (!galleryItems.length) return;
+    var vh = window.innerHeight, sy = window.scrollY;
+    for (var i = 0; i < galleryItems.length; i++) {
+      var o = galleryItems[i];
+      if (o.docTop == null) continue;
+      var top = o.docTop - sy;
+      var vis = top < vh + 100 && top + o.h > -100;
+      var as = o.sp && o.sp.Components && o.sp.Components.AutoScroll;
+      if (!as) continue;
+      if (vis && !o.playing) { as.play(); o.playing = true; }
+      else if (!vis && o.playing) { as.pause(); o.playing = false; }
+    }
+  }
+  lenis.on('scroll', toggleGalleries);
+
   /* スクロールハンドラで getBoundingClientRect を呼ぶと毎回 reflow が起き
      FVスクロール中にカクつく。要素の「文書内 top」を一度だけ測ってキャッシュし、
      スクロール時は window.scrollY（レイアウト非発生）との差だけで判定する。
      ピン挿入やリサイズで位置が変わるので ScrollTrigger の refresh で測り直す。 */
   function recomputeRevealPositions() {
     var sy = window.scrollY;
-    [revealItems, figItems, countGroups].forEach(function (arr) {
+    [revealItems, figItems, countGroups, galleryItems].forEach(function (arr) {
       for (var i = 0; i < arr.length; i++) {
         var o = arr[i];
         var el = o.el || o.fig || o.g;
@@ -2053,7 +2088,7 @@ table{ border-collapse:collapse; width:100%; }
     if (!window.Splide || !window.splide || !window.splide.Extensions) return;
     document.querySelectorAll('.js-gallery').forEach(function (el) {
       var reverse = el.classList.contains('type-reverse');
-      new Splide(el, {
+      var sp = new Splide(el, {
         type: 'loop',
         drag: false,
         arrows: false,
@@ -2067,10 +2102,16 @@ table{ border-collapse:collapse; width:100%; }
           pauseOnHover: false,
           pauseOnFocus: false
         }
-      }).mount(window.splide.Extensions);
+      });
+      sp.mount(window.splide.Extensions);
+      // 通常経路のみ登録（fallback経路では galleryItems は未定義＝スキップ）。
+      if (typeof galleryItems !== 'undefined') galleryItems.push({ el: el, sp: sp, playing: true });
     });
   }
   initSplide();
+  // ギャラリー生成後に位置をキャッシュし、初回の可視判定（画面外は即pause）を走らせる。
+  recomputeRevealPositions();
+  toggleGalleries();
 
   /* --------------------------------------------------------
      FAQ アコーディオン（GSAPで高さアニメーション）
@@ -2124,7 +2165,12 @@ table{ border-collapse:collapse; width:100%; }
       t = setTimeout(fn, wait);
     };
   }
+  // 幅が変わったとき（回転・PC↔SP跨ぎ）だけ測り直す。高さのみの変化
+  // ＝アドレスバー伸縮では全トリガ再計測（レイアウトストーム）を避ける。
+  var lastResizeW = window.innerWidth;
   window.addEventListener('resize', debounce(function () {
+    if (window.innerWidth === lastResizeW) return;
+    lastResizeW = window.innerWidth;
     recalcMaskMax();
     ScrollTrigger.refresh();
   }, 100));
