@@ -444,6 +444,8 @@ table{ border-collapse:collapse; width:100%; }
 
 .fv__cta{ margin-top:2.4em; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
+/* 想いの文章オーバーレイはSPの第3段専用。PC/タブレットでは出さない */
+.fv__message{ display:none; }
 
 @media (max-width:767px){
   /* SP：FVは画面いっぱいに画像を敷いて固定。スクロールすると「その場で」
@@ -458,16 +460,26 @@ table{ border-collapse:collapse; width:100%; }
     display:block; align-items:center;
     max-width:none; margin:0; padding-inline:var(--gutter);
     text-align:center;
-    opacity:0;                 /* スクロールで表示（JSが opacity を上げる）*/
-    z-index:3;
+    z-index:3;                 /* 初期から表示（イントロで横からスライドイン）。色はJSが暗→白へ */
+    text-shadow:0 2px 22px rgba(0,0,0,.28);
   }
-  /* 暗転した画像の上で読めるよう、文字を白系にして影を添える */
-  .fv__catch{ color:#FFFFFF; text-shadow:0 2px 22px rgba(0,0,0,.4); }
-  .fv__sub{ justify-content:center; text-align:center; color:#FFFFFF; }
-  .fv__sub small{ color:rgba(255,255,255,.9); }
+  .fv__sub{ justify-content:center; text-align:center; }
   .fv__sub::after{ content:""; width:38px; height:1px; background:var(--gold); flex:none; }
+  /* メインコピーは親(fvCopy)の色を継承。JSが暗→白へ補間して切り替える */
+  .fv__catch, .fv__sub, .fv__sub small{ color:inherit; }
   .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
+
+  /* 第3段：想いの文章（白・暗転画像の上に現れる） */
+  .fv__message{
+    display:flex; flex-direction:column; justify-content:center; gap:1.4em;
+    position:absolute; inset:0; z-index:4; padding:0 var(--gutter);
+    text-align:center; color:#FFFFFF;
+    font-family:var(--font-mincho); letter-spacing:.06em; line-height:2.05;
+    font-size:clamp(.92rem,4vw,1.08rem);
+    text-shadow:0 2px 20px rgba(0,0,0,.45);
+    opacity:0; pointer-events:none;
+  }
 }
 
 /* ============================================================
@@ -877,6 +889,14 @@ table{ border-collapse:collapse; width:100%; }
           </span>
         </a>
       </div>
+    </div>
+
+    <!-- 想いの文章（SP：暗転後にさらにスクロールすると現れる。文言は仮） -->
+    <div class="fv__message" id="fvMessage" aria-hidden="true">
+      <p>「もう遅いかもしれない」<br>「私には、<wbr>才能なんてないから」</p>
+      <p>そんな言葉で、<wbr>自分の可能性に<wbr>そっと蓋をしていませんか。</p>
+      <p>年齢も、<wbr>ブランクも、<wbr>あなたの価値を<wbr>決めるものではありません。</p>
+      <p>一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
     </div>
   </section>
 
@@ -1413,6 +1433,7 @@ table{ border-collapse:collapse; width:100%; }
   var fv      = document.querySelector('.fv');
   var fvMask  = document.getElementById('fvMask');
   var fvCopy  = document.getElementById('fvCopy');
+  var fvMessage = document.getElementById('fvMessage');
   var archline = document.querySelector('.fv__archline');
   var fvImg  = document.getElementById('fvImg');
   var header = document.getElementById('header');
@@ -1741,24 +1762,33 @@ table{ border-collapse:collapse; width:100%; }
 
     // --- SP：アーチは拡大せず、写真をアーチ枠で見せたまま縦積み ---
     fvMm.add('(max-width: 767px)', function () {
-      /* SP：FVをピン留めして2段階で変化させる。
-         第1段（前半）：明るいアーチ枠 → マスクを広げて画面全体に広がる。
-         第2段（後半）：全体になった写真がその場で暗転し、白い文章が現れる。
-         ピンで固定するので「その場で」変わり、スクロール量に連動して滑らか。 */
-      /* 拡大は mask-size ではなく transform:scale で行う。
-         モバイルでは mask-size の毎フレーム再描画が重くカクつくため、
-         GPU合成される transform に寄せて滑らかにする（PCの体感に近づける）。 */
-      var SCALE_MAX = 2.9;      // アーチ枠 → 画面いっぱいに広がる倍率
-      setMask(118, 118);        // マスクは固定（アーチ枠）
-      gsap.set(fvCopy, { clearProps: 'transform' });
+      /* SP：見本サイト準拠の3段階（ピン留めして順に変化）。
+         ① アーチ枠＋メインコピー（横からスライドインはイントロが担当、文字は暗色）
+         ② スクロールで枠が全体に広がり暗転、メインコピーが暗→白へ
+         ③ さらにスクロールでメインコピーが退き、想いの文章が現れる
+         拡大は transform:scale（GPU合成）で滑らかにする。 */
+      var SCALE_MAX = 2.9;
+      var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+      // 文字色を暗→白へ補間（#5A5148 → #FFFFFF）
+      var lerpColor = function (t) {
+        var r = Math.round(90 + (255 - 90) * t),
+            g = Math.round(81 + (255 - 81) * t),
+            b = Math.round(72 + (255 - 72) * t);
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+      };
+
+      setMask(118, 118);
       gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%' });
       fvImg.style.filter = 'brightness(1)';
-      fvCopy.style.opacity = '0';
+      // 初期：メインコピーは表示（イントロで横からスライドイン）、色は暗、想いは非表示
+      fvCopy.style.opacity = '1';
+      fvCopy.style.color = lerpColor(0);
+      if (fvMessage) fvMessage.style.opacity = '0';
 
       var st = ScrollTrigger.create({
         trigger: '.fv',
         start: 'top top',
-        end: '+=200%',            // 2画面分（前半＝拡大／後半＝暗転＋文章）
+        end: '+=260%',            // 3段ぶん（拡大→暗転＋白化→想い）
         scrub: true,
         pin: true,
         pinSpacing: true,
@@ -1766,13 +1796,19 @@ table{ border-collapse:collapse; width:100%; }
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          // 前半：枠が全体に広がる（GPUで滑らか）
-          var e = Math.min(1, p / 0.5);
+          // ①→② 枠拡大＋暗転（0〜0.45）
+          var e = clamp01(p / 0.45);
           gsap.set(fvMask, { scale: 1 + (SCALE_MAX - 1) * e });
-          // 後半：暗転＋文章フェードイン
-          var d = Math.max(0, (p - 0.5) / 0.5);
-          fvImg.style.filter = 'brightness(' + (1 - 0.55 * d) + ')';
-          fvCopy.style.opacity = Math.min(1, d * 1.6).toFixed(3);
+          fvImg.style.filter = 'brightness(' + (1 - 0.55 * e) + ')';
+          // メインコピーを暗→白へ
+          fvCopy.style.color = lerpColor(e);
+          // ③ メインコピー退場（0.5〜0.62）→ 想い登場（0.6〜0.9）
+          var out = clamp01((p - 0.5) / 0.12);
+          fvCopy.style.opacity = (1 - out).toFixed(3);
+          if (fvMessage) {
+            var mi = clamp01((p - 0.6) / 0.3);
+            fvMessage.style.opacity = mi.toFixed(3);
+          }
         }
       });
 
@@ -1780,6 +1816,8 @@ table{ border-collapse:collapse; width:100%; }
         st.kill();
         fvImg.style.filter = '';
         fvCopy.style.opacity = '1';
+        fvCopy.style.color = '';
+        if (fvMessage) fvMessage.style.opacity = '0';
         gsap.set(fvMask, { scale: SCALE_MAX });
       };
     });
