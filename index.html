@@ -685,6 +685,21 @@ table{ border-collapse:collapse; width:100%; }
   color:var(--text); margin:1em 0 1.4em;
 }
 .founder__body{ font-size:.9rem; color:var(--text-sub); display:grid; gap:1.05em; }
+/* 代表の経歴（簡潔リスト） */
+.founder__career{ margin-top:1.4em; display:grid; gap:.85em; font-size:.9rem; color:var(--text-sub); line-height:1.8; list-style:none; }
+.founder__career li{ position:relative; padding-left:1.2em; }
+.founder__career li::before{ content:""; position:absolute; left:0; top:.62em; width:.45em; height:.45em; border:1px solid var(--gold); border-radius:50%; }
+.founder__career b{ font-weight:500; color:var(--text); }
+
+/* ============================================================
+   Our Vision（代表メッセージ）
+   ============================================================ */
+.vision__body{ max-width:660px; margin:3.2em auto 0; font-family:var(--font-mincho); color:var(--text); font-size:1rem; line-height:2.1; letter-spacing:.02em; display:grid; gap:1.7em; }
+.vision__lead{ margin:1.2em 0 .2em; text-align:center; font-family:var(--font-mincho); font-weight:400; font-size:clamp(1.3rem,5vw,1.8rem); line-height:1.7; letter-spacing:.05em; color:var(--greige-dk); }
+.vision__body .quote{ color:var(--text-sub); }
+/* 太字部分はマーカー（金）で強調 */
+.vision__body strong{ font-weight:600; color:var(--greige-dk); background:linear-gradient(transparent 58%, rgba(196,165,123,.34) 58%); padding:0 .06em; }
+.vision__close{ margin-top:.5em; text-align:center; font-size:1.12rem; letter-spacing:.06em; color:var(--greige-dk); }
 
 /* 実績パネル（権威性の核）：金の額装＋金のシマー掃引で豪華に見せる */
 .founder__hero{
@@ -1201,19 +1216,15 @@ table{ border-collapse:collapse; width:100%; }
         </div>
 
         <div class="founder__text ani-gsap fadeIn slide-t" data-delay="0.12">
-          <p class="founder__name"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表　<b><span class="tbd">要確認</span> お名前</b></p>
+          <p class="founder__name"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表　<b>藤井</b></p>
 
-          <p class="founder__lead">
-            ライフステージが<wbr>変わっても、<wbr>ネイリストで<wbr>あり続けられる。<wbr>
-            それを、<wbr>21年かけて<wbr>自分の手で<wbr>証明してきました。
-          </p>
-
-          <div class="founder__body">
-            <p>大手ネイルサロンで、<wbr>ネイリストから<wbr>店長・マネージャーまでの9年。<wbr>全国の百貨店や<wbr>ハワイ・アラモアナへの出店を<wbr>任される日々の一方で、<wbr>出産・育児・介護を機に、<wbr>続けたくても<wbr>辞めていく仲間を<wbr>何人も見送ってきました。</p>
-            <p>「このままでは、<wbr>自分の心も<wbr>折れてしまう」。<wbr>理想のサロンを<wbr>自らつくるため、<wbr>2005年に独立。<wbr>ジェルネイルの波とともに<wbr>店舗とスクールを育て、<wbr>21年間、<wbr>市場の浮き沈みを越えて<wbr>経営を続けています。</p>
-            <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを<wbr>運営し、<wbr>30名を超えるスタッフを<wbr>現場で育てています。<wbr>SGS講師として、<wbr>700名を超える<wbr>個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
-            <p>目指すのは、<wbr>技術を教えるだけの<wbr>場ではありません。<wbr>ライフステージに合わせて<wbr>働き方を選びながら、<wbr>一人ひとりが<wbr>自信を持って<wbr>長く活躍できること。<wbr><span class="brand">parer nail school</span>は、<wbr>その願いから<wbr>生まれました。</p>
-          </div>
+          <ul class="founder__career">
+            <li>正社員ネイリストとして9年、<b>2005年に独立</b>。</li>
+            <li>全国の百貨店・ハワイ（アラモアナ）への出店を歴任。</li>
+            <li>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを運営。</li>
+            <li>30名を超えるスタッフを育成。<wbr>SGS講師として700名を超える個人サロンオーナーを支援。</li>
+            <li>21年間、<wbr>市場の浮き沈みを越えて経営を継続。</li>
+          </ul>
         </div>
       </div>
 
@@ -1241,29 +1252,74 @@ table{ border-collapse:collapse; width:100%; }
   </section>
 
   <!-- ============================================================
+       Our Vision（代表メッセージ）
+       ============================================================ -->
+  <section class="sec marble" id="vision">
+    <div class="wrap">
+      <div class="center">
+        <p class="eyebrow ani-gsap fadeIn slide-t">Our Vision</p>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">「好き」を、<br class="sp-only">これからの人生の力に。</h2>
+      </div>
+
+      <div class="vision__body ani-gsap fadeIn slide-t" data-delay="0.2">
+        <p>ネイルが好き。</p>
+        <p>いつかネイルを仕事にしてみたい。<wbr>技術を身につけて、<wbr>長く続けられる仕事を身につけたい。</p>
+        <p>そんな想いを持つ大人の女性に、<wbr>「ネイルを仕事にする」という選択肢を、<wbr>もっと身近に感じてもらいたいと思っています。</p>
+        <p>はじめまして。<wbr><span class="brand">parer nail school</span> 代表の藤井です。</p>
+        <p>正社員ネイリスト9年、<wbr>独立から21年、<wbr>ネイルサロンの現場で多くのお客様と向き合い、<wbr>スタッフの育成や技術スクールの運営に携わってきました。</p>
+        <p>その中で、<wbr>ずっと感じていたことがあります。</p>
+
+        <h3 class="vision__lead">検定に合格しても、<br>「実際にできる」とは限らない</h3>
+        <p>ネイル検定に合格すると、<wbr>ひとつの大きな目標を達成したように感じます。</p>
+        <p>けれど、<wbr>そこからサロンで働こうとすると、</p>
+        <p class="quote">「実際のお客様を前にしたら、ちゃんと施術できるだろうか」<br>「どのくらいの時間で仕上げればいいの？」<br>「接客にも自信がない……」</p>
+        <p>そんな不安を感じる方は少なくありません。</p>
+        <p>私自身も、<wbr>ネイルの仕事を始めようと思ったとき、<wbr>専門的に学べる場所を探すことに苦労しました。<wbr>最終的には、<wbr>働きながら技術を身につけられる環境に転職し、<wbr>現場で一つひとつ学んでいきました。</p>
+        <p>検定では、<wbr>決められた課題を、<wbr>決められた条件の中で美しく仕上げる力が求められます。</p>
+        <p>コロナ以降、<wbr>検定モデルは人の手ではなくマネキンに代わりました。<wbr>そのことで、<wbr>ますます「検定だけを取って踏み出せない人」を増やすことになっています。</p>
+        <p><strong>ネイルの資格や検定の取得をゴールにしたネイルスクールはたくさんありますが、「実際のサロンで働くための力」を学ぶ場所が、まだまだ少ない</strong>ということです。</p>
+        <p>サロンでは、<wbr>お客様一人ひとり異なる爪の状態を見ながら、<wbr>限られた時間の中で施術し、<wbr>会話をし、<wbr>心地よく過ごしていただくことまで求められます。</p>
+        <p>同じ「ネイル」という技術でも、<wbr>現場で必要とされる力は全然違うのです。</p>
+        <p>だからこそ、<wbr><span class="brand">parer nail school</span> では、<wbr>資格取得をしただけで止まってしまっている人向けに<strong>「学んだ技術を、実際の仕事で使えるようになる」をカリキュラム</strong>にしています。</p>
+        <p>仕事や家事、家庭との両立。<wbr>これまでのキャリア。<wbr>「今から始めても遅くないかな」という迷い。</p>
+        <p>大人になればなるほど、<wbr>一歩を踏み出すまでに時間がかかることもあると思います。</p>
+        <p>でも、<wbr>私はこれまで多くの人と一緒に働いてきた経験から、<wbr><strong>何歳であっても「やってみたい」という気持ちを持ったときの方が、吸収する力がある</strong>と感じています。</p>
+        <p>ネイルは、<wbr>技術を身につければ身につけるほど、<wbr>自分自身の可能性を広げていける仕事です。</p>
+        <p>サロンで働く。<wbr>自分でお店を持つ。<wbr>副業としておうちで始める。<wbr>他の仕事と絡めて活躍する。</p>
+        <p>目指す形は、<wbr>人それぞれでいい。</p>
+        <p class="quote">もし今、<br>「検定は取ったけれど、その先に進めない」<br>「ネイルを仕事にしてみたいけれど、自分にできるかわからない」<br>「もう年だから遅くないかな」</p>
+        <p>そんなふうに感じているなら、<wbr>どうか一人で答えを出さないでください。</p>
+        <p><span class="brand">parer nail school</span> では、<wbr>「こうならなければいけない」という一つの答えを押しつけるのではなく、<wbr><strong>あなたがこれからどんなふうにネイルと関わっていきたいのか</strong>を大切にしたいと思っています。</p>
+        <p>そして、<wbr>その先にある「働く」「続ける」「自分らしく生きる」まで、<wbr>一緒に考えていく。</p>
+        <p class="vision__close">それが、<span class="brand">parer nail school</span> の目指す場所です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        料金
        ============================================================ -->
   <section class="sec marble--warm" id="price">
     <div class="wrap center">
       <p class="eyebrow ani-gsap fadeIn slide-t">Tuition</p>
-      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">受講料</h2>
+      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">price</h2>
+      <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.15">「またあなたにお願いしたい」<br class="sp-only">選ばれるネイリストへ</p>
 
       <div class="price ani-gsap fadeIn slide-t blur-10" data-delay="0.2">
         <div class="price__card">
           <p class="price__name">自宅サロン開業コース／全8週</p>
 
           <div class="price__figure">
-            <p><span class="price__num">200,000</span><span class="price__unit">円</span></p>
+            <p><span class="price__num">220,000</span><span class="price__unit">円</span></p>
           </div>
           <p class="price__note">表示価格は税込です</p>
 
           <ul class="price__list">
-            <li>オンラインレッスン 全8回（実演指導）</li>
-            <li>写真・動画での添削（受講中は回数の制限なし）</li>
+            <li>対面レッスン 全2回（12h）</li>
+            <li>写真・動画での課題添削（全8回）</li>
             <li>チャットでの質問（無制限）</li>
-            <li>自宅サロン開業のための資料一式</li>
-            <li>卒業後のフォロー期間 <span class="tbd">要確認</span></li>
-            <li>分割払いの可否・回数 <span class="tbd">要確認</span></li>
+            <li>受講期間2ヶ月＋受講後のフォロー2ヶ月（合計4ヶ月）</li>
+            <li>分割払いの可否 <span class="tbd">要確認</span></li>
           </ul>
 
           <div class="price__cta">
