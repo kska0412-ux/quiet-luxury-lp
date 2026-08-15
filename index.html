@@ -1137,13 +1137,13 @@ table{ border-collapse:collapse; width:100%; }
           </p>
         </div>
 
-        <div class="curriculum__scroll ani-gsap fadeIn slide-t" data-delay="0.3">
+        <div class="curriculum__scroll">
           <table>
             <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">カリキュラム一覧（全12レッスン）</caption>
             <thead>
               <tr><th scope="col">Lesson</th><th scope="col">内容と到達目標</th></tr>
             </thead>
-            <tbody>
+            <tbody class="js-lesson-rows">
               <tr><th scope="row">01</th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
               <tr><th scope="row">02</th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
               <tr><th scope="row">03</th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
@@ -1349,13 +1349,13 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>ブランクがあっても大丈夫ですか</span>
+            <span>サロンで働いたことがありませんが受講できますか？</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a1" role="region" aria-labelledby="faq-q1">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>大丈夫です。受講される方の多くが、資格を取ってから何年も離れていた方です。1週目に今の技術を見せていただき、そこを起点に組み立てます。思い出すところからで構いません。</p>
+              <p>サロン経験は必要ありません。</p>
             </div>
           </div>
         </div>
@@ -1363,13 +1363,27 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>子どもがいても通えますか</span>
+            <span>受講条件はありますか？</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a2" role="region" aria-labelledby="faq-q2">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>全8回すべてオンラインなので、ご自宅から参加できます。日程は個別に調整し、急な体調不良のときは振り替えられます。</p>
+              <p>ネイリスト検定2級またはジェル検定上級取得済みの方<br>または、検定なしでサロン勤務が6カ月以上ある方</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7">
+            <span class="faq__mark" aria-hidden="true">Q</span>
+            <span>検定取得からブランクがありますが大丈夫ですか？</span>
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a" id="faq-a7" role="region" aria-labelledby="faq-q7">
+            <div class="faq__a-inner">
+              <span class="faq__mark" aria-hidden="true">A</span>
+              <p>ブランクは問題ありません。基礎の復習もカリキュラムに含まれています。</p>
             </div>
           </div>
         </div>
@@ -1397,7 +1411,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a4" role="region" aria-labelledby="faq-q4">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>あります。開いてからのほうが、迷いは増えるものです。写真添削とご質問は卒業後も受け付けています。期間の詳細は <span class="tbd">要確認</span> です。</p>
+              <p>合計4か月間で希望のネイリストとしての働き方ができるように指導しますが、状況によっては、引き続きサポートさせていただきます。直営サロン4店舗を使ってモニター施術なども可能です。</p>
             </div>
           </div>
         </div>
@@ -1425,7 +1439,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a6" role="region" aria-labelledby="faq-q6">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>いいえ。相談は、合うかどうかを確かめる場です。合わないと感じられたら、そのままお伝えください。こちらから追いかけるご連絡はいたしません。</p>
+              <p>無料個別相談に参加されたからと言って受講するかは自由に決めていただけます。しつこくこちらから営業することはありませんので、安心してご相談ください。</p>
             </div>
           </div>
         </div>
@@ -2035,6 +2049,17 @@ table{ border-collapse:collapse; width:100%; }
       .to(texts, { opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power2.out' }, '<');
 
     revealItems.push({ el: list, tween: tl, done: false });
+  });
+
+  /* カリキュラム表：Lesson 行を上から順番に現す（stagger reveal）。
+     js-popin と同じく paused タイムラインを revealItems に積み、実座標で発火。
+     ※<tr> への transform 非対応ブラウザでも opacity は効くので自然に劣化する */
+  document.querySelectorAll('.js-lesson-rows').forEach(function (tbody) {
+    var rows = tbody.querySelectorAll('tr');
+    gsap.set(rows, { opacity: 0, y: 18 });
+    var tl = gsap.timeline({ paused: true });
+    tl.to(rows, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', stagger: 0.11 });
+    revealItems.push({ el: tbody, tween: tl, done: false });
   });
 
   /* ani-gsap / js-popin の実座標リビール駆動。
