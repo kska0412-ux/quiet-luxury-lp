@@ -3,15 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quiet Luxury 〜次世代型ネイルスクール〜｜上質な技術で、選ばれるネイリストへ</title>
+<title>parer nail school 〜次世代型ネイルスクール〜｜実践的な学びで、選ばれるネイリストへ</title>
 <meta name="description" content="30〜50代のネイリストのための自宅サロン開業スクール。少人数制・2ヶ月完結・写真添削・質問無制限。完全オンラインで、家庭と仕事を止めずに学べます。無料個別相談を受付中。">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Shippori+Mincho:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide-core.min.css">
 
 <style>
+/* ============================================================
+   Web Fonts（英語＝The Seasons を自己ホスト）
+   ※ 正規ライセンス購入版の font ファイルを /fonts に配置してください。
+   　 ファイルが無い間は自動的に Cormorant Garamond にフォールバックします。
+   　 想定ファイル名：
+   　   fonts/TheSeasons-Light.woff2   （細字・weight 300 用／任意）
+   　   fonts/TheSeasons-Regular.woff2 （標準・weight 400 用）
+   　 .otf しか無い場合も同名 .otf を置けば読み込まれます。
+   ============================================================ */
+@font-face{
+  font-family:'The Seasons';
+  font-style:normal;
+  font-weight:300;
+  font-display:swap;
+  src:url('fonts/TheSeasons-Light.woff2') format('woff2'),
+      url('fonts/TheSeasons-Light.otf') format('opentype');
+}
+@font-face{
+  font-family:'The Seasons';
+  font-style:normal;
+  font-weight:400;
+  font-display:swap;
+  src:url('fonts/TheSeasons-Regular.woff2') format('woff2'),
+      url('fonts/TheSeasons-Regular.otf') format('opentype');
+}
+
 /* ============================================================
    Design Tokens
    ============================================================ */
@@ -26,9 +52,10 @@
   --white:     #FFFFFF;
   --ph:        #EDE6DD; /* 画像プレースホルダー */
 
-  --font-en: 'Cormorant Garamond', 'Shippori Mincho', serif;
+  --font-en: 'The Seasons', 'Cormorant Garamond', 'Shippori Mincho', serif;
   --font-mincho: 'Shippori Mincho', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
-  --font-gothic: 'Zen Kaku Gothic New', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
+  /* 日本語は本文も含め明朝（Shippori Mincho）に統一。ゴシックは廃止 */
+  --font-gothic: var(--font-mincho);
 
   --shadow: 0 4px 24px rgba(90,81,72,.06);
   --radius-card: 16px;
@@ -109,6 +136,9 @@ table{ border-collapse:collapse; width:100%; }
   color:var(--gold);
   line-height:1.6;
 }
+
+/* スクール名（英字）は The Seasons＝--font-en で表示。明朝の見出し内でも英字だけ切替 */
+.brand{ font-family:var(--font-en); font-weight:inherit; letter-spacing:.03em; }
 
 .sec-title{
   font-family:var(--font-mincho);
@@ -859,7 +889,7 @@ table{ border-collapse:collapse; width:100%; }
   </div>
   <div class="door__glow" id="doorGlow" aria-hidden="true"></div>
   <div class="loading__logoWrap">
-    <p class="loading__logo" id="loadingLogo">Quiet&nbsp;Luxury</p>
+    <p class="loading__logo" id="loadingLogo">parer&nbsp;nail&nbsp;school</p>
   </div>
 </div>
 
@@ -867,12 +897,12 @@ table{ border-collapse:collapse; width:100%; }
      Header
      ============================================================ -->
 <header class="header" id="header">
-  <a class="header__logo" id="headerLogo" href="#top">Quiet&nbsp;Luxury</a>
+  <a class="header__logo" id="headerLogo" href="#top">parer&nbsp;nail&nbsp;school</a>
   <nav class="header__nav" aria-label="メインナビゲーション">
     <a href="#problem">課題</a>
     <a href="#reason">選ばれる理由</a>
-    <a href="#works">受講生の作品</a>
-    <a href="#price">料金</a>
+    <a href="#works">gallery</a>
+    <a href="#price">price</a>
     <a href="#faq">よくある質問</a>
   </nav>
 </header>
@@ -900,11 +930,11 @@ table{ border-collapse:collapse; width:100%; }
 
     <div class="fv__copy" id="fvCopy">
       <h1 class="fv__catch">
-        上質な技術で、<br>
+        実践的な学びで、<br>
         選ばれるネイリストへ
       </h1>
       <p class="fv__sub">
-        <span>Quiet Luxury<small>〜次世代型ネイルスクール〜</small></span>
+        <span>parer nail school<small>〜次世代型ネイルスクール〜</small></span>
       </p>
 
       <div class="fv__cta">
@@ -932,24 +962,24 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble--warm" id="record">
     <div class="wrap center">
       <p class="eyebrow ani-gsap fadeIn slide-t">Achievements</p>
-      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">Quiet&nbsp;Luxury 代表の実績</h2>
+      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表の実績</h2>
 
       <div class="rcircles js-count-group">
         <div class="rcircle">
-          <span class="rcircle__label">経営を継続</span>
+          <span class="rcircle__label">経営歴</span>
           <span class="rcircle__num"><span class="js-count" data-to="21">0</span><i>年</i></span>
         </div>
         <div class="rcircle">
-          <span class="rcircle__label">サロンを運営</span>
+          <span class="rcircle__label">ネイルサロン経営</span>
           <span class="rcircle__num"><span class="js-count" data-to="4">0</span><i>店舗</i></span>
         </div>
         <div class="rcircle">
-          <span class="rcircle__label">オーナーを支援</span>
+          <span class="rcircle__label">美容サロンオーナーを支援</span>
           <span class="rcircle__num"><span class="js-count" data-to="700">0</span><i>名</i></span>
         </div>
         <div class="rcircle">
-          <span class="rcircle__label">スタッフを育成</span>
-          <span class="rcircle__num"><span class="js-count" data-to="30">0</span><i>名+</i></span>
+          <span class="rcircle__label">スクール卒業生ネイリスト育成</span>
+          <span class="rcircle__num"><span class="js-count" data-to="200">0</span><i>名+</i></span>
         </div>
       </div>
     </div>
@@ -962,7 +992,7 @@ table{ border-collapse:collapse; width:100%; }
     <div class="wrap">
       <div class="center">
         <p class="eyebrow ani-gsap fadeIn slide-t">Where you stand</p>
-        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">あと10年、<br class="sp-only">同じ生活を続けますか？</h2>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">好きなコトを仕事にする夢を<br class="sp-only">あきらめますか？</h2>
         <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.2">
           資格を取ったあの日、思い描いていた自分に、<br class="pc-only">
           今のあなたは、<wbr>どのくらい<wbr>近づけているでしょうか。
@@ -974,37 +1004,37 @@ table{ border-collapse:collapse; width:100%; }
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">資格はある。<wbr>けれど、<wbr>技術に自信が持てない</span>
+          <span class="js-popin__text">資格は取った。けれど、<br class="sp-only">技術に自信はない。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">SNSで同世代の活躍を見るたび、<wbr>胸がざわつく</span>
+          <span class="js-popin__text">接客・接遇の正解がわからず不安。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">自分の挑戦は、<wbr>いつも後回しにしてきた</span>
+          <span class="js-popin__text">若い子の中で学ぶことに抵抗がある。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">飛び抜けたアートの<wbr>センスが<wbr>あるわけではない</span>
+          <span class="js-popin__text">アートをセンスのせいにして<br class="sp-only">学んでこなかった。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">学び直したい。<wbr>でも、<wbr>家庭も仕事も<wbr>止められない</span>
+          <span class="js-popin__text">人の手に施術すると<br class="sp-only">時間がかかりすぎる。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">本当は、<wbr>自分はもっと<wbr>できるはずだと<wbr>思っている</span>
+          <span class="js-popin__text">今のサロンでは成長できず<br class="sp-only">疲弊するだけ。</span>
         </li>
       </ul>
 
@@ -1024,7 +1054,7 @@ table{ border-collapse:collapse; width:100%; }
       <div class="center">
         <p class="eyebrow ani-gsap fadeIn slide-t">Three reasons</p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">
-          Quiet Luxuryが選ばれる、<br class="sp-only">3つの理由
+          <span class="brand">parer nail school</span>が選ばれる、<br class="sp-only">3つの理由
         </h2>
       </div>
 
@@ -1114,7 +1144,7 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble" id="works">
     <div class="wrap center">
       <p class="eyebrow ani-gsap fadeIn slide-t">Students' works</p>
-      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">Quiet&nbsp;Luxuryで<br class="sp-only">得られる技術</h2>
+      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><span class="brand">parer&nbsp;nail&nbsp;school</span>で<br class="sp-only">得られる技術</h2>
     </div>
 
     <div class="gallery" aria-label="受講生の作品ギャラリー">
@@ -1145,17 +1175,17 @@ table{ border-collapse:collapse; width:100%; }
     <div class="wrap">
       <div class="center">
         <p class="eyebrow ani-gsap fadeIn slide-t">Founder</p>
-        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">Quiet&nbsp;Luxury 代表</h2>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表</h2>
       </div>
 
       <div class="founder__inner">
         <div class="founder__photo ani-gsap fadeIn slide-t">
           <img src="images/founder.jpg" width="800" height="1000" loading="lazy"
-               alt="Quiet Luxury 代表のポートレート">
+               alt="parer nail school 代表のポートレート">
         </div>
 
         <div class="founder__text ani-gsap fadeIn slide-t" data-delay="0.12">
-          <p class="founder__name">APRES&nbsp;LA&nbsp;PLUIE 代表　<b><span class="tbd">要確認</span> お名前</b></p>
+          <p class="founder__name"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表　<b><span class="tbd">要確認</span> お名前</b></p>
 
           <p class="founder__lead">
             ライフステージが<wbr>変わっても、<wbr>ネイリストで<wbr>あり続けられる。<wbr>
@@ -1166,7 +1196,7 @@ table{ border-collapse:collapse; width:100%; }
             <p>大手ネイルサロンで、<wbr>ネイリストから<wbr>店長・マネージャーまでの9年。<wbr>全国の百貨店や<wbr>ハワイ・アラモアナへの出店を<wbr>任される日々の一方で、<wbr>出産・育児・介護を機に、<wbr>続けたくても<wbr>辞めていく仲間を<wbr>何人も見送ってきました。</p>
             <p>「このままでは、<wbr>自分の心も<wbr>折れてしまう」。<wbr>理想のサロンを<wbr>自らつくるため、<wbr>2005年に独立。<wbr>ジェルネイルの波とともに<wbr>店舗とスクールを育て、<wbr>21年間、<wbr>市場の浮き沈みを越えて<wbr>経営を続けています。</p>
             <p>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを<wbr>運営し、<wbr>30名を超えるスタッフを<wbr>現場で育てています。<wbr>SGS講師として、<wbr>700名を超える<wbr>個人サロンオーナーの歩みにも<wbr>伴走してきました。</p>
-            <p>目指すのは、<wbr>技術を教えるだけの<wbr>場ではありません。<wbr>ライフステージに合わせて<wbr>働き方を選びながら、<wbr>一人ひとりが<wbr>自信を持って<wbr>長く活躍できること。<wbr>Quiet Luxuryは、<wbr>その願いから<wbr>生まれました。</p>
+            <p>目指すのは、<wbr>技術を教えるだけの<wbr>場ではありません。<wbr>ライフステージに合わせて<wbr>働き方を選びながら、<wbr>一人ひとりが<wbr>自信を持って<wbr>長く活躍できること。<wbr><span class="brand">parer nail school</span>は、<wbr>その願いから<wbr>生まれました。</p>
           </div>
         </div>
       </div>
@@ -1176,19 +1206,19 @@ table{ border-collapse:collapse; width:100%; }
         <div class="founder__hshimmer" aria-hidden="true"></div>
         <div class="founder__hstat">
           <p class="founder__hnum"><span class="js-count" data-to="21">0</span><i>年</i></p>
-          <p class="founder__hlabel">経営を継続</p>
+          <p class="founder__hlabel">経営歴</p>
         </div>
         <div class="founder__hstat">
           <p class="founder__hnum"><span class="js-count" data-to="4">0</span><i>店舗</i></p>
-          <p class="founder__hlabel">サロンを運営</p>
+          <p class="founder__hlabel">ネイルサロン経営</p>
         </div>
         <div class="founder__hstat">
           <p class="founder__hnum"><span class="js-count" data-to="700">0</span><i>名</i></p>
-          <p class="founder__hlabel">オーナーを支援</p>
+          <p class="founder__hlabel">美容サロンオーナーを支援</p>
         </div>
         <div class="founder__hstat">
-          <p class="founder__hnum"><span class="js-count" data-to="30">0</span><i>名+</i></p>
-          <p class="founder__hlabel">スタッフを育成</p>
+          <p class="founder__hnum"><span class="js-count" data-to="200">0</span><i>名+</i></p>
+          <p class="founder__hlabel">スクール卒業生ネイリスト育成</p>
         </div>
       </div>
     </div>
@@ -1374,9 +1404,9 @@ table{ border-collapse:collapse; width:100%; }
      Footer
      ============================================================ -->
 <footer class="footer">
-  <p class="footer__logo">Quiet&nbsp;Luxury</p>
+  <p class="footer__logo">parer&nbsp;nail&nbsp;school</p>
   <p class="footer__sub">〜次世代型ネイルスクール〜</p>
-  <p class="footer__copy">&copy; Quiet Luxury. All rights reserved.</p>
+  <p class="footer__copy">&copy; parer nail school. All rights reserved.</p>
 </footer>
 
 <!-- SP 固定CTAバー -->
@@ -2029,7 +2059,12 @@ table{ border-collapse:collapse; width:100%; }
           });
         });
       } else if (top <= -o.h) {
-        o.done = true; setFinal(o.g);   // すでに通り過ぎていたら即最終値
+        // すでに通り過ぎていた場合：数値は最終値にし、丸（.rcircle）も必ず表示する。
+        // is-shimmer を付けないと .rcircle が opacity:0 のまま残り、実績が丸ごと消える
+        // （速いスクロールで1フレームに窓を飛び越すと発生していた不具合の修正）。
+        o.done = true;
+        o.g.classList.add('is-shimmer');
+        setFinal(o.g);
       }
     }
   }
