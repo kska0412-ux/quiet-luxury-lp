@@ -609,6 +609,9 @@ table{ border-collapse:collapse; width:100%; }
 .curriculum tbody tr:last-child th,
 .curriculum tbody tr:last-child td{ border-bottom:0; }
 .curriculum tbody th{ font-weight:500; white-space:nowrap; color:var(--greige-dk); }
+.curriculum td b{ font-weight:500; color:var(--greige-dk); }
+.curriculum td .cur-goal{ display:block; margin-top:.35em; font-size:.86em; color:var(--text-sub); line-height:1.65; }
+.curriculum__note{ margin-top:2.2em; text-align:center; font-size:.85rem; color:var(--text-sub); letter-spacing:.03em; line-height:1.95; }
 .tag{
   display:inline-block; padding:.15em 1em; border-radius:999px;
   font-size:.74rem; letter-spacing:.1em; white-space:nowrap;
@@ -1109,31 +1112,44 @@ table{ border-collapse:collapse; width:100%; }
       <div class="curriculum">
         <div class="center">
           <p class="eyebrow ani-gsap fadeIn slide-t">Curriculum</p>
-          <h3 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">本質の技術を、<br class="sp-only">たった二ヶ月で</h3>
+          <h3 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">現役のネイリストから<br>そのまま使える<br class="sp-only">実践力を直接吸収</h3>
           <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.2">
-            全8回すべて<span class="tag tag--z">オンライン</span>。<br class="sp-only">
-            ご自宅から、<wbr>移動の負担なく学べます。
+            仕上がりの美しさと持ちの良さ、<wbr>リアルな時短テクニック、<wbr>生きたトレンドデザイン、<wbr>爪の状態に合わせた臨機応変な施術アレンジ、<wbr>そしてお客様の心を掴む接客やリピートにつなげるカウンセリングの極意…<br>
+            たった<span class="tag">4ヶ月</span>で学べます。
+          </p>
+          <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.25">
+            ミドルエイジ世代のサロンに特化し、<wbr>デザイン・フォルム・持ち・接客・素材の<b>5軸</b>を<br class="sp-only">“本質”として学びます。
           </p>
         </div>
 
         <div class="curriculum__scroll ani-gsap fadeIn slide-t" data-delay="0.3">
           <table>
-            <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">カリキュラム一覧</caption>
+            <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">カリキュラム一覧（全12レッスン）</caption>
             <thead>
-              <tr><th scope="col">週</th><th scope="col">内容</th></tr>
+              <tr><th scope="col">Lesson</th><th scope="col">内容と到達目標</th></tr>
             </thead>
             <tbody>
-              <tr><th scope="row">1週目</th><td>今の施術を画面で見せていただき、癖を洗い出す。器具と姿勢の見直し</td></tr>
-              <tr><th scope="row">2週目</th><td>爪の構造と診断。お客様の爪に合わせた設計の考え方</td></tr>
-              <tr><th scope="row">3週目</th><td>ケアの精度を上げる。甘皮処理とファイリングを実演で確認</td></tr>
-              <tr><th scope="row">4週目</th><td>写真添削の実践。撮り方と、指摘の受け取り方</td></tr>
-              <tr><th scope="row">5週目</th><td>持ちを左右するベースとフォルム形成</td></tr>
-              <tr><th scope="row">6週目</th><td>カウンセリングと提案。単価が上がる伝え方</td></tr>
-              <tr><th scope="row">7週目</th><td>ワンカラーとニュアンスの仕上げ。総合演習</td></tr>
-              <tr><th scope="row">8週目</th><td>自宅サロンの開業設計。価格、集客、続けるための仕組み</td></tr>
+              <tr><th scope="row">01</th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
+              <tr><th scope="row">02</th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
+              <tr><th scope="row">03</th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
+              <tr><th scope="row">04</th><td><b>ワンカラーで魅了する</b><span class="cur-goal">ムラ・キワ・ツヤ・光の反射を極める</span></td></tr>
+              <tr><th scope="row">05</th><td><b>ニュアンス基礎技法</b><span class="cur-goal">“なんか微妙”を防ぐ、再現性を身につける</span></td></tr>
+              <tr><th scope="row">06</th><td><b>ニュアンス応用技法</b><span class="cur-goal">“それっぽい”から抜け出し、抜け感ある構図を作る</span></td></tr>
+              <tr><th scope="row">07</th><td><b>骨格・筋肉・神経とワークフロー</b><span class="cur-goal">負担をかけない手の扱いと、ネイリストの職業病予防</span></td></tr>
+              <tr><th scope="row">08</th><td><b>アートジェルネイル</b><span class="cur-goal">技法の引き出しを増やし、ワンパターン化を防ぐ</span></td></tr>
+              <tr><th scope="row">09</th><td><b>ホスピタリティ</b><span class="cur-goal">“またお願いしたい”を生む接客・カウンセリング設計</span></td></tr>
+              <tr><th scope="row">10</th><td><b>これからのネイルサロン動向</b><span class="cur-goal">健康志向・ミドル/シニア層の広がりと市場ニーズを掴む</span></td></tr>
+              <tr><th scope="row">11</th><td><b>進路設計（独立開業・サロン就職）</b><span class="cur-goal">卒業2ヶ月以内の計画策定と、高単価メニューの実現</span></td></tr>
+              <tr><th scope="row">12</th><td><b>最終課題・デザイン構成と見せ方</b><span class="cur-goal">完成度に加え“垢抜け”を整え、制作意図まで発表する</span></td></tr>
             </tbody>
           </table>
         </div>
+
+        <p class="curriculum__note ani-gsap fadeIn slide-t" data-delay="0.35">
+          対面2日間（計12時間）＋Zoomフォロー2回＋写真添削8回＋質問チャット無制限。<br class="sp-only">
+          受講2ヶ月＋アフターサポート2ヶ月＝計4ヶ月。<br>
+          受講条件：ネイリスト技能検定2級以上 ／ 少人数制（1期10名）
+        </p>
       </div>
     </div>
   </section>
