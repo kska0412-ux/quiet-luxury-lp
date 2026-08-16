@@ -713,7 +713,9 @@ table{ border-collapse:collapse; width:100%; }
    単語途中では折れず、狭い画面でも溢れない。非対応ブラウザは normal にフォールバック。 */
 .vision__body p, .vision__body h3{ word-break:auto-phrase; }
 /* 太字部分はマーカー（金）で強調 */
-.vision__body strong{ font-weight:600; color:var(--greige-dk); background:linear-gradient(transparent 58%, rgba(196,165,123,.34) 58%); padding:0 .06em; }
+.vision__body strong{ font-weight:600; color:var(--greige-dk); background:linear-gradient(transparent 58%, rgba(196,165,123,.34) 58%); padding:0 .06em;
+  /* 複数行に折り返した時、1行目の背景が行末（列の右端）まで伸びるのを防ぎ、各行で文字に沿わせる */
+  -webkit-box-decoration-break:clone; box-decoration-break:clone; }
 .vision__close{ margin-top:.5em; text-align:center; font-size:1.12rem; letter-spacing:.06em; color:var(--greige-dk); }
 
 /* 実績パネル（権威性の核）：金の額装＋金のシマー掃引で豪華に見せる */
@@ -1113,7 +1115,7 @@ table{ border-collapse:collapse; width:100%; }
 
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-03.png" width="800" height="600" loading="lazy"
+            <img src="images/reason-03.jpg" width="800" height="600" loading="lazy"
                  alt="ネイルマシンでの施術の手元アップ">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.24">
