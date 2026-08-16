@@ -84,10 +84,12 @@ body{
   overflow-x:hidden;
 }
 
-/* 日本語組版：単語途中で改行させない（手動 <br> で文節を制御する） */
+/* 日本語組版：単語途中で改行させない。改行は <wbr>/<br>/空白（＝文節境界）
+   のみで起こし、行頭が助詞（を・と 等）になる割れも防ぐ。
+   overflow-wrap は normal（anywhere だと溢れ回避のため単語途中で割れてしまう）。 */
 body,h1,h2,h3,h4,p,li,dt,dd,th,td,figcaption,button,a,span{
   word-break:keep-all;
-  overflow-wrap:anywhere;
+  overflow-wrap:normal;
   line-break:strict;
 }
 
@@ -916,13 +918,6 @@ table{ border-collapse:collapse; width:100%; }
      ============================================================ -->
 <header class="header" id="header">
   <a class="header__logo" id="headerLogo" href="#top">parer&nbsp;nail&nbsp;school</a>
-  <nav class="header__nav" aria-label="メインナビゲーション">
-    <a href="#problem">課題</a>
-    <a href="#reason">選ばれる理由</a>
-    <a href="#works">gallery</a>
-    <a href="#price">price</a>
-    <a href="#faq">よくある質問</a>
-  </nav>
 </header>
 
 <main id="top">
@@ -951,10 +946,6 @@ table{ border-collapse:collapse; width:100%; }
         実践的な学びで、<br>
         選ばれるネイリストへ
       </h1>
-      <p class="fv__sub">
-        <span>parer nail school<small>〜次世代型ネイルスクール〜</small></span>
-      </p>
-
       <div class="fv__cta">
         <a class="btn" href="#cta">
           無料個別相談に参加する
@@ -1028,7 +1019,7 @@ table{ border-collapse:collapse; width:100%; }
           <span class="problem__icon js-popin__icon" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M1 6.2 4.4 9.6 11 2.6"/></svg>
           </span>
-          <span class="js-popin__text">接客・接遇の正解がわからず不安。</span>
+          <span class="js-popin__text">接客の正解が分からず不安。</span>
         </li>
         <li class="problem__item">
           <span class="problem__icon js-popin__icon" aria-hidden="true">
@@ -1080,7 +1071,7 @@ table{ border-collapse:collapse; width:100%; }
         <article>
           <div class="reason__fig js-fig">
             <img src="images/reason-01.jpg" width="800" height="600" loading="lazy"
-                 alt="少人数のレッスンで、講師が受講生の手元を見ながら指導している様子">
+                 alt="講師が受講生に寄り添って指導する様子">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t">
             <p class="reason__label">01</p>
@@ -1094,8 +1085,8 @@ table{ border-collapse:collapse; width:100%; }
 
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-02.jpg" width="800" height="600" loading="lazy"
-                 alt="ジェルネイルの施術中の手元のアップ">
+            <img src="images/reason-02.png" width="800" height="600" loading="lazy"
+                 alt="対面レッスンで施術する様子">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.12">
             <p class="reason__label">02</p>
@@ -1109,8 +1100,8 @@ table{ border-collapse:collapse; width:100%; }
 
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-03.jpg" width="800" height="600" loading="lazy"
-                 alt="ノートとタブレットを開いて学んでいる様子">
+            <img src="images/reason-03.png" width="800" height="600" loading="lazy"
+                 alt="ネイルマシンでの施術の手元アップ">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.24">
             <p class="reason__label">03</p>
@@ -1129,7 +1120,7 @@ table{ border-collapse:collapse; width:100%; }
           <p class="eyebrow ani-gsap fadeIn slide-t">Curriculum</p>
           <h3 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">現役のネイリストから<br>そのまま使える<br class="sp-only">実践力を直接吸収</h3>
           <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.2">
-            仕上がりの美しさと持ちの良さ、<wbr>リアルな時短テクニック、<wbr>生きたトレンドデザイン、<wbr>爪の状態に合わせた臨機応変な施術アレンジ、<wbr>そしてお客様の心を掴む接客やリピートにつなげるカウンセリングの極意…<br>
+            仕上がりの美しさと持ちの良さ、<wbr>リアルな時短テクニック、<wbr>生きたトレンドデザイン、<wbr>爪の状態に合わせた臨機応変な施術アレンジ、<wbr>そしてお客様の心を掴む接客や<wbr>リピートにつなげる<wbr>カウンセリングの極意…<br>
             たった<span class="tag">4ヶ月</span>で学べます。
           </p>
           <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.25">
@@ -1311,8 +1302,6 @@ table{ border-collapse:collapse; width:100%; }
 
       <div class="price ani-gsap fadeIn slide-t blur-10" data-delay="0.2">
         <div class="price__card">
-          <p class="price__name">自宅サロン開業コース／全8週</p>
-
           <div class="price__figure">
             <p><span class="price__num">220,000</span><span class="price__unit">円</span></p>
           </div>
@@ -1353,7 +1342,7 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>サロンで働いたことがありませんが受講できますか？</span>
+            <span>サロンで働いたことが<wbr>ありませんが<wbr>受講できますか？</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a1" role="region" aria-labelledby="faq-q1">
@@ -1381,7 +1370,7 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>検定取得からブランクがありますが大丈夫ですか？</span>
+            <span>検定取得から<wbr>ブランクがありますが<wbr>大丈夫ですか？</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a7" role="region" aria-labelledby="faq-q7">
@@ -1395,7 +1384,7 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>パソコンが苦手でもオンラインで参加できますか</span>
+            <span>パソコンが苦手でも<wbr>オンラインで<wbr>参加できますか</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a3" role="region" aria-labelledby="faq-q3">
@@ -2055,15 +2044,17 @@ table{ border-collapse:collapse; width:100%; }
     revealItems.push({ el: list, tween: tl, done: false });
   });
 
-  /* カリキュラム表：Lesson 行を上から順番に現す（stagger reveal）。
-     js-popin と同じく paused タイムラインを revealItems に積み、実座標で発火。
+  /* カリキュラム表：Lesson を1行ずつ、スクロールで視界に入った順に現す。
+     tbody 一括で stagger すると、表の上端が視界に入った瞬間に全12行ぶんが
+     流れ切り、下部の行は画面外で消化されて「動きが見えない」。そこで各 <tr>
+     を個別に revealItems へ積み、実座標でその行が視界に入った時に発火させる
+     （js-popin と同じ実座標方式。ScrollTrigger は使わない）。
      ※<tr> への transform 非対応ブラウザでも opacity は効くので自然に劣化する */
-  document.querySelectorAll('.js-lesson-rows').forEach(function (tbody) {
-    var rows = tbody.querySelectorAll('tr');
-    gsap.set(rows, { opacity: 0, y: 18 });
+  document.querySelectorAll('.js-lesson-rows tr').forEach(function (row) {
+    gsap.set(row, { opacity: 0, y: 20 });
     var tl = gsap.timeline({ paused: true });
-    tl.to(rows, { opacity: 1, y: 0, duration: 0.55, ease: 'power2.out', stagger: 0.11 });
-    revealItems.push({ el: tbody, tween: tl, done: false });
+    tl.to(row, { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+    revealItems.push({ el: row, tween: tl, done: false });
   });
 
   /* ani-gsap / js-popin の実座標リビール駆動。
