@@ -482,8 +482,17 @@ table{ border-collapse:collapse; width:100%; }
 
 .fv__cta{ margin-top:2.4em; }
 .fv__cta .btn{ min-height:60px; font-size:clamp(.92rem,2.1vw,1.05rem); }
-/* 想いの文章オーバーレイはSPの第3段専用。PC/タブレットでは出さない */
-.fv__message{ display:none; }
+/* 想いの文章オーバーレイ。PC・SPともFVスクロール終盤で暗転した写真の上にフェードイン。
+   SPは下の media で文字サイズを上書き。 */
+.fv__message{
+  display:flex; flex-direction:column; justify-content:center; gap:1.4em;
+  position:absolute; inset:0; z-index:4; padding:0 var(--gutter);
+  text-align:center; color:#FFFFFF;
+  font-family:var(--font-mincho); letter-spacing:.06em; line-height:2.05;
+  font-size:clamp(1rem, 2.1vw, 1.32rem);
+  text-shadow:0 2px 20px rgba(0,0,0,.5);
+  opacity:0; pointer-events:none; will-change:opacity;
+}
 /* 白いモヤ（SP専用・文字背後の視認性向上）。PCでは出さない */
 .fv__haze{ display:none; }
 
@@ -697,9 +706,12 @@ table{ border-collapse:collapse; width:100%; }
 /* ============================================================
    Our Vision（代表メッセージ）
    ============================================================ */
-.vision__body{ max-width:660px; margin:3.2em auto 0; font-family:var(--font-mincho); color:var(--text); font-size:1rem; line-height:2.1; letter-spacing:.02em; display:grid; gap:1.7em; }
+.vision__body{ max-width:660px; margin:3.2em auto 0; font-family:var(--font-mincho); color:var(--text); font-size:1rem; line-height:2.1; letter-spacing:.02em; display:grid; grid-template-columns:minmax(0,1fr); gap:1.7em; }
 .vision__lead{ margin:1.2em 0 .2em; text-align:center; font-family:var(--font-mincho); font-weight:400; font-size:clamp(1.3rem,5vw,1.8rem); line-height:1.7; letter-spacing:.05em; color:var(--greige-dk); }
 .vision__body .quote{ color:var(--text-sub); }
+/* 長文プロセは日本語の文節単位で自動改行（keep-all の「文節間しか折れない」を上書き）。
+   単語途中では折れず、狭い画面でも溢れない。非対応ブラウザは normal にフォールバック。 */
+.vision__body p, .vision__body h3{ word-break:auto-phrase; }
 /* 太字部分はマーカー（金）で強調 */
 .vision__body strong{ font-weight:600; color:var(--greige-dk); background:linear-gradient(transparent 58%, rgba(196,165,123,.34) 58%); padding:0 .06em; }
 .vision__close{ margin-top:.5em; text-align:center; font-size:1.12rem; letter-spacing:.06em; color:var(--greige-dk); }
@@ -1854,10 +1866,13 @@ table{ border-collapse:collapse; width:100%; }
           if (fvCopy) { fvCopy.style.opacity = fade; }
           if (archline) { archline.style.opacity = fade; }
 
-          // 暗転はfilter:brightnessではなく黒幕(.fv__dim)のopacityで。
-          // 黒 opacity=0.3p の合成結果は img×(1−0.3p)=brightness(1−0.3p) と同一で、
-          // opacityはコンポジットのみ完結するため毎フレームの全画面再描画を無くす。
-          if (fvDim) fvDim.style.opacity = (0.3 * p).toFixed(3);
+          // 想いの文章：アーチが全面に広がった後半でフェードイン（SPと同じ体験）
+          var mi = Math.max(0, Math.min(1, (p - 0.5) / 0.4));
+          if (fvMessage) fvMessage.style.opacity = mi.toFixed(3);
+
+          // 暗転はfilter:brightnessではなく黒幕(.fv__dim)のopacityで（合成のみで完結）。
+          // 通常は0.3p、想い表示中はさらに暗く（最大0.6）して白文字を読みやすくする。
+          if (fvDim) fvDim.style.opacity = (0.3 * p + 0.3 * mi).toFixed(3);
 
           // 文字色の反転はピン区間中のみ（この間FVは全画面固定でヘッダー背後に必ずある）。
           // getBoundingClientRect の毎フレーム読み取り（forced reflow）を避ける。
@@ -1872,6 +1887,7 @@ table{ border-collapse:collapse; width:100%; }
         st.kill();
         gsap.set([fvMask, fvImg], { clearProps: 'transform' });
         if (fvDim) fvDim.style.opacity = '0';
+        if (fvMessage) fvMessage.style.opacity = '0';
         headerLogo.style.filter = '';
         // スクロール中にSPへ切り替わると、透明度を戻さない限りコピーが消えたままになる。
         // CSSの初期値が opacity:0（イントロ用）なので、空文字ではなく 1 を明示する。
