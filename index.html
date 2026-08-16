@@ -94,6 +94,7 @@ body,h1,h2,h3,h4,p,li,dt,dd,th,td,figcaption,button,a,span{
 }
 
 img{ display:block; max-width:100%; height:auto; background:var(--ph); object-fit:cover; }
+.sr-only{ position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; padding:0; border:0; }
 a{ color:inherit; text-decoration:none; }
 button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
 ul,ol{ list-style:none; }
@@ -569,7 +570,7 @@ table{ border-collapse:collapse; width:100%; }
    Reasons
    ============================================================ */
 .reasons{ margin-top:4.5em; display:grid; gap:3.4em; }
-@media (min-width:768px){ .reasons{ grid-template-columns:repeat(3,1fr); gap:3em 2.4em; } }
+@media (min-width:768px){ .reasons{ grid-template-columns:repeat(3,minmax(0,1fr)); gap:3em 2.4em; } }
 
 .reason__fig{ border-radius:var(--radius-card); overflow:hidden; background:var(--ph); }
 .reason__fig img{ width:100%; aspect-ratio:4/3; }
@@ -1092,8 +1093,8 @@ table{ border-collapse:collapse; width:100%; }
             <p class="reason__label">02</p>
             <h3 class="reason__title">4か月で完結。<br>家庭や仕事があっても学べる。</h3>
             <p class="reason__body">
-              対面でしか伝えられないことを2回（12h）に詰め込みました。<wbr>個々の段階にあった課題に取り組み、<wbr>
-              Zoomや無制限チャットでのサポートがあるので安心。<wbr>4か月後には理想のネイリストとしての働き方をスタート。
+              対面でしか伝えられないことを<wbr>2回（12h）に詰め込みました。<wbr>個々の段階にあった課題に取り組み、<wbr>
+              Zoomや無制限チャットでの<wbr>サポートがあるので安心。<wbr>4か月後には<wbr>理想のネイリストとしての<wbr>働き方をスタート。
             </p>
           </div>
         </article>
@@ -1108,7 +1109,7 @@ table{ border-collapse:collapse; width:100%; }
             <h3 class="reason__title">写真添削と質問相談無制限で<br>一人にしない。</h3>
             <p class="reason__body">
               課題を写真で提出、<wbr>数日以内に添削返信されるので、<wbr>進みを止めさせません。<wbr>
-              受講期間2カ月、<wbr>受講後2カ月以内に、<wbr>それぞれの希望進路に合わせた準備やスケジュール組み立てを一緒にします。
+              受講期間2カ月、<wbr>受講後2カ月以内に、<wbr>それぞれの希望進路に合わせた準備や<wbr>スケジュール組み立てを<wbr>一緒にします。
             </p>
           </div>
         </article>
@@ -1132,21 +1133,21 @@ table{ border-collapse:collapse; width:100%; }
           <table>
             <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">カリキュラム一覧（全12レッスン）</caption>
             <thead>
-              <tr><th scope="col">Lesson</th><th scope="col">内容と到達目標</th></tr>
+              <tr><th scope="col"><span class="sr-only">レッスン</span></th><th scope="col">内容と到達目標</th></tr>
             </thead>
             <tbody class="js-lesson-rows">
-              <tr><th scope="row">01</th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
-              <tr><th scope="row">02</th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
-              <tr><th scope="row">03</th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
-              <tr><th scope="row">04</th><td><b>ワンカラーで魅了する</b><span class="cur-goal">ムラ・キワ・ツヤ・光の反射を極める</span></td></tr>
-              <tr><th scope="row">05</th><td><b>ニュアンス基礎技法</b><span class="cur-goal">“なんか微妙”を防ぐ、再現性を身につける</span></td></tr>
-              <tr><th scope="row">06</th><td><b>ニュアンス応用技法</b><span class="cur-goal">“それっぽい”から抜け出し、抜け感ある構図を作る</span></td></tr>
-              <tr><th scope="row">07</th><td><b>骨格・筋肉・神経とワークフロー</b><span class="cur-goal">負担をかけない手の扱いと、ネイリストの職業病予防</span></td></tr>
-              <tr><th scope="row">08</th><td><b>アートジェルネイル</b><span class="cur-goal">技法の引き出しを増やし、ワンパターン化を防ぐ</span></td></tr>
-              <tr><th scope="row">09</th><td><b>ホスピタリティ</b><span class="cur-goal">“またお願いしたい”を生む接客・カウンセリング設計</span></td></tr>
-              <tr><th scope="row">10</th><td><b>これからのネイルサロン動向</b><span class="cur-goal">健康志向・ミドル/シニア層の広がりと市場ニーズを掴む</span></td></tr>
-              <tr><th scope="row">11</th><td><b>進路設計（独立開業・サロン就職）</b><span class="cur-goal">卒業2ヶ月以内の計画策定と、高単価メニューの実現</span></td></tr>
-              <tr><th scope="row">12</th><td><b>最終課題・デザイン構成と見せ方</b><span class="cur-goal">完成度に加え“垢抜け”を整え、制作意図まで発表する</span></td></tr>
+              <tr><th scope="row">Lesson1</th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
+              <tr><th scope="row">Lesson2</th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
+              <tr><th scope="row">Lesson3</th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
+              <tr><th scope="row">Lesson4</th><td><b>ワンカラーで魅了する</b><span class="cur-goal">ムラ・キワ・ツヤ・光の反射を極める</span></td></tr>
+              <tr><th scope="row">Lesson5</th><td><b>ニュアンス基礎技法</b><span class="cur-goal">“なんか微妙”を防ぐ、再現性を身につける</span></td></tr>
+              <tr><th scope="row">Lesson6</th><td><b>ニュアンス応用技法</b><span class="cur-goal">“それっぽい”から抜け出し、抜け感ある構図を作る</span></td></tr>
+              <tr><th scope="row">Lesson7</th><td><b>骨格・筋肉・神経とワークフロー</b><span class="cur-goal">負担をかけない手の扱いと、ネイリストの職業病予防</span></td></tr>
+              <tr><th scope="row">Lesson8</th><td><b>アートジェルネイル</b><span class="cur-goal">技法の引き出しを増やし、ワンパターン化を防ぐ</span></td></tr>
+              <tr><th scope="row">Lesson9</th><td><b>ホスピタリティ</b><span class="cur-goal">“またお願いしたい”を生む接客・カウンセリング設計</span></td></tr>
+              <tr><th scope="row">Lesson10</th><td><b>これからのネイルサロン動向</b><span class="cur-goal">健康志向・ミドル/シニア層の広がりと市場ニーズを掴む</span></td></tr>
+              <tr><th scope="row">Lesson11</th><td><b>進路設計（独立開業・サロン就職）</b><span class="cur-goal">卒業2ヶ月以内の計画策定と、高単価メニューの実現</span></td></tr>
+              <tr><th scope="row">Lesson12</th><td><b>最終課題・デザイン構成と見せ方</b><span class="cur-goal">完成度に加え“垢抜け”を整え、制作意図まで発表する</span></td></tr>
             </tbody>
           </table>
         </div>
