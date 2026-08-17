@@ -916,6 +916,14 @@ table{ border-collapse:collapse; width:100%; }
   .header{ opacity:1; }
   .fv__mask{ -webkit-mask-size:200% 250%; mask-size:200% 250%; }
 }
+
+/* === 英字＝The Seasons 画像差し替え === */
+.en-img{ width:auto; max-width:none; background:transparent; object-fit:fill; }
+.header__logo .en-logo{ display:block; }
+.footer__logo .en-logo{ display:block; margin-inline:auto; }
+.eyebrow .en-eb{ display:inline-block; vertical-align:middle; }
+.curriculum tbody th .en-lesson{ display:inline-block; vertical-align:baseline; }
+.en-brand{ display:inline-block; width:auto; height:1.34em; vertical-align:-0.41em; }
 </style>
 </head>
 
@@ -941,7 +949,7 @@ table{ border-collapse:collapse; width:100%; }
      Header
      ============================================================ -->
 <header class="header" id="header">
-  <a class="header__logo" id="headerLogo" href="#top">parer&nbsp;nail&nbsp;school</a>
+  <a class="header__logo" id="headerLogo" href="#top"><img class="en-img en-logo" src="images/en/logo.png" alt="parer nail school" style="height:1.397em"></a>
 </header>
 
 <main id="top">
@@ -994,8 +1002,8 @@ table{ border-collapse:collapse; width:100%; }
        ============================================================ -->
   <section class="sec marble--warm" id="record">
     <div class="wrap center">
-      <p class="eyebrow ani-gsap fadeIn slide-t">Achievements</p>
-      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表の実績</h2>
+      <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_achievements.png" alt="Achievements" style="height:1.092em"></p>
+      <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><img class="en-img en-brand" src="images/en/logo.png" alt="parer nail school"> 代表の実績</h2>
 
       <div class="rcircles js-count-group">
         <div class="rcircle">
@@ -1024,7 +1032,7 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble" id="problem">
     <div class="wrap">
       <div class="center">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Where you stand</p>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_where.png" alt="Where you stand" style="height:1.278em"></p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">好きなコトを仕事にする夢を<br class="sp-only">あきらめますか？</h2>
         <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.2">
           資格を取ったあの日、思い描いていた自分に、<br class="pc-only">
@@ -1085,9 +1093,9 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble--warm" id="reason">
     <div class="wrap">
       <div class="center">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Three reasons</p>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_three.png" alt="Three reasons" style="height:1.092em"></p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">
-          <span class="brand">parer nail school</span>が選ばれる、<br class="sp-only">3つの理由
+          <img class="en-img en-brand" src="images/en/logo.png" alt="parer nail school">が選ばれる、<br class="sp-only">3つの理由
         </h2>
       </div>
 
@@ -1141,7 +1149,7 @@ table{ border-collapse:collapse; width:100%; }
       <!-- カリキュラム -->
       <div class="curriculum">
         <div class="center">
-          <p class="eyebrow ani-gsap fadeIn slide-t">Curriculum</p>
+          <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_curriculum.png" alt="Curriculum" style="height:1.092em"></p>
           <h3 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">現役のネイリストから<br>そのまま使える<br class="sp-only">実践力を直接吸収</h3>
           <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.2">
             仕上がりの美しさと持ちの良さ、<wbr>リアルな時短テクニック、<wbr>生きたトレンドデザイン、<wbr>爪の状態に合わせた臨機応変な施術アレンジ、<wbr>そしてお客様の心を掴む接客や<wbr>リピートにつなげる<wbr>カウンセリングの極意…<br>
@@ -1159,18 +1167,18 @@ table{ border-collapse:collapse; width:100%; }
               <tr><th scope="col"><span class="sr-only">レッスン</span></th><th scope="col">内容と到達目標</th></tr>
             </thead>
             <tbody class="js-lesson-rows">
-              <tr><th scope="row">Lesson1</th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
-              <tr><th scope="row">Lesson2</th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
-              <tr><th scope="row">Lesson3</th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
-              <tr><th scope="row">Lesson4</th><td><b>ワンカラーで魅了する</b><span class="cur-goal">ムラ・キワ・ツヤ・光の反射を極める</span></td></tr>
-              <tr><th scope="row">Lesson5</th><td><b>ニュアンス基礎技法</b><span class="cur-goal">“なんか微妙”を防ぐ、再現性を身につける</span></td></tr>
-              <tr><th scope="row">Lesson6</th><td><b>ニュアンス応用技法</b><span class="cur-goal">“それっぽい”から抜け出し、抜け感ある構図を作る</span></td></tr>
-              <tr><th scope="row">Lesson7</th><td><b>骨格・筋肉・神経とワークフロー</b><span class="cur-goal">負担をかけない手の扱いと、ネイリストの職業病予防</span></td></tr>
-              <tr><th scope="row">Lesson8</th><td><b>アートジェルネイル</b><span class="cur-goal">技法の引き出しを増やし、ワンパターン化を防ぐ</span></td></tr>
-              <tr><th scope="row">Lesson9</th><td><b>ホスピタリティ</b><span class="cur-goal">“またお願いしたい”を生む接客・カウンセリング設計</span></td></tr>
-              <tr><th scope="row">Lesson10</th><td><b>これからのネイルサロン動向</b><span class="cur-goal">健康志向・ミドル/シニア層の広がりと市場ニーズを掴む</span></td></tr>
-              <tr><th scope="row">Lesson11</th><td><b>進路設計（独立開業・サロン就職）</b><span class="cur-goal">卒業2ヶ月以内の計画策定と、高単価メニューの実現</span></td></tr>
-              <tr><th scope="row">Lesson12</th><td><b>最終課題・デザイン構成と見せ方</b><span class="cur-goal">完成度に加え“垢抜け”を整え、制作意図まで発表する</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson1.png" alt="Lesson1" style="height:0.854em"></th><td><b>オリエンテーションと現状整理</b><span class="cur-goal">受講目的を明確にし、苦手の原因を可視化する</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson2.png" alt="Lesson2" style="height:0.854em"></th><td><b>爪・皮膚の解剖学とトラブル回避</b><span class="cur-goal">構造を理解し、時間をかけすぎず持ちを長くする土台をつくる</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson3.png" alt="Lesson3" style="height:0.95em"></th><td><b>ジェル塗り基礎とアペックスバランス</b><span class="cur-goal">正しい塗り方と、美しく見える構造を意図的に作る</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson4.png" alt="Lesson4" style="height:0.839em"></th><td><b>ワンカラーで魅了する</b><span class="cur-goal">ムラ・キワ・ツヤ・光の反射を極める</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson5.png" alt="Lesson5" style="height:1.012em"></th><td><b>ニュアンス基礎技法</b><span class="cur-goal">“なんか微妙”を防ぐ、再現性を身につける</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson6.png" alt="Lesson6" style="height:0.921em"></th><td><b>ニュアンス応用技法</b><span class="cur-goal">“それっぽい”から抜け出し、抜け感ある構図を作る</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson7.png" alt="Lesson7" style="height:0.854em"></th><td><b>骨格・筋肉・神経とワークフロー</b><span class="cur-goal">負担をかけない手の扱いと、ネイリストの職業病予防</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson8.png" alt="Lesson8" style="height:0.824em"></th><td><b>アートジェルネイル</b><span class="cur-goal">技法の引き出しを増やし、ワンパターン化を防ぐ</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson9.png" alt="Lesson9" style="height:0.905em"></th><td><b>ホスピタリティ</b><span class="cur-goal">“またお願いしたい”を生む接客・カウンセリング設計</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson10.png" alt="Lesson10" style="height:0.839em"></th><td><b>これからのネイルサロン動向</b><span class="cur-goal">健康志向・ミドル/シニア層の広がりと市場ニーズを掴む</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson11.png" alt="Lesson11" style="height:0.839em"></th><td><b>進路設計（独立開業・サロン就職）</b><span class="cur-goal">卒業2ヶ月以内の計画策定と、高単価メニューの実現</span></td></tr>
+              <tr><th scope="row"><img class="en-img en-lesson" src="images/en/Lesson12.png" alt="Lesson12" style="height:0.854em"></th><td><b>最終課題・デザイン構成と見せ方</b><span class="cur-goal">完成度に加え“垢抜け”を整え、制作意図まで発表する</span></td></tr>
             </tbody>
           </table>
         </div>
@@ -1189,7 +1197,7 @@ table{ border-collapse:collapse; width:100%; }
        ============================================================ -->
   <section class="sec marble" id="works">
     <div class="wrap center">
-      <p class="eyebrow ani-gsap fadeIn slide-t">Design Gallery</p>
+      <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_gallery.png" alt="Design Gallery" style="height:1.371em"></p>
       <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">『感覚』ではなく<br class="sp-only">『再現』を学ぶ</h2>
     </div>
 
@@ -1224,8 +1232,8 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble" id="founder">
     <div class="wrap">
       <div class="center">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Founder</p>
-        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表</h2>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_founder.png" alt="Founder" style="height:1.092em"></p>
+        <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1"><img class="en-img en-brand" src="images/en/logo.png" alt="parer nail school"> 代表</h2>
       </div>
 
       <div class="founder__inner">
@@ -1235,7 +1243,7 @@ table{ border-collapse:collapse; width:100%; }
         </div>
 
         <div class="founder__text ani-gsap fadeIn slide-t" data-delay="0.12">
-          <p class="founder__name"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表　<b>藤井</b></p>
+          <p class="founder__name"><img class="en-img en-brand" src="images/en/logo.png" alt="parer nail school"> 代表　<b>藤井</b></p>
 
           <ul class="founder__career">
             <li>正社員ネイリストとして9年、2005年に独立。</li>
@@ -1276,7 +1284,7 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble" id="vision">
     <div class="wrap">
       <div class="center">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Our Vision</p>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_vision.png" alt="Our Vision" style="height:1.022em"></p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">「好き」を、<br class="sp-only">これからの人生の力に。</h2>
       </div>
 
@@ -1320,7 +1328,7 @@ table{ border-collapse:collapse; width:100%; }
        ============================================================ -->
   <section class="sec marble--warm" id="price">
     <div class="wrap center">
-      <p class="eyebrow ani-gsap fadeIn slide-t">Tuition</p>
+      <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_tuition.png" alt="Tuition" style="height:1.022em"></p>
       <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">price</h2>
       <p class="sec-lead ani-gsap fadeIn slide-t" data-delay="0.15">「またあなたにお願いしたい」<br class="sp-only">選ばれるネイリストへ</p>
 
@@ -1358,7 +1366,7 @@ table{ border-collapse:collapse; width:100%; }
   <section class="sec marble" id="faq">
     <div class="wrap">
       <div class="center">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Questions</p>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_questions.png" alt="Questions" style="height:1.185em"></p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">よくあるご質問</h2>
       </div>
 
@@ -1475,7 +1483,7 @@ table{ border-collapse:collapse; width:100%; }
 
     <div class="cta__inner">
       <div class="wrap">
-        <p class="eyebrow ani-gsap fadeIn slide-t">Free consultation</p>
+        <p class="eyebrow ani-gsap fadeIn slide-t"><img class="en-img en-eb" src="images/en/eb_free.png" alt="Free consultation" style="height:1.092em"></p>
         <h2 class="sec-title ani-gsap fadeIn slide-t blur-10" data-delay="0.1">
           まずは、<br class="sp-only">話を聞くところから。
         </h2>
@@ -1507,7 +1515,7 @@ table{ border-collapse:collapse; width:100%; }
      Footer
      ============================================================ -->
 <footer class="footer">
-  <p class="footer__logo">parer&nbsp;nail&nbsp;school</p>
+  <p class="footer__logo"><img class="en-img en-logo" src="images/en/logo.png" alt="parer nail school" style="height:1.397em"></p>
   <p class="footer__sub">〜次世代型ネイルスクール〜</p>
   <p class="footer__copy">&copy; parer nail school. All rights reserved.</p>
 </footer>
