@@ -820,6 +820,8 @@ table{ border-collapse:collapse; width:100%; }
    FAQ
    ============================================================ */
 .faq{ max-width:800px; margin:3.6em auto 0; }
+/* Q&Aは日本語の文節単位で自動改行（keep-allだと「、」で折れず見切れるため）。 */
+.faq__q, .faq__a p{ word-break:auto-phrase; }
 .faq__item{ border-bottom:1px solid rgba(196,165,123,.45); }
 .faq__q{
   width:100%;
@@ -1002,7 +1004,7 @@ table{ border-collapse:collapse; width:100%; }
           <span class="rcircle__num"><span class="js-count" data-to="700">0</span><i>名</i></span>
         </div>
         <div class="rcircle">
-          <span class="rcircle__label">スクール卒業生ネイリスト育成</span>
+          <span class="rcircle__label">スクール卒業生<br>ネイリスト育成</span>
           <span class="rcircle__num"><span class="js-count" data-to="200">0</span><i>名+</i></span>
         </div>
       </div>
@@ -1229,7 +1231,7 @@ table{ border-collapse:collapse; width:100%; }
           <p class="founder__name"><span class="brand">parer&nbsp;nail&nbsp;school</span> 代表　<b>藤井</b></p>
 
           <ul class="founder__career">
-            <li>正社員ネイリストとして9年、<b>2005年に独立</b>。</li>
+            <li>正社員ネイリストとして9年、2005年に独立。</li>
             <li>全国の百貨店・ハワイ（アラモアナ）への出店を歴任。</li>
             <li>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを運営。</li>
             <li>30名を超えるスタッフを育成。<wbr>SGS講師として700名を超える個人サロンオーナーを支援。</li>
@@ -1255,7 +1257,7 @@ table{ border-collapse:collapse; width:100%; }
         </div>
         <div class="founder__hstat">
           <p class="founder__hnum"><span class="js-count" data-to="200">0</span><i>名+</i></p>
-          <p class="founder__hlabel">スクール卒業生ネイリスト育成</p>
+          <p class="founder__hlabel">スクール卒業生<br>ネイリスト育成</p>
         </div>
       </div>
     </div>
@@ -1287,10 +1289,10 @@ table{ border-collapse:collapse; width:100%; }
         <p>私自身も、<wbr>ネイルの仕事を始めようと思ったとき、<wbr>専門的に学べる場所を探すことに苦労しました。<wbr>最終的には、<wbr>働きながら技術を身につけられる環境に転職し、<wbr>現場で一つひとつ学んでいきました。</p>
         <p>検定では、<wbr>決められた課題を、<wbr>決められた条件の中で美しく仕上げる力が求められます。</p>
         <p>コロナ以降、<wbr>検定モデルは人の手ではなくマネキンに代わりました。<wbr>そのことで、<wbr>ますます「検定だけを取って踏み出せない人」を増やすことになっています。</p>
-        <p><strong>ネイルの資格や検定の取得をゴールにしたネイルスクールはたくさんありますが、「実際のサロンで働くための力」を学ぶ場所が、まだまだ少ない</strong>ということです。</p>
+        <p><strong>ネイルの資格や検定の取得をゴールにしたネイルスクールはたくさんありますが、<br>「実際のサロンで働くための力」を学ぶ場所が、まだまだ少ない</strong>ということです。</p>
         <p>サロンでは、<wbr>お客様一人ひとり異なる爪の状態を見ながら、<wbr>限られた時間の中で施術し、<wbr>会話をし、<wbr>心地よく過ごしていただくことまで求められます。</p>
         <p>同じ「ネイル」という技術でも、<wbr>現場で必要とされる力は全然違うのです。</p>
-        <p>だからこそ、<wbr><span class="brand">parer nail school</span> では、<wbr>資格取得をしただけで止まってしまっている人向けに<strong>「学んだ技術を、実際の仕事で使えるようになる」をカリキュラム</strong>にしています。</p>
+        <p>だからこそ、<wbr><span class="brand">parer nail school</span> では、<wbr>資格取得をしただけで止まってしまっている人向けに<strong>「学んだ技術を、実際の仕事で<br>使えるようになる」をカリキュラム</strong>にしています。</p>
         <p>仕事や家事、家庭との両立。<wbr>これまでのキャリア。<wbr>「今から始めても遅くないかな」という迷い。</p>
         <p>大人になればなるほど、<wbr>一歩を踏み出すまでに時間がかかることもあると思います。</p>
         <p>でも、<wbr>私はこれまで多くの人と一緒に働いてきた経験から、<wbr><strong>何歳であっても「やってみたい」という気持ちを持ったときの方が、吸収する力がある</strong>と感じています。</p>
