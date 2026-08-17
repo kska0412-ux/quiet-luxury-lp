@@ -70,7 +70,10 @@
    ============================================================ */
 *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
 
-html{ -webkit-text-size-adjust:100%; }
+/* iOS Safari は「ビューポートより広い要素」に合わせてレイアウト幅を広げてしまい、
+   結果として本文が画面の半分幅に寄る。html を横方向にクリップして拡張を防ぐ。
+   clip はスクロールコンテナを作らない（overflow-y も変えない）ので Lenis/ピンに無害。 */
+html{ -webkit-text-size-adjust:100%; overflow-x:clip; }
 
 body{
   font-family:var(--font-gothic);
@@ -709,13 +712,17 @@ table{ border-collapse:collapse; width:100%; }
 .vision__body{ max-width:660px; margin:3.2em auto 0; font-family:var(--font-mincho); color:var(--text); font-size:1rem; line-height:2.1; letter-spacing:.02em; display:grid; grid-template-columns:minmax(0,1fr); gap:1.7em; }
 .vision__lead{ margin:1.2em 0 .2em; text-align:center; font-family:var(--font-mincho); font-weight:400; font-size:clamp(1.3rem,5vw,1.8rem); line-height:1.7; letter-spacing:.05em; color:var(--greige-dk); }
 .vision__body .quote{ color:var(--text-sub); }
-/* 長文プロセは日本語の文節単位で自動改行（keep-all の「文節間しか折れない」を上書き）。
-   単語途中では折れず、狭い画面でも溢れない。非対応ブラウザは normal にフォールバック。 */
-.vision__body p, .vision__body h3{ word-break:auto-phrase; }
+/* 長文プロセの改行。Chrome/Edge は auto-phrase で文節単位（単語途中で折れない）。
+   Safari/Firefox は auto-phrase 非対応なので normal にフォールバックさせる
+   （keep-all のままだと「、」でも折れず溢れるため。normal なら必ず折り返す）。
+   ※2段書きが CSS のフォールバック：後の宣言が無効な環境では前の normal が採用される。 */
+.vision__body p, .vision__body h3{ word-break:normal; word-break:auto-phrase; }
 /* 太字部分はマーカー（金）で強調 */
 .vision__body strong{ font-weight:600; color:var(--greige-dk); background:linear-gradient(transparent 58%, rgba(196,165,123,.34) 58%); padding:0 .06em;
   /* 複数行に折り返した時、1行目の背景が行末（列の右端）まで伸びるのを防ぎ、各行で文字に沿わせる */
-  -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+  -webkit-box-decoration-break:clone; box-decoration-break:clone;
+  /* 目立つ強調は全ブラウザで語中改行させない：keep-all＋文中の<wbr>で文節折返し */
+  word-break:keep-all; }
 .vision__close{ margin-top:.5em; text-align:center; font-size:1.12rem; letter-spacing:.06em; color:var(--greige-dk); }
 
 /* 実績パネル（権威性の核）：金の額装＋金のシマー掃引で豪華に見せる */
@@ -1289,19 +1296,19 @@ table{ border-collapse:collapse; width:100%; }
         <p>私自身も、<wbr>ネイルの仕事を始めようと思ったとき、<wbr>専門的に学べる場所を探すことに苦労しました。<wbr>最終的には、<wbr>働きながら技術を身につけられる環境に転職し、<wbr>現場で一つひとつ学んでいきました。</p>
         <p>検定では、<wbr>決められた課題を、<wbr>決められた条件の中で美しく仕上げる力が求められます。</p>
         <p>コロナ以降、<wbr>検定モデルは人の手ではなくマネキンに代わりました。<wbr>そのことで、<wbr>ますます「検定だけを取って踏み出せない人」を増やすことになっています。</p>
-        <p><strong>ネイルの資格や検定の取得をゴールにしたネイルスクールはたくさんありますが、<br>「実際のサロンで働くための力」を学ぶ場所が、まだまだ少ない</strong>ということです。</p>
+        <p><strong>ネイルの資格や検定の取得を<wbr>ゴールにした<wbr>ネイルスクールは<wbr>たくさんありますが、<br>「実際のサロンで<wbr>働くための力」を<wbr>学ぶ場所が、<wbr>まだまだ少ない</strong>ということです。</p>
         <p>サロンでは、<wbr>お客様一人ひとり異なる爪の状態を見ながら、<wbr>限られた時間の中で施術し、<wbr>会話をし、<wbr>心地よく過ごしていただくことまで求められます。</p>
         <p>同じ「ネイル」という技術でも、<wbr>現場で必要とされる力は全然違うのです。</p>
-        <p>だからこそ、<wbr><span class="brand">parer nail school</span> では、<wbr>資格取得をしただけで止まってしまっている人向けに<strong>「学んだ技術を、実際の仕事で<br>使えるようになる」をカリキュラム</strong>にしています。</p>
+        <p>だからこそ、<wbr><span class="brand">parer nail school</span> では、<wbr>資格取得をしただけで止まってしまっている人向けに<strong>「学んだ技術を、<wbr>実際の仕事で<br>使えるようになる」を<wbr>カリキュラム</strong>にしています。</p>
         <p>仕事や家事、家庭との両立。<wbr>これまでのキャリア。<wbr>「今から始めても遅くないかな」という迷い。</p>
         <p>大人になればなるほど、<wbr>一歩を踏み出すまでに時間がかかることもあると思います。</p>
-        <p>でも、<wbr>私はこれまで多くの人と一緒に働いてきた経験から、<wbr><strong>何歳であっても「やってみたい」という気持ちを持ったときの方が、吸収する力がある</strong>と感じています。</p>
+        <p>でも、<wbr>私はこれまで多くの人と一緒に働いてきた経験から、<wbr><strong>何歳であっても<wbr>「やってみたい」という<wbr>気持ちを持ったときの方が、<wbr>吸収する力がある</strong>と感じています。</p>
         <p>ネイルは、<wbr>技術を身につければ身につけるほど、<wbr>自分自身の可能性を広げていける仕事です。</p>
         <p>サロンで働く。<wbr>自分でお店を持つ。<wbr>副業としておうちで始める。<wbr>他の仕事と絡めて活躍する。</p>
         <p>目指す形は、<wbr>人それぞれでいい。</p>
         <p class="quote">もし今、<br>「検定は取ったけれど、その先に進めない」<br>「ネイルを仕事にしてみたいけれど、自分にできるかわからない」<br>「もう年だから遅くないかな」</p>
         <p>そんなふうに感じているなら、<wbr>どうか一人で答えを出さないでください。</p>
-        <p><span class="brand">parer nail school</span> では、<wbr>「こうならなければいけない」という一つの答えを押しつけるのではなく、<wbr><strong>あなたがこれからどんなふうにネイルと関わっていきたいのか</strong>を大切にしたいと思っています。</p>
+        <p><span class="brand">parer nail school</span> では、<wbr>「こうならなければいけない」という一つの答えを押しつけるのではなく、<wbr><strong>あなたがこれから<wbr>どんなふうに<wbr>ネイルと関わって<wbr>いきたいのか</strong><wbr>を大切にしたいと思っています。</p>
         <p>そして、<wbr>その先にある「働く」「続ける」「自分らしく生きる」まで、<wbr>一緒に考えていく。</p>
         <p class="vision__close">それが、<span class="brand">parer nail school</span> の目指す場所です。</p>
       </div>
@@ -1393,7 +1400,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a7" role="region" aria-labelledby="faq-q7">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>ブランクは問題ありません。基礎の復習もカリキュラムに含まれています。</p>
+              <p>ブランクは問題ありません。<wbr>基礎の復習もカリキュラムに含まれています。</p>
             </div>
           </div>
         </div>
@@ -1407,7 +1414,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a3" role="region" aria-labelledby="faq-q3">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>スマートフォンだけで参加できます。初回の前に接続の練習をご用意していますので、設定や操作に不安があってもそこで解消できます。</p>
+              <p>スマートフォンだけで参加できます。<wbr>初回の前に接続の練習をご用意していますので、<wbr>設定や操作に不安があっても<wbr>そこで解消できます。</p>
             </div>
           </div>
         </div>
@@ -1421,7 +1428,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a4" role="region" aria-labelledby="faq-q4">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>合計4か月間で希望のネイリストとしての働き方ができるように指導しますが、状況によっては、引き続きサポートさせていただきます。直営サロン4店舗を使ってモニター施術なども可能です。</p>
+              <p>合計4か月間で希望のネイリストとしての<wbr>働き方ができるように指導しますが、<wbr>状況によっては、<wbr>引き続きサポートさせていただきます。<wbr>直営サロン4店舗を使って<wbr>モニター施術なども可能です。</p>
             </div>
           </div>
         </div>
@@ -1435,7 +1442,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a5" role="region" aria-labelledby="faq-q5">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>このスクールが扱うのは、流行のアートではありません。爪を見立てる力、持ちのよい仕上げ、そして提案の言葉です。センスではなく、積み上げで届く領域です。</p>
+              <p>このスクールが扱うのは、<wbr>流行のアートではありません。<wbr>爪を見立てる力、<wbr>持ちのよい仕上げ、<wbr>そして提案の言葉です。<wbr>センスではなく、<wbr>積み上げで届く領域です。</p>
             </div>
           </div>
         </div>
@@ -1449,7 +1456,7 @@ table{ border-collapse:collapse; width:100%; }
           <div class="faq__a" id="faq-a6" role="region" aria-labelledby="faq-q6">
             <div class="faq__a-inner">
               <span class="faq__mark" aria-hidden="true">A</span>
-              <p>無料個別相談に参加されたからと言って受講するかは自由に決めていただけます。しつこくこちらから営業することはありませんので、安心してご相談ください。</p>
+              <p>無料個別相談に参加されたからと言って<wbr>受講するかは自由に決めていただけます。<wbr>しつこくこちらから営業することは<wbr>ありませんので、<wbr>安心してご相談ください。</p>
             </div>
           </div>
         </div>
