@@ -816,7 +816,8 @@ table{ border-collapse:collapse; width:100%; }
 .price__note{ margin-top:1em; font-size:.78rem; color:var(--text-sub); }
 
 .price__list{ margin-top:2.6em; text-align:left; display:grid; gap:.85em; }
-.price__list li{ display:flex; gap:.9em; font-size:.88rem; line-height:1.9; }
+.price__list li{ display:flex; gap:.9em; font-size:.88rem; line-height:1.9; min-width:0; }
+.price__list li > *{ min-width:0; }
 .price__list li::before{
   content:""; flex:none; width:6px; height:6px; margin-top:.95em;
   border-radius:50%; background:var(--gold);
@@ -828,7 +829,7 @@ table{ border-collapse:collapse; width:100%; }
    ============================================================ */
 .faq{ max-width:800px; margin:3.6em auto 0; }
 /* Q&Aは日本語の文節単位で自動改行（keep-allだと「、」で折れず見切れるため）。 */
-.faq__q, .faq__a p{ word-break:auto-phrase; }
+.faq__q, .faq__a p{ word-break:keep-all; }
 .faq__item{ border-bottom:1px solid rgba(196,165,123,.45); }
 .faq__q{
   width:100%;
@@ -878,6 +879,13 @@ table{ border-collapse:collapse; width:100%; }
 #cta .cta__meta{ color:rgba(247,243,236,.82); }
 #cta .rule{ border-color:rgba(247,243,236,.5); background:rgba(247,243,236,.5); }
 #cta .en-eb{ filter:brightness(0) invert(1); opacity:.92; }
+/* CTA背景：スマホは横長写真がズームし過ぎて顔が切れるため、表示高を抑えて全体を見せる（PCは不変） */
+@media (max-width:767px){
+  #cta{ background:#2b2621; }
+  #cta .js-pin-bg__item{ height:60svh; }
+  #cta .js-pin-bg__item img{ object-position:50% 24%; }
+  #cta .js-pin-bg__item::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:42%; background:linear-gradient(to bottom, rgba(43,38,33,0), rgba(43,38,33,.92)); z-index:1; }
+}
 .cta__inner{ position:relative; z-index:2; padding-block:var(--sec-pad); text-align:center; }
 .cta__body{ margin-top:2em; font-size:clamp(.88rem,3.4vw,.98rem); color:var(--text-sub); }
 .cta__btn{ margin-top:3em; }
@@ -1254,11 +1262,11 @@ table{ border-collapse:collapse; width:100%; }
           <p class="founder__name"><img class="en-img en-brand" src="images/en/logo.png" alt="parer nail school"> 代表　<b>藤井</b></p>
 
           <ul class="founder__career">
-            <li>正社員ネイリストとして9年、2005年に独立。</li>
-            <li>全国の百貨店・ハワイ（アラモアナ）への出店を歴任。</li>
-            <li>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・ボイストレーニングスタジオを運営。</li>
-            <li>30名を超えるスタッフを育成。<wbr>SGS講師として700名を超える個人サロンオーナーを支援。</li>
-            <li>21年間、<wbr>市場の浮き沈みを越えて経営を継続。</li>
+            <li>正社員ネイリストとして<wbr>9年、<wbr>2005年に独立。</li>
+            <li>全国の百貨店・<wbr>ハワイ（アラモアナ）への<wbr>出店を歴任。</li>
+            <li>現在はネイルサロン4店舗、<wbr>スクール、<wbr>リラクゼーションサロン、<wbr>ダンス・<wbr>ボイストレーニング<wbr>スタジオを運営。</li>
+            <li>30名を超えるスタッフを育成。<wbr>SGS講師として<wbr>700名を超える<wbr>個人サロンオーナーを<wbr>支援。</li>
+            <li>21年間、<wbr>市場の浮き沈みを<wbr>越えて経営を継続。</li>
           </ul>
         </div>
       </div>
@@ -1351,7 +1359,7 @@ table{ border-collapse:collapse; width:100%; }
             <li>対面レッスン 全2回（12h）</li>
             <li>写真・動画での課題添削（全8回）</li>
             <li>チャットでの質問（無制限）</li>
-            <li>受講期間2ヶ月＋受講後のフォロー2ヶ月（合計4ヶ月）</li>
+            <li>受講期間2ヶ月＋<wbr>受講後の<wbr>フォロー2ヶ月（合計4ヶ月）</li>
             <li>分割払いの可否</li>
           </ul>
 
@@ -1452,7 +1460,7 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>アートが得意ではありませんが、続けられますか</span>
+            <span>アートが得意では<wbr>ありませんが、<wbr>続けられますか</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a5" role="region" aria-labelledby="faq-q5">
@@ -1466,7 +1474,7 @@ table{ border-collapse:collapse; width:100%; }
         <div class="faq__item">
           <button class="faq__q" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
             <span class="faq__mark" aria-hidden="true">Q</span>
-            <span>相談したら、申し込まないといけませんか</span>
+            <span>相談したら、<wbr>申し込まないと<wbr>いけませんか</span>
             <span class="faq__icon" aria-hidden="true"></span>
           </button>
           <div class="faq__a" id="faq-a6" role="region" aria-labelledby="faq-q6">
