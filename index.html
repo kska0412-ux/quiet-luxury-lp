@@ -389,18 +389,6 @@ table{ border-collapse:collapse; width:100%; }
 /* SP専用レイヤー（PCでは非表示）。アーチ→全画面のクロスフェード用 */
 .fv__full{ display:none; }
 .fv__dim-sp{ display:none; }
-/* SP専用：想いの文章セクション（FV直下・独立）。PCでは非表示（PCはFV内オーバーレイのまま） */
-.fv-msg-sp{ display:none; }
-@media (max-width:767px){
-  .fv-msg-sp{ display:block; background:var(--bg-warm); padding:15vh 0; }
-  .fv-msg-sp__inner{
-    max-width:640px; margin:0 auto; padding-inline:var(--gutter); text-align:center;
-    font-family:var(--font-mincho); color:var(--greige-dk);
-    line-height:2.1; letter-spacing:.05em; font-size:clamp(1rem,4.2vw,1.14rem);
-    display:grid; gap:1.7em;
-  }
-  .fv-msg-sp p{ word-break:keep-all; overflow-wrap:normal; margin:0; }
-}
 
 /* アーチの輪郭に沿わせる金の細罫。見本にはない、こちらの署名。
    マスクと同一のパスをSVGで描くので、形が必ず一致する。 */
@@ -1047,16 +1035,6 @@ table{ border-collapse:collapse; width:100%; }
       <p>そんな言葉で、<wbr>自分の可能性に<wbr>そっと蓋をしていませんか。</p>
       <p>年齢も、<wbr>ブランクも、<wbr>あなたの価値を<wbr>決めるものではありません。</p>
       <p>一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
-    </div>
-  </section>
-
-  <!-- SP専用：想いの文章（FVから独立。pin/scrubを使わず視界に入ったら1回だけフェード＝滑らか） -->
-  <section class="fv-msg-sp" aria-label="想い">
-    <div class="fv-msg-sp__inner">
-      <p class="ani-gsap fadeIn slide-t">「もう遅いかもしれない」<br>「私には、<wbr>才能なんてないから」</p>
-      <p class="ani-gsap fadeIn slide-t" data-delay="0.1">そんな言葉で、<wbr>自分の可能性に<wbr>そっと蓋をしていませんか。</p>
-      <p class="ani-gsap fadeIn slide-t" data-delay="0.2">年齢も、<wbr>ブランクも、<wbr>あなたの価値を<wbr>決めるものではありません。</p>
-      <p class="ani-gsap fadeIn slide-t" data-delay="0.3">一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
     </div>
   </section>
 
@@ -1977,21 +1955,57 @@ table{ border-collapse:collapse; width:100%; }
       };
     });
 
-    // --- SP：pin/scrubを撤去した「静止ヒーロー」。参考サイト同様、FVは毎フレーム計算せず
-    //         普通に上へスクロールして流れるだけ＝ネイティブの滑らかさ。想いの文章はFV直下の
-    //         独立セクション(.fv-msg-sp)で、視界に入ったら1回だけフェードさせる（scrubしない）。 ---
+    // --- SP：演出は同じ（枠が拡大→暗転→想い登場）だが、スクロールに毎フレーム追従(scrub)せず、
+    //         スクロールで“入った瞬間に1回だけ”GSAPタイムラインを再生する（=シネマティック）。
+    //         GSAPが60fpsで回すのでLenis/iOSのスクロールのガタつきに影響されず滑らか。
+    //         pinは「再生中フレームを保持するだけ」で毎フレーム計算はしない。 ---
     fvMm.add('(max-width: 767px)', function () {
+      // 初期状態
       setMask(118, 118);
-      gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%', opacity: 1 });
+      gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%', opacity: 1, force3D: true });
       if (fvFull) gsap.set(fvFull, { opacity: 0 });
       if (fvDimSp) gsap.set(fvDimSp, { opacity: 0 });
       if (fvDim) fvDim.style.opacity = '0';
-      if (fvHaze) fvHaze.style.opacity = '1';   // 白いモヤで暗い見出しを読みやすく
+      if (fvHaze) fvHaze.style.opacity = '1';
       fvCopy.style.opacity = '1';
       fvCopy.style.color = '#5A5148';
-      if (fvMessage) fvMessage.style.opacity = '0';   // FV内の想いはSPでは使わない（直下の独立セクションで出す）
+      if (fvMessage) gsap.set(fvMessage, { opacity: 0 });
+
+      // 一度きりの滑らかリビール（transform/opacityのみ＝GPU）
+      var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
+      tl.to(fvMask,   { scale: 2.9, duration: 1.15 }, 0)                // 枠が拡大
+        .to(fvDimSp,  { opacity: 0.6, duration: 1.0 }, 0.05)            // 暗転
+        .to(fvHaze,   { opacity: 0, duration: 0.5 }, 0)                 // 白モヤを消す
+        .call(function () { fvCopy.style.color = '#FFFFFF'; }, null, 0.5) // コピーを白へ（1回・CSS transitionで滑らか）
+        .to(fvCopy,   { opacity: 0, duration: 0.4 }, 0.8)              // コピー退場
+        .to(fvMessage, { opacity: 1, duration: 0.7 }, 1.05);           // 想い登場
+
+      var played = false;
+      var st = ScrollTrigger.create({
+        trigger: '.fv',
+        start: 'top top',
+        end: '+=130%',          // 再生中フレームを保持するためだけの短いpin
+        pin: true,
+        pinSpacing: true,
+        anticipatePin: 1,
+        onUpdate: function (self) {
+          // ほんの少しスクロールしたら1回だけ再生（毎フレームの追従はしない）
+          if (!played && self.progress > 0.03) { played = true; tl.play(); }
+        },
+        onLeaveBack: function () {           // 一番上まで戻したら初期状態へ（再度スクロールで再生できる）
+          played = false; tl.pause(0);
+          fvCopy.style.color = '#5A5148';
+        }
+      });
+
       return function () {
-        if (fvMessage) fvMessage.style.opacity = '0';
+        st.kill(); tl.kill();
+        gsap.set(fvMask, { scale: 1, opacity: 1 });
+        if (fvDimSp) gsap.set(fvDimSp, { opacity: 0 });
+        if (fvHaze) fvHaze.style.opacity = '0';
+        fvCopy.style.opacity = '1';
+        fvCopy.style.color = '';
+        if (fvMessage) gsap.set(fvMessage, { opacity: 0 });
       };
     });
   }
