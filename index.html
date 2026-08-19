@@ -1987,28 +1987,29 @@ table{ border-collapse:collapse; width:100%; }
         trigger: '.fv',
         start: 'top top',
         end: '+=175%',            // 短めのピン。少ないスクロールで想いまで到達する
-        scrub: 0.5,               // スクロール位置へ滑らかに追従（微振動を吸収）
+        scrub: 0.8,               // スクロール位置へ滑らかに追従（微振動を吸収・切替感を抑える）
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: function (self) {
           var p = self.progress;
-          // ①→② 枠拡大＋暗転（0〜0.32）。暗転は黒幕opacity（GPUで軽い）
-          var e = clamp01(p / 0.32);
-          // アーチ→全画面：opacityクロスフェード（maskは拡大しない＝GPU合成のみで滑らか）
-          fvMask.style.opacity = (1 - e).toFixed(3);
+          // ①→② 周囲フェードイン＋暗転（0〜0.42）。smoothstepで端を緩やかに
+          var e0 = clamp01(p / 0.42);
+          var e = e0 * e0 * (3 - 2 * e0);
+          // アーチは常時くっきり（fvMaskは1固定・触らない）。全画面写真を『周囲だけ』フェードインさせるので
+          // 同じ写真が二重に切り替わって見えず、周囲が紙→写真に滲む滑らかな演出になる。
           if (fvFull) fvFull.style.opacity = e.toFixed(3);
           if (fvDimSp) fvDimSp.style.opacity = (0.6 * e).toFixed(3);
           // 白いモヤは暗転が進むにつれ消す
           if (fvHaze) fvHaze.style.opacity = (1 - e).toFixed(3);
           // メインコピーは閾値で暗↔白を切替（毎フレーム再描画を避け、CSS transitionで滑らかに）
           fvCopy.style.color = e < 0.5 ? '#5A5148' : '#FFFFFF';
-          // ③ メインコピー退場（0.34〜0.44）→ 想い登場（0.4〜0.68）
-          var out = clamp01((p - 0.34) / 0.1);
+          // ③ メインコピー退場→想い登場（クロスフェード完了後に順次）
+          var out = clamp01((p - 0.46) / 0.1);
           fvCopy.style.opacity = (1 - out).toFixed(3);
           if (fvMessage) {
-            var mi = clamp01((p - 0.4) / 0.28);
+            var mi = clamp01((p - 0.52) / 0.28);
             fvMessage.style.opacity = mi.toFixed(3);
           }
         }
