@@ -389,6 +389,18 @@ table{ border-collapse:collapse; width:100%; }
 /* SP専用レイヤー（PCでは非表示）。アーチ→全画面のクロスフェード用 */
 .fv__full{ display:none; }
 .fv__dim-sp{ display:none; }
+/* SP専用：想いの文章セクション（FV直下・独立）。PCでは非表示（PCはFV内オーバーレイのまま） */
+.fv-msg-sp{ display:none; }
+@media (max-width:767px){
+  .fv-msg-sp{ display:block; background:var(--bg-warm); padding:15vh 0; }
+  .fv-msg-sp__inner{
+    max-width:640px; margin:0 auto; padding-inline:var(--gutter); text-align:center;
+    font-family:var(--font-mincho); color:var(--greige-dk);
+    line-height:2.1; letter-spacing:.05em; font-size:clamp(1rem,4.2vw,1.14rem);
+    display:grid; gap:1.7em;
+  }
+  .fv-msg-sp p{ word-break:keep-all; overflow-wrap:normal; margin:0; }
+}
 
 /* アーチの輪郭に沿わせる金の細罫。見本にはない、こちらの署名。
    マスクと同一のパスをSVGで描くので、形が必ず一致する。 */
@@ -1035,6 +1047,16 @@ table{ border-collapse:collapse; width:100%; }
       <p>そんな言葉で、<wbr>自分の可能性に<wbr>そっと蓋をしていませんか。</p>
       <p>年齢も、<wbr>ブランクも、<wbr>あなたの価値を<wbr>決めるものではありません。</p>
       <p>一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
+    </div>
+  </section>
+
+  <!-- SP専用：想いの文章（FVから独立。pin/scrubを使わず視界に入ったら1回だけフェード＝滑らか） -->
+  <section class="fv-msg-sp" aria-label="想い">
+    <div class="fv-msg-sp__inner">
+      <p class="ani-gsap fadeIn slide-t">「もう遅いかもしれない」<br>「私には、<wbr>才能なんてないから」</p>
+      <p class="ani-gsap fadeIn slide-t" data-delay="0.1">そんな言葉で、<wbr>自分の可能性に<wbr>そっと蓋をしていませんか。</p>
+      <p class="ani-gsap fadeIn slide-t" data-delay="0.2">年齢も、<wbr>ブランクも、<wbr>あなたの価値を<wbr>決めるものではありません。</p>
+      <p class="ani-gsap fadeIn slide-t" data-delay="0.3">一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
     </div>
   </section>
 
@@ -1955,77 +1977,21 @@ table{ border-collapse:collapse; width:100%; }
       };
     });
 
-    // --- SP：アーチは拡大せず、写真をアーチ枠で見せたまま縦積み ---
+    // --- SP：pin/scrubを撤去した「静止ヒーロー」。参考サイト同様、FVは毎フレーム計算せず
+    //         普通に上へスクロールして流れるだけ＝ネイティブの滑らかさ。想いの文章はFV直下の
+    //         独立セクション(.fv-msg-sp)で、視界に入ったら1回だけフェードさせる（scrubしない）。 ---
     fvMm.add('(max-width: 767px)', function () {
-      /* SP：見本サイト準拠の3段階（ピン留めして順に変化）。
-         ① アーチ枠＋メインコピー（横からスライドインはイントロが担当、文字は暗色）
-         ② スクロールで枠が全体に広がり暗転、メインコピーが暗→白へ
-         ③ さらにスクロールでメインコピーが退き、想いの文章が現れる
-         拡大は transform:scale（GPU合成）で滑らかにする。 */
-      var SCALE_MAX = 2.9;
-      var clamp01 = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
-      // 文字色を暗→白へ補間（#5A5148 → #FFFFFF）
-      var lerpColor = function (t) {
-        var r = Math.round(90 + (255 - 90) * t),
-            g = Math.round(81 + (255 - 81) * t),
-            b = Math.round(72 + (255 - 72) * t);
-        return 'rgb(' + r + ',' + g + ',' + b + ')';
-      };
-
       setMask(118, 118);
       gsap.set(fvMask, { scale: 1, transformOrigin: '50% 32%', opacity: 1 });
       if (fvFull) gsap.set(fvFull, { opacity: 0 });
       if (fvDimSp) gsap.set(fvDimSp, { opacity: 0 });
       if (fvDim) fvDim.style.opacity = '0';
-      if (fvHaze) fvHaze.style.opacity = '1';   // 初期は白いモヤを出して暗い文字を読みやすく
-      // 初期：メインコピーは表示（イントロで横からスライドイン）、色は暗、想いは非表示
+      if (fvHaze) fvHaze.style.opacity = '1';   // 白いモヤで暗い見出しを読みやすく
       fvCopy.style.opacity = '1';
-      fvCopy.style.color = lerpColor(0);
-      if (fvMessage) fvMessage.style.opacity = '0';
-
-      var st = ScrollTrigger.create({
-        trigger: '.fv',
-        start: 'top top',
-        end: '+=175%',            // 短めのピン。少ないスクロールで想いまで到達する
-        scrub: 0.8,               // スクロール位置へ滑らかに追従（微振動を吸収・切替感を抑える）
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: function (self) {
-          var p = self.progress;
-          // ①→② 周囲フェードイン＋暗転（0〜0.42）。smoothstepで端を緩やかに
-          var e0 = clamp01(p / 0.42);
-          var e = e0 * e0 * (3 - 2 * e0);
-          // アーチは常時くっきり（fvMaskは1固定・触らない）。全画面写真を『周囲だけ』フェードインさせるので
-          // 同じ写真が二重に切り替わって見えず、周囲が紙→写真に滲む滑らかな演出になる。
-          if (fvFull) fvFull.style.opacity = e.toFixed(3);
-          if (fvDimSp) fvDimSp.style.opacity = (0.6 * e).toFixed(3);
-          // 白いモヤは暗転が進むにつれ消す
-          if (fvHaze) fvHaze.style.opacity = (1 - e).toFixed(3);
-          // メインコピーは閾値で暗↔白を切替（毎フレーム再描画を避け、CSS transitionで滑らかに）
-          fvCopy.style.color = e < 0.5 ? '#5A5148' : '#FFFFFF';
-          // ③ メインコピー退場→想い登場（クロスフェード完了後に順次）
-          var out = clamp01((p - 0.46) / 0.1);
-          fvCopy.style.opacity = (1 - out).toFixed(3);
-          if (fvMessage) {
-            var mi = clamp01((p - 0.52) / 0.28);
-            fvMessage.style.opacity = mi.toFixed(3);
-          }
-        }
-      });
-
+      fvCopy.style.color = '#5A5148';
+      if (fvMessage) fvMessage.style.opacity = '0';   // FV内の想いはSPでは使わない（直下の独立セクションで出す）
       return function () {
-        st.kill();
-        if (fvDimSp) fvDimSp.style.opacity = '0';
-        if (fvDim) fvDim.style.opacity = '0';
-        if (fvHaze) fvHaze.style.opacity = '0';
-        fvCopy.style.opacity = '1';
-        fvCopy.style.color = '';
         if (fvMessage) fvMessage.style.opacity = '0';
-        fvMask.style.opacity = '1';
-        if (fvFull) fvFull.style.opacity = '0';
-        gsap.set(fvMask, { scale: 1 });
       };
     });
   }
