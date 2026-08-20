@@ -544,9 +544,9 @@ table{ border-collapse:collapse; width:100%; }
   .fv__catch, .fv__sub, .fv__sub small{ color:inherit; }
   .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
-  /* SP：GPUのみで動く層。マスクは拡大せずopacityで退場、全画面写真がフェードイン */
+  /* SP：案A一発再生。マスク（アーチ）をscale拡大するので、GPUテクスチャ化のためwill-changeはtransformを指す */
   .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
-  .fv__mask{ z-index:1; will-change:opacity; }
+  .fv__mask{ z-index:1; will-change:transform; -webkit-backface-visibility:hidden; backface-visibility:hidden; }
   .fv__dim-sp{ display:block; position:absolute; inset:0; background:#000; opacity:0; z-index:1; pointer-events:none; will-change:opacity; transform:translateZ(0); }
   .fv__copy{ transition:color .35s ease; }
 
@@ -1973,18 +1973,18 @@ table{ border-collapse:collapse; width:100%; }
 
       // 一度きりの滑らかリビール（transform/opacityのみ＝GPU）
       var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
-      tl.to(fvMask,   { scale: 2.9, duration: 1.15 }, 0)                // 枠が拡大
-        .to(fvDimSp,  { opacity: 0.6, duration: 1.0 }, 0.05)            // 暗転
-        .to(fvHaze,   { opacity: 0, duration: 0.5 }, 0)                 // 白モヤを消す
-        .call(function () { fvCopy.style.color = '#FFFFFF'; }, null, 0.5) // コピーを白へ（1回・CSS transitionで滑らか）
-        .to(fvCopy,   { opacity: 0, duration: 0.4 }, 0.8)              // コピー退場
-        .to(fvMessage, { opacity: 1, duration: 0.7 }, 1.05);           // 想い登場
+      tl.to(fvMask,   { scale: 2.9, duration: 1.35, ease: 'sine.inOut' }, 0) // 枠が拡大（1フレーム毎の拡大量を小さく＝滑らか）
+        .to(fvDimSp,  { opacity: 0.6, duration: 1.15 }, 0.1)            // 暗転
+        .to(fvHaze,   { opacity: 0, duration: 0.55 }, 0)               // 白モヤを消す
+        .call(function () { fvCopy.style.color = '#FFFFFF'; }, null, 0.55) // コピーを白へ（1回・CSS transitionで滑らか）
+        .to(fvCopy,   { opacity: 0, duration: 0.4 }, 0.9)              // コピー退場
+        .to(fvMessage, { opacity: 1, duration: 0.75 }, 1.2);          // 想い登場
 
       var played = false;
       var st = ScrollTrigger.create({
         trigger: '.fv',
         start: 'top top',
-        end: '+=130%',          // 再生中フレームを保持するためだけの短いpin
+        end: '+=150%',          // 再生中フレームを保持するためだけの短いpin
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
