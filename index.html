@@ -84,7 +84,7 @@ body{
   letter-spacing:.04em;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  overflow-x:hidden;
+  overflow-x:clip;   /* hiddenだと overflow-y が auto 化しbodyがスクロールコンテナになりFVのstickyが無効化される。clipなら横あふれ防止のままstickyが効く */
 }
 
 /* 日本語組版：単語途中で改行させない。改行は <wbr>/<br>/空白（＝文節境界）
@@ -515,7 +515,11 @@ table{ border-collapse:collapse; width:100%; }
   /* SP：FVは画面いっぱいに画像を敷いて固定。スクロールすると「その場で」
      画像が暗転し、文章（白）が下からのぼって現れる（見本サイト準拠）。
      マスク拡大はせず brightness と opacity だけを動かすので滑らかに動く。 */
-  .fv{ height:100svh; min-height:560px; padding:0; overflow:hidden; }
+  /* SP：ScrollTriggerの動的pin(position:fixed付け外し)をやめ、ネイティブstickyで固定保持。
+     nicoplus同様「JSでfixedをトグルしない」ことでiOSのピン留めフリーズを構造的に排除。
+     .fv-wrap が縦スクロール距離を作り、.fv はその中でstickyに張り付く。 */
+  .fv-wrap{ height:200svh; }
+  .fv{ position:sticky; top:0; height:100svh; min-height:560px; padding:0; overflow:hidden; }
   .fv__mask{ position:absolute; inset:0; will-change:transform; }
   .fv__img{ position:absolute; inset:0; }
   .fv__archline{ display:none; }
@@ -995,6 +999,7 @@ table{ border-collapse:collapse; width:100%; }
   <!-- ============================================================
        FV
        ============================================================ -->
+  <div class="fv-wrap">
   <section class="fv" aria-label="ファーストビュー">
     <div class="fv__mask" id="fvMask">
       <img class="fv__img" id="fvImg"
@@ -1037,6 +1042,7 @@ table{ border-collapse:collapse; width:100%; }
       <p>一歩を踏み出したその日から、<wbr>“選ばれるネイリスト”への道は、<wbr>静かに始まります。</p>
     </div>
   </section>
+  </div><!-- /.fv-wrap -->
 
   <!-- ============================================================
        代表の実績（金の円形バッジ・アニメーション入り）
@@ -1981,20 +1987,20 @@ table{ border-collapse:collapse; width:100%; }
         .to(fvMessage, { opacity: 1, duration: 0.75 }, 1.2);          // 想い登場
 
       var played = false;
+      // pinは使わない（＝position:fixedの付け外しが無い＝iOSのフリーズが出ない）。
+      // .fv はCSSのstickyで画面に張り付き、.fv-wrap(200svh)がスクロール距離を作る。
+      // トリガーは再生/リセットの合図だけに使い、演出自体は60fpsの一発再生に任せる。
       var st = ScrollTrigger.create({
-        trigger: '.fv',
+        trigger: '.fv-wrap',
         start: 'top top',
-        end: '+=150%',          // 再生中フレームを保持するためだけの短いpin
-        pin: true,
-        pinSpacing: true,
-        anticipatePin: 1,
+        end: 'bottom bottom',
         onUpdate: function (self) {
-          // ほんの少しスクロールしたら1回だけ再生（毎フレームの追従はしない）
-          if (!played && self.progress > 0.03) { played = true; tl.play(); }
-        },
-        onLeaveBack: function () {           // 一番上まで戻したら初期状態へ（再度スクロールで再生できる）
-          played = false; tl.pause(0);
-          fvCopy.style.color = '#5A5148';
+          if (!played && self.progress > 0.02) {          // 入ったら1回だけ再生
+            played = true; tl.play();
+          } else if (played && self.progress <= 0.004) {  // 最上部へ戻したら初期状態へ
+            played = false; tl.pause(0);
+            fvCopy.style.color = '#5A5148';
+          }
         }
       });
 
