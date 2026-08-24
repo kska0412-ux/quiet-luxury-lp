@@ -517,14 +517,14 @@ table{ border-collapse:collapse; width:100%; }
      画像が暗転し、文章（白）が下からのぼって現れる（見本サイト準拠）。
      マスク拡大はせず brightness と opacity だけを動かすので滑らかに動く。 */
   .fv{ height:100svh; min-height:560px; padding:0; overflow:hidden; }
-  .fv__mask{ position:absolute; inset:0; will-change:transform; }
-  .fv__img{ position:absolute; inset:0; }
+  .fv__mask{ position:absolute; inset:0; }
+  .fv__img{ position:absolute; inset:0; will-change:auto; }
   .fv__archline{ display:none; }
   /* 白いモヤ：文字エリア（下半分）に柔らかい白のグローを敷き、暗い文字を読みやすくする。
      画像の上・文字の下（z-index 2）。暗転が進むとJSがopacityを下げて消す。 */
   .fv__haze{
     display:block; position:absolute; left:0; right:0; bottom:0; height:72%;
-    z-index:4; pointer-events:none; will-change:opacity;
+    z-index:4; pointer-events:none;
     background:radial-gradient(140% 84% at 50% 84%,
       rgba(255,253,248,1) 0%,
       rgba(255,253,248,.94) 34%,
@@ -547,8 +547,10 @@ table{ border-collapse:collapse; width:100%; }
   .fv__cta .btn{ width:100%; }
   /* SP：純GPUマット方式。フル写真を土台に敷き、その上の「紙＋アーチ穴」マットをscale拡大して枠を開く。
      マスク(fvMask)は静止のまま＝再ラスタライズが起きない。 */
-  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
-  .fv__mask{ z-index:1; will-change:transform; -webkit-backface-visibility:hidden; backface-visibility:hidden; }
+  /* fvFull/fvMaskは静止層。GPU昇格(will-change/translateZ)を付けると独立合成レイヤーになり、
+     iOSでfixed(pin)スクロール中に写真だけが一瞬ゴースト表示される。昇格を外して親レイヤーに畳む。 */
+  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; opacity:0; z-index:0; will-change:auto; }
+  .fv__mask{ z-index:1; will-change:auto; }
   /* 紙(#FAF7F3)＋アーチ形の穴。穴は現行アーチ実測(左右x18〜372/上ピークy150/下端y545/中心50%41%)に一致。
      scaleで穴が広がり全画面写真へ。純GPUのテクスチャ拡大＝iOS再ラスタライズなし。 */
   .fv__matte{
@@ -559,7 +561,7 @@ table{ border-collapse:collapse; width:100%; }
     will-change:transform, opacity; pointer-events:none;
     -webkit-backface-visibility:hidden; backface-visibility:hidden;
   }
-  .fv__dim-sp{ display:block; position:absolute; inset:0; background:#000; opacity:0; z-index:3; pointer-events:none; will-change:opacity; transform:translateZ(0); }
+  .fv__dim-sp{ display:block; position:absolute; inset:0; background:#000; opacity:0; z-index:3; pointer-events:none; }
   .fv__copy{ transition:color .35s ease; }
 
   /* 第3段：想いの文章（白・暗転画像の上に現れる） */
