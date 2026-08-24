@@ -1986,6 +1986,8 @@ table{ border-collapse:collapse; width:100%; }
         start: 'top top',
         end: '+=150%',          // 再生中フレームを保持するためだけの短いpin
         pin: true,
+        pinType: 'transform',   // position:fixedを使わずtransformで固定。iOSのfixedレイヤー生成による
+                                //  ピン留め時フリーズ(実測0.4〜0.5秒)を回避。Lenis(実スクロール)とも相性が良い。
         pinSpacing: true,
         anticipatePin: 1,
         onUpdate: function (self) {
