@@ -2077,9 +2077,10 @@ table{ border-collapse:collapse; width:100%; }
     var item = wrapEl.querySelector('.js-pin-bg__item');
     if (!item) return;
 
-    // ラッパー高さがビューポート以下なら発火させない。
+    // 背景ピンはPCのみ。SP(iOS)ではpinのposition:fixedトグルで背景画像が一瞬フラッシュするため無効化。
+    //  SPは静止時の見た目は同一（pinSpacing:false＝レイアウト不変）、失うのはスクロール中のパララックスのみ。
     // 高さは幅で変わるため matchMedia の再評価に載せ、条件を満たすときだけ生成する。
-    pinMm.add('(min-width: 1px)', function () {
+    pinMm.add('(min-width: 768px)', function () {
       if (wrapEl.offsetHeight <= window.innerHeight) return;
 
       var st = ScrollTrigger.create({
