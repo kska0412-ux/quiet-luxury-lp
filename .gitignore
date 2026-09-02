@@ -2,3 +2,6 @@
 index.COMPLETE-*.html
 .DS_Store
 .claude/
+
+# 画像生成時のプレビュー（納品物ではない）
+images/en/_preview.html
