@@ -186,11 +186,11 @@ table{ border-collapse:collapse; width:100%; }
    Buttons
    ============================================================ */
 .btn{
-  --btn-arrow:42px;            /* 右の矢印の直径。左に同じ幅の余白を置いて文字を中央に揃える */
+  --btn-arrow:42px;            /* 右の矢印の直径 */
   display:inline-flex;
   align-items:center;
-  justify-content:space-between;
-  gap:.8em;
+  justify-content:center;      /* ラベルと矢印をひとまとまりにして中央へ */
+  gap:1.2em;
   min-height:68px;
   padding:.9em 1.2em;
   border-radius:999px;
@@ -203,9 +203,7 @@ table{ border-collapse:collapse; width:100%; }
   box-shadow:var(--shadow);
   transition:transform .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, background-color .4s ease;
 }
-/* 矢印と同じ幅の空きを先頭に置く＝文字がボタンの中央に来る。
-   幅が足りない端末ではこの空きだけが縮み、ラベルは折り返さない。 */
-.btn::before{ content:""; flex:0 1 var(--btn-arrow); }
+/* ラベルは絶対に折り返さない（縮むのは左右の余白側） */
 .btn__label{ flex:none; white-space:nowrap; }
 .btn:hover{ transform:translateY(-2px); box-shadow:0 10px 34px rgba(90,81,72,.10); }
 .btn__arrow{
@@ -870,7 +868,9 @@ table{ border-collapse:collapse; width:100%; }
 .price__cta{ margin-top:2.8em; }
 /* SP：カード内にCTAボタンが収まらず溢れるため幅いっぱいに */
 @media (max-width:767px){
-  .price__cta .btn{ width:100%; padding-inline:1.4em; }
+  /* 360px幅ではカードの左右余白が効きすぎてCTAが収まらないため詰める */
+  .price__card{ padding-inline:1.15em; }
+  .price__cta .btn{ width:100%; padding-inline:.8em; --btn-arrow:36px; gap:.7em; }
 }
 
 /* ============================================================
