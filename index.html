@@ -387,7 +387,8 @@ table{ border-collapse:collapse; width:100%; }
   will-change:transform;
   width:100%; height:100%;
   object-fit:cover;
-  object-position:50% 30%;   /* 施術者の顔と手がアーチ中央に来る位置 */
+  object-position:22% 30%;   /* 施術者の顔と手がアーチ中央に来る位置。
+                                SPの縦切り抜きで顔が端で切れないよう左寄せ */
 }
 /* 暗転用の黒幕（マスク内なのでアーチ形に収まり、拡大にも追従）。opacityのみ動かす */
 .fv__dim{
@@ -557,7 +558,7 @@ table{ border-collapse:collapse; width:100%; }
   .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
   /* SP：案A一発再生。マスク（アーチ）をscale拡大するので、GPUテクスチャ化のためwill-changeはtransformを指す */
-  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 30%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
+  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:22% 30%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
   .fv__mask{ z-index:1; will-change:transform; -webkit-backface-visibility:hidden; backface-visibility:hidden; }
   .fv__dim-sp{ display:block; position:absolute; inset:0; background:#000; opacity:0; z-index:1; pointer-events:none; will-change:opacity; transform:translateZ(0); }
   .fv__copy{ transition:color .35s ease; }
@@ -1011,14 +1012,14 @@ table{ border-collapse:collapse; width:100%; }
   <section class="fv" aria-label="ファーストビュー">
     <div class="fv__mask" id="fvMask">
       <img class="fv__img" id="fvImg"
-           src="images/fv-hero.jpg"
-           width="1536" height="1024"
-           alt="明るいサロンで、お客様の爪にジェルを塗るネイリスト">
+           src="images/fv-hero.jpg?v=2"
+           width="1800" height="1350"
+           alt="サロンで、講師と受講生が施術しながら話している様子">
       <!-- 暗転はfilterではなく黒幕のopacity（GPU合成で軽い）。SPのスクロールで使用 -->
       <div class="fv__dim" id="fvDim" aria-hidden="true"></div>
     </div>
     <!-- SP：アーチ→全画面の切替をopacityクロスフェード（GPU）で行う全画面写真層＋暗幕。PCでは非表示 -->
-    <img class="fv__full" id="fvFull" src="images/fv-hero.jpg" width="1536" height="1024" alt="" aria-hidden="true">
+    <img class="fv__full" id="fvFull" src="images/fv-hero.jpg?v=2" width="1800" height="1350" alt="" aria-hidden="true">
     <div class="fv__dim-sp" id="fvDimSp" aria-hidden="true"></div>
     <svg class="fv__archline" viewBox="0 0 100 130" preserveAspectRatio="none" aria-hidden="true">
       <path d="M18.78,130 L18.78,71 A40,40 0 1 1 81.22,71 L81.22,130" vector-effect="non-scaling-stroke"/>
@@ -1157,8 +1158,8 @@ table{ border-collapse:collapse; width:100%; }
       <div class="reasons">
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-01.jpg" width="800" height="600" loading="lazy"
-                 alt="講師が受講生に寄り添って指導する様子">
+            <img src="images/reason-01.jpg?v=2" width="900" height="675" loading="lazy"
+                 alt="少人数のレッスンで、講師が受講生一人ひとりの手元を見ている様子">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t">
             <p class="reason__label">01</p>
@@ -1176,8 +1177,8 @@ table{ border-collapse:collapse; width:100%; }
 
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-02.jpg?v=2" width="800" height="600" loading="lazy"
-                 alt="対面レッスンで施術する様子">
+            <img src="images/reason-02.jpg?v=3" width="900" height="675" loading="lazy"
+                 alt="アペックスバランスをホワイトボードで解説する講師">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.12">
             <p class="reason__label">02</p>
@@ -1195,8 +1196,8 @@ table{ border-collapse:collapse; width:100%; }
 
         <article>
           <div class="reason__fig js-fig">
-            <img src="images/reason-03.jpg" width="800" height="600" loading="lazy"
-                 alt="ネイルマシンでの施術の手元アップ">
+            <img src="images/reason-03.jpg?v=2" width="900" height="675" loading="lazy"
+                 alt="ファイルの当て方を練習する受講生の手元">
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.24">
             <p class="reason__label">03</p>
@@ -1557,7 +1558,7 @@ table{ border-collapse:collapse; width:100%; }
        ============================================================ -->
   <section class="cta js-pin-bg" id="cta">
     <div class="js-pin-bg__item" aria-hidden="true">
-      <img src="images/cta-bg.jpg" width="1920" height="1080" loading="lazy" alt="">
+      <img src="images/cta-bg.jpg?v=2" width="1204" height="904" loading="lazy" alt="">
     </div>
     <div class="cta__veil" aria-hidden="true"></div>
 
