@@ -818,6 +818,9 @@ table{ border-collapse:collapse; width:100%; }
   .founder__hstat:nth-child(2n){ border-left:1px solid rgba(196,165,123,.32); }
   .founder__hstat:nth-child(n+3){ border-top:1px solid rgba(196,165,123,.32); }
   .founder__text{ text-align:center; }
+  /* 経歴は li::before の丸印が left:0 に絶対配置されるため、
+     中央寄せだと丸印だけ左端に取り残される。文章側を左寄せに揃える。 */
+  .founder__career{ text-align:left; }
 }
 
 /* ============================================================
@@ -846,7 +849,13 @@ table{ border-collapse:collapse; width:100%; }
 .price__unit{ font-family:var(--font-mincho); font-size:1.1rem; margin-left:.15em; letter-spacing:.08em; }
 .price__note{ margin-top:1em; font-size:.78rem; color:var(--text-sub); }
 
+.price__phase{
+  margin-top:2.4em; text-align:left;
+  font-family:var(--font-mincho); font-weight:500;
+  font-size:.95rem; letter-spacing:.08em; color:var(--greige-dk);
+}
 .price__list{ margin-top:2.6em; text-align:left; display:grid; gap:.85em; }
+.price__phase + .price__list{ margin-top:1em; }
 .price__list li{ display:flex; gap:.9em; font-size:.88rem; line-height:1.9; min-width:0; }
 .price__list li > *{ min-width:0; }
 .price__list li::before{
@@ -1201,14 +1210,13 @@ table{ border-collapse:collapse; width:100%; }
           </div>
           <div class="reason__text ani-gsap fadeIn slide-t" data-delay="0.24">
             <p class="reason__label">03</p>
-            <h3 class="reason__title">写真添削と質問相談無制限で<br>一人にしない</h3>
+            <h3 class="reason__title">写真添削とチャット無制限で<br>デビュー準備</h3>
             <p class="reason__body">
               課題を写真で提出<br>
               数日以内に添削返信されるので<br>
               進みを止めさせません<br>
-              受講期間2カ月+<wbr>アフターサポート2カ月の期間に<br>
-              それぞれの希望進路に合わせた準備や<br>
-              スケジュール組み立てを一緒にします
+              それぞれの希望進路に合わせた準備と<br>
+              スケジュール組み立てを<wbr>一緒に行う事も可能です
             </p>
           </div>
         </article>
@@ -1421,11 +1429,19 @@ table{ border-collapse:collapse; width:100%; }
           </div>
           <p class="price__note">表示価格は税込です</p>
 
+          <p class="price__phase">受講期間2カ月</p>
           <ul class="price__list">
             <li>対面レッスン 全2回（12h）</li>
+            <li>課題別Zoomフォロー2回</li>
             <li>写真・動画での課題添削（全8回）</li>
             <li>チャットでの質問（無制限）</li>
-            <li>受講期間2ヶ月＋<wbr>アフターフォロー2ヶ月<wbr>（合計4ヶ月）</li>
+          </ul>
+
+          <p class="price__phase">アフターサポート2カ月</p>
+          <ul class="price__list">
+            <li>Instagramアカウント構築等</li>
+            <li>開業・就職・副業進路相談</li>
+            <li>チャットでの質問（無制限）</li>
           </ul>
 
           <div class="price__cta">
