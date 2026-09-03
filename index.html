@@ -186,12 +186,13 @@ table{ border-collapse:collapse; width:100%; }
    Buttons
    ============================================================ */
 .btn{
+  --btn-arrow:42px;            /* 右の矢印の直径。左に同じ幅の余白を置いて文字を中央に揃える */
   display:inline-flex;
   align-items:center;
   justify-content:space-between;
-  gap:1.2em;
+  gap:.8em;
   min-height:68px;
-  padding:.9em 1.5em .9em 2.4em;
+  padding:.9em 1.2em;
   border-radius:999px;
   background:var(--white);
   color:var(--text);
@@ -202,10 +203,14 @@ table{ border-collapse:collapse; width:100%; }
   box-shadow:var(--shadow);
   transition:transform .4s cubic-bezier(.2,.7,.3,1), box-shadow .4s ease, background-color .4s ease;
 }
+/* 矢印と同じ幅の空きを先頭に置く＝文字がボタンの中央に来る。
+   幅が足りない端末ではこの空きだけが縮み、ラベルは折り返さない。 */
+.btn::before{ content:""; flex:0 1 var(--btn-arrow); }
+.btn__label{ flex:none; white-space:nowrap; }
 .btn:hover{ transform:translateY(-2px); box-shadow:0 10px 34px rgba(90,81,72,.10); }
 .btn__arrow{
   flex:none;
-  width:42px; height:42px;
+  width:var(--btn-arrow); height:var(--btn-arrow);
   border-radius:50%;
   background:var(--greige);
   display:grid; place-items:center;
@@ -387,8 +392,8 @@ table{ border-collapse:collapse; width:100%; }
   will-change:transform;
   width:100%; height:100%;
   object-fit:cover;
-  object-position:22% 30%;   /* 施術者の顔と手がアーチ中央に来る位置。
-                                SPの縦切り抜きで顔が端で切れないよう左寄せ */
+  object-position:50% 30%;   /* 施術者の顔と手がアーチ中央に来る位置。
+                                SPは 9:16 の専用画像なので切り抜きは起きない */
 }
 /* 暗転用の黒幕（マスク内なのでアーチ形に収まり、拡大にも追従）。opacityのみ動かす */
 .fv__dim{
@@ -558,7 +563,7 @@ table{ border-collapse:collapse; width:100%; }
   .fv__cta{ margin-top:1.6em; }
   .fv__cta .btn{ width:100%; }
   /* SP：案A一発再生。マスク（アーチ）をscale拡大するので、GPUテクスチャ化のためwill-changeはtransformを指す */
-  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:22% 30%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
+  .fv__full{ display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 50%; opacity:0; z-index:0; will-change:opacity; transform:translateZ(0); }
   .fv__mask{ z-index:1; will-change:transform; -webkit-backface-visibility:hidden; backface-visibility:hidden; }
   .fv__dim-sp{ display:block; position:absolute; inset:0; background:#000; opacity:0; z-index:1; pointer-events:none; will-change:opacity; transform:translateZ(0); }
   .fv__copy{ transition:color .35s ease; }
@@ -865,7 +870,7 @@ table{ border-collapse:collapse; width:100%; }
 .price__cta{ margin-top:2.8em; }
 /* SP：カード内にCTAボタンが収まらず溢れるため幅いっぱいに */
 @media (max-width:767px){
-  .price__cta .btn{ width:100%; padding-left:1.8em; padding-right:1.4em; }
+  .price__cta .btn{ width:100%; padding-inline:1.4em; }
 }
 
 /* ============================================================
@@ -925,10 +930,21 @@ table{ border-collapse:collapse; width:100%; }
 #cta .en-eb{ filter:brightness(0) invert(1); opacity:.92; }
 /* CTA背景：スマホは横長写真がズームし過ぎて顔が切れるため、表示高を抑えて全体を見せる（PCは不変） */
 @media (max-width:767px){
-  #cta{ background:#2b2621; }
-  #cta .js-pin-bg__item{ height:60svh; }
+  /* スマホはCTAの文章とボタンが写真の中に収まらないため、
+     写真は上部だけに敷き（通常フロー）、文章以降は明るい地の上に置く。PCは不変。 */
+  #cta{ background:var(--bg-base); }
+  #cta .js-pin-bg__item{ position:relative; height:46svh; }
   #cta .js-pin-bg__item img{ object-position:50% 24%; }
-  #cta .js-pin-bg__item::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:42%; background:linear-gradient(to bottom, rgba(43,38,33,0), rgba(43,38,33,.92)); z-index:1; }
+  #cta .js-pin-bg__item::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:38%; background:linear-gradient(to bottom, rgba(250,247,243,0), var(--bg-base)); z-index:1; }
+  #cta .cta__veil{ display:none; }
+  /* 明るい地に載るので、文字と罫と英字見出しを濃い側へ戻す */
+  #cta .sec-title{ color:var(--text); }
+  #cta .cta__body{ color:var(--text-sub); }
+  #cta .cta__meta{ color:var(--text-sub); }
+  #cta .rule{ border-color:var(--gold); background:var(--gold); }
+  #cta .en-eb{ filter:none; opacity:1; }
+  #cta .cta__inner{ padding-top:2.4em; }
+  #cta .cta__btn .btn{ width:100%; }
 }
 .cta__inner{ position:relative; z-index:2; padding-block:var(--sec-pad); text-align:center; }
 .cta__body{ margin-top:2em; font-size:clamp(.88rem,3.4vw,.98rem); color:var(--text-sub); }
@@ -956,8 +972,7 @@ table{ border-collapse:collapse; width:100%; }
   transition:opacity .5s ease, visibility .5s ease;
 }
 .spbar.is-visible{ opacity:1; visibility:visible; }
-.spbar .btn{ width:100%; min-height:58px; padding-left:1.8em; font-size:1rem; }
-.spbar .btn__arrow{ width:36px; height:36px; }
+.spbar .btn{ --btn-arrow:36px; width:100%; min-height:58px; font-size:1rem; }
 @media (min-width:768px){ .spbar{ display:none; } }
 
 /* ============================================================
@@ -1020,15 +1035,18 @@ table{ border-collapse:collapse; width:100%; }
   <div class="fv-wrap">
   <section class="fv" aria-label="ファーストビュー">
     <div class="fv__mask" id="fvMask">
-      <img class="fv__img" id="fvImg"
-           src="images/fv-hero.jpg?v=2"
-           width="1800" height="1350"
-           alt="サロンで、講師と受講生が施術しながら話している様子">
+      <picture>
+        <source media="(max-width:767px)" srcset="images/fv-hero-sp.jpg?v=1">
+        <img class="fv__img" id="fvImg"
+             src="images/fv-hero.jpg?v=2"
+             width="1800" height="1350"
+             alt="サロンで、講師と受講生が施術しながら話している様子">
+      </picture>
       <!-- 暗転はfilterではなく黒幕のopacity（GPU合成で軽い）。SPのスクロールで使用 -->
       <div class="fv__dim" id="fvDim" aria-hidden="true"></div>
     </div>
     <!-- SP：アーチ→全画面の切替をopacityクロスフェード（GPU）で行う全画面写真層＋暗幕。PCでは非表示 -->
-    <img class="fv__full" id="fvFull" src="images/fv-hero.jpg?v=2" width="1800" height="1350" alt="" aria-hidden="true">
+    <img class="fv__full" id="fvFull" src="images/fv-hero-sp.jpg?v=1" width="1170" height="2532" alt="" aria-hidden="true">
     <div class="fv__dim-sp" id="fvDimSp" aria-hidden="true"></div>
     <svg class="fv__archline" viewBox="0 0 100 130" preserveAspectRatio="none" aria-hidden="true">
       <path d="M18.78,130 L18.78,71 A40,40 0 1 1 81.22,71 L81.22,130" vector-effect="non-scaling-stroke"/>
@@ -1044,7 +1062,7 @@ table{ border-collapse:collapse; width:100%; }
       </h1>
       <div class="fv__cta">
         <a class="btn" href="#cta">
-          無料個別相談に参加する
+          <span class="btn__label">無料個別相談に参加する</span>
           <span class="btn__arrow" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
           </span>
@@ -1446,7 +1464,7 @@ table{ border-collapse:collapse; width:100%; }
 
           <div class="price__cta">
             <a class="btn btn--fill" href="#cta">
-              無料個別相談に参加する
+              <span class="btn__label">無料個別相談に参加する</span>
               <span class="btn__arrow" aria-hidden="true">
                 <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
               </span>
@@ -1591,7 +1609,7 @@ table{ border-collapse:collapse; width:100%; }
         </p>
         <div class="cta__btn ani-gsap fadeIn slide-t" data-delay="0.3">
           <a class="btn btn--fill" href="#cta">
-            無料個別相談に参加する
+            <span class="btn__label">無料個別相談に参加する</span>
             <span class="btn__arrow" aria-hidden="true">
               <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
             </span>
@@ -1618,7 +1636,7 @@ table{ border-collapse:collapse; width:100%; }
 <!-- SP 固定CTAバー -->
 <div class="spbar" id="spbar">
   <a class="btn btn--fill" href="#cta">
-    無料個別相談に参加する
+    <span class="btn__label">無料個別相談に参加する</span>
     <span class="btn__arrow" aria-hidden="true">
       <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
     </span>
