@@ -1000,6 +1000,23 @@ table{ border-collapse:collapse; width:100%; }
 .en-loading{ display:inline-block; width:auto; height:1.083em; vertical-align:middle; }
 .en-price{ display:inline-block; width:auto; vertical-align:middle; }
 </style>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1742640370186103');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1742640370186103&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -1061,7 +1078,7 @@ table{ border-collapse:collapse; width:100%; }
         選ばれるネイリストへ
       </h1>
       <div class="fv__cta">
-        <a class="btn" href="#cta">
+        <a class="btn" href="https://lin.ee/ub7ix7B" target="_blank" rel="noopener">
           <span class="btn__label">無料個別相談に参加する</span>
           <span class="btn__arrow" aria-hidden="true">
             <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
@@ -1463,7 +1480,7 @@ table{ border-collapse:collapse; width:100%; }
           </ul>
 
           <div class="price__cta">
-            <a class="btn btn--fill" href="#cta">
+            <a class="btn btn--fill" href="https://lin.ee/ub7ix7B" target="_blank" rel="noopener">
               <span class="btn__label">無料個別相談に参加する</span>
               <span class="btn__arrow" aria-hidden="true">
                 <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
@@ -1608,7 +1625,7 @@ table{ border-collapse:collapse; width:100%; }
           決めていなくて構いません。<wbr>相談だけの参加を<wbr>歓迎しています。
         </p>
         <div class="cta__btn ani-gsap fadeIn slide-t" data-delay="0.3">
-          <a class="btn btn--fill" href="#cta">
+          <a class="btn btn--fill" href="https://lin.ee/ub7ix7B" target="_blank" rel="noopener">
             <span class="btn__label">無料個別相談に参加する</span>
             <span class="btn__arrow" aria-hidden="true">
               <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
@@ -1635,7 +1652,7 @@ table{ border-collapse:collapse; width:100%; }
 
 <!-- SP 固定CTAバー -->
 <div class="spbar" id="spbar">
-  <a class="btn btn--fill" href="#cta">
+  <a class="btn btn--fill" href="https://lin.ee/ub7ix7B" target="_blank" rel="noopener">
     <span class="btn__label">無料個別相談に参加する</span>
     <span class="btn__arrow" aria-hidden="true">
       <svg viewBox="0 0 12 12"><path d="M2 6h8M6.5 2.5 10 6l-3.5 3.5"/></svg>
@@ -2443,6 +2460,23 @@ table{ border-collapse:collapse; width:100%; }
   }, 100));
 
 })();
+</script>
+
+<!-- Meta Pixel: LINE CTA クリックを Lead として計測 -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll(
+    'a[href*="line.me"], a[href*="lin.ee"]'
+  ).forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (typeof fbq === 'function') {
+        fbq('track', 'Lead', {
+          content_name: 'parer_LINE_CTA'
+        });
+      }
+    });
+  });
+});
 </script>
 
 </body>
