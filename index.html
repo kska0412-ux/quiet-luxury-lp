@@ -850,6 +850,11 @@ table{ border-collapse:collapse; width:100%; }
   letter-spacing:.02em; color:var(--text);
 }
 .price__unit{ font-family:var(--font-mincho); font-size:1.1rem; margin-left:.15em; letter-spacing:.08em; }
+.price__limited{
+  font-family:var(--font-mincho); font-weight:500;
+  font-size:.95rem; letter-spacing:.18em; color:var(--gold);
+  margin-bottom:.6em;
+}
 .price__note{ margin-top:1em; font-size:.78rem; color:var(--text-sub); }
 
 .price__phase{
@@ -1460,7 +1465,8 @@ src="https://www.facebook.com/tr?id=1742640370186103&ev=PageView&noscript=1"
       <div class="price ani-gsap fadeIn slide-t blur-10" data-delay="0.2">
         <div class="price__card">
           <div class="price__figure">
-            <p><span class="price__num">220,000</span><span class="price__unit">円</span></p>
+            <p class="price__limited">0期生限定</p>
+            <p><span class="price__num">110,000</span><span class="price__unit">円</span></p>
           </div>
           <p class="price__note">表示価格は税込です</p>
 
